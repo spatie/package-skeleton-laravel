@@ -2,7 +2,7 @@
     "name": "spatie/:package_name",
     "description": ":package_description",
     "keywords": [
-        "league",
+        "spatie",
         ":package_name"
     ],
     "homepage": "https://github.com/spatie/:package_name",
