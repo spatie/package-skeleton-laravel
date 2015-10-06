@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/thephpleague/:package_name).
+We accept contributions via Pull Requests on [Github](https://github.com/spatie/:package_name).
 
 
 ## Pull Requests
