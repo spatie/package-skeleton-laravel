@@ -1,4 +1,4 @@
-# :package_name
+# Very short description of the package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/:package_name.svg?style=flat-square)](https://packagist.org/packages/spatie/:package_name)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -13,7 +13,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-## Install
+## Installation
 
 **Note:** Remove this paragraph if you are building a public package  
 This package is custom built for [Spatie](https://spatie.be) projects and is therefore not registered on packagist. In order to install it via composer you must specify this extra repository in `composer.json`:
@@ -25,7 +25,7 @@ This package is custom built for [Spatie](https://spatie.be) projects and is the
 You can install the package via composer:
 
 ``` bash
-$ composer require spatie/:package_name
+composer require spatie/:package_name
 ```
 
 ## Usage
@@ -47,7 +47,7 @@ $ composer test
 
 ## Contributing
 
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security
 
