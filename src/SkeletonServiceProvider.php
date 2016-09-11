@@ -11,17 +11,19 @@ class SkeletonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
-        ], 'config');
+        if ($this->app->runningInConsole()) {
+           $this->publishes([
+               __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
+           ], 'config');
 
-        /*
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
-
-        $this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
-        ], 'views');
-        */
+           /*
+           $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
+   
+           $this->publishes([
+               __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
+           ], 'views');
+           */
+        }
     }
 
     /**
