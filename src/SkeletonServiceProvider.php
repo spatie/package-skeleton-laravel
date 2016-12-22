@@ -18,7 +18,7 @@ class SkeletonServiceProvider extends ServiceProvider
 
             /*
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
-   
+
             $this->publishes([
                 __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
             ], 'views');
