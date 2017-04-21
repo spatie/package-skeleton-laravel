@@ -29,7 +29,7 @@ This package is custom built for [Spatie](https://spatie.be) projects and is the
 
 You can install the package via composer:
 
-``` bash
+```bash
 composer require spatie/:package_name
 ```
 
