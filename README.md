@@ -54,12 +54,12 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-### Support us
+## Support us
 
 Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
-### Postcardware
+## Postcardware
 
 You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
