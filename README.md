@@ -67,11 +67,9 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 - [:author_name](https://github.com/:author_username)
 - [All Contributors](../../contributors)
 
-### About Spatie
+### Support us
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
-
-## Support us
 
 Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
