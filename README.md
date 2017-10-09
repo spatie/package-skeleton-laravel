@@ -54,7 +54,7 @@ If you discover any security related issues, please email freek@spatie.be instea
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-### Postcardware
+## Postcardware
 
 You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
 
@@ -67,7 +67,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 - [:author_name](https://github.com/:author_username)
 - [All Contributors](../../contributors)
 
-### Support us
+## Support us
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
