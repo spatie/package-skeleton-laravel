@@ -12,13 +12,6 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 
-**Note:** Remove this paragraph if you are building a public package  
-This package is custom built for [Spatie](https://spatie.be) projects and is therefore not registered on packagist. In order to install it via composer you must specify this extra repository in `composer.json`:
-
-```json
-"repositories": [ { "type": "composer", "url": "https://satis.spatie.be/" } ]
-```
-
 You can install the package via composer:
 
 ```bash
