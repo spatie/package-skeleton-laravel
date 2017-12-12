@@ -28,7 +28,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Test\\": "tests"
+            "Spatie\\Skeleton\\Tests\\": "tests"
         }
     },
     "scripts": {
