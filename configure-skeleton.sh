@@ -51,4 +51,5 @@ sed -i '' -e "/^\*\*Note:\*\* Replace/d" README.md
 
 echo "Replaced all values and reset git directory, self destructing in 3... 2... 1..."
 
+rm -- "configure-skeleton.ps1"
 rm -- "$0"
