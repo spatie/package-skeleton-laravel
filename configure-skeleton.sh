@@ -41,13 +41,23 @@ git init
 
 echo
 
-find . -type f -exec sed -i '' -e "s/:author_name/$author_name/" {} \;
-find . -type f -exec sed -i '' -e "s/:author_username/$author_username/" {} \;
-find . -type f -exec sed -i '' -e "s/:author_email/$author_email/" {} \;
-find . -type f -exec sed -i '' -e "s/:package_name/$package_name/" {} \;
-find . -type f -exec sed -i '' -e "s/:package_description/$package_description/" {} \;
+if [[ "$OSTYPE" == "darwin" ]]; then
+    find . -type f -exec sed -i '' -e "s/:author_name/$author_name/" {} \;
+    find . -type f -exec sed -i '' -e "s/:author_username/$author_username/" {} \;
+    find . -type f -exec sed -i '' -e "s/:author_email/$author_email/" {} \;
+    find . -type f -exec sed -i '' -e "s/:package_name/$package_name/" {} \;
+    find . -type f -exec sed -i '' -e "s/:package_description/$package_description/" {} \;
 
-sed -i '' -e "/^\*\*Note:\*\* Replace/d" README.md
+    sed -i '' -e "/^\*\*Note:\*\* Replace/d" README.md
+else
+    find . -type f -exec sed -i -e "s/:author_name/$author_name/" {} \;
+    find . -type f -exec sed -i -e "s/:author_username/$author_username/" {} \;
+    find . -type f -exec sed -i -e "s/:author_email/$author_email/" {} \;
+    find . -type f -exec sed -i -e "s/:package_name/$package_name/" {} \;
+    find . -type f -exec sed -i -e "s/:package_description/$package_description/" {} \;
+
+    sed -i -e "/^\*\*Note:\*\* Replace/d" README.md
+fi
 
 echo "Replaced all values and reset git directory, self destructing in 3... 2... 1..."
 
