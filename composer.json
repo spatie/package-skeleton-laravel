@@ -16,11 +16,11 @@
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.3"
     },
     "require-dev": {
         "larapack/dd": "^1.0",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": {
