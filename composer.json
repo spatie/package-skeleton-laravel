@@ -19,7 +19,7 @@
         "php": "^7.3"
     },
     "require-dev": {
-        "larapack/dd": "^1.0",
+        "symfony/var-dumper": "^4.3",
         "phpunit/phpunit": "^8.2"
     },
     "autoload": {
