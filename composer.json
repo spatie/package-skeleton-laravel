@@ -48,5 +48,7 @@
                 "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
             }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
