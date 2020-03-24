@@ -9,4 +9,5 @@
 /tests              export-ignore
 /.editorconfig      export-ignore
 /.php.cs            export-ignore
+/.github            export-ignore
 
