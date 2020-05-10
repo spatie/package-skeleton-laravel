@@ -20,7 +20,6 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
-        "symfony/var-dumper": "^4.3",
         "orchestra/testbench": "^5.0",
         "phpunit/phpunit": "^9.0"
     },
