@@ -20,7 +20,6 @@ class SkeletonServiceProvider extends ServiceProvider
             }
 
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
-        }
     }
 
     public function register()
