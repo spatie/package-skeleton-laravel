@@ -13,7 +13,7 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('skeleton.php'),
+                __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
             ], 'config');
 
             /*
@@ -31,6 +31,6 @@ class SkeletonServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__.'/../config/skeleton.php', 'skeleton');
     }
 }
