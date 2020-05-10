@@ -35,5 +35,4 @@ class TestCase extends Orchestra
         (new CreateYourTable())->up();
         */
     }
-
 }
