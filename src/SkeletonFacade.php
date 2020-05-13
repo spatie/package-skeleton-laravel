@@ -5,7 +5,7 @@ namespace Spatie\Skeleton;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Spatie\Skeleton\SkeletonClass
+ * @see \Spatie\Skeleton\Skeleton
  */
 class SkeletonFacade extends Facade
 {
