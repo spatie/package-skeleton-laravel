@@ -3,6 +3,7 @@
 namespace Spatie\Skeleton;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\Skeleton\Commands\SkeletonCommand;
 
 class SkeletonServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,10 @@ class SkeletonServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
             ], 'views');
+
+            $this->commands([
+                SkeletonCommand::class,
+            ]);
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
