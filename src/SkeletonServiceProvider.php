@@ -18,6 +18,12 @@ class SkeletonServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
             ], 'views');
 
+            if (! class_exists('CreatePackageTables')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/create_package_tables.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_package_tables.php'),
+                ], 'migrations');
+            }
+
             $this->commands([
                 SkeletonCommand::class,
             ]);
