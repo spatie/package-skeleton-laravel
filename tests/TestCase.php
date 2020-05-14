@@ -11,7 +11,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__.'/../database/factories');
+        $this->withFactories(__DIR__.'/database/factories');
     }
 
     protected function getPackageProviders($app)
@@ -31,7 +31,7 @@ class TestCase extends Orchestra
         ]);
 
         /*
-        include_once __DIR__.'/../database/migrations/create_package_tables.php.stub';
+        include_once __DIR__.'/../database/migrations/create_skeleton_tables.php.stub';
         (new CreatePackageTables())->up();
         */
     }
