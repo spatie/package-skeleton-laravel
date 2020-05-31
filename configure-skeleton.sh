@@ -36,11 +36,6 @@ fi
 
 echo
 
-rm -rf .git
-git init
-
-echo
-
 find . -type f -exec sed -i '' -e "s/:author_name/$author_name/g" {} \;
 find . -type f -exec sed -i '' -e "s/:author_username/$author_username/g" {} \;
 find . -type f -exec sed -i '' -e "s/:author_email/$author_email/g" {} \;
