@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LC_ALL=C
+
 git_name=`git config user.name`;
 git_email=`git config user.email`;
 
