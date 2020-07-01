@@ -39,8 +39,11 @@ echo -e "Author: $author_name ($author_username, $author_email)"
 echo -e "Package: $package_name <$package_description>"
 echo -e "Suggested Class Name: $class_name"
 
+vendor_name=`echo "${author_username^}"`
+package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
+
 echo
-files=$(grep -E -r -l ":author|:package" ./*  | grep -v "$script_name")
+files=$(grep -E -r -l -i ":author|:package|spatie|skeleton" ./*  | grep -v "$script_name")
 
 echo "This script will replace the above values in all relevant files in the project directory and reset the git repository."
 if ! confirm "Modify composer.json and .MD Markdown files?" ; then
@@ -57,12 +60,23 @@ for file in $files ; do
     | sed "s/:author_username/$author_username/g" \
     | sed "s/:author_email/$author_email/g" \
     | sed "s/:package_name/$package_name/g" \
+    | sed "s/spatie/$author_name/g" \
+    | sed "s/Spatie/$vendor_name/g" \
+    | sed "s/_skeleton_/$package_name_underscore/g" \
+    | sed "s/skeleton/$package_name/g" \
+    | sed "s/Skeleton/$class_name/g" \
     | sed "s/:package_description/$package_description/g" \
     | sed "/^\*\*Note:\*\* Replace/d" \
     > "$temp_file"
     rm -f "$file"
-    mv "$temp_file" "$file"
+    new_file=`echo $file | sed -e "s/Skeleton/${class_name}/g"`
+    mv "$temp_file" "$new_file"
 done
+mv "./config/skeleton.php" "./config/${package_name}.php"
+
+if confirm "Execute composer install and phpunit test" ; then
+    composer install && ./vendor/bin/phpunit
+fi
 
 if confirm 'Let this script delete itself (since you only need it once)?' ; then
     echo "Delete $0 !"
