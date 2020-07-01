@@ -39,7 +39,7 @@ echo -e "Author: $author_name ($author_username, $author_email)"
 echo -e "Package: $package_name <$package_description>"
 echo -e "Suggested Class Name: $class_name"
 
-vendor_name=`echo "${author_username^}"`
+vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${author_username:0:1})${author_username:1}"
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
