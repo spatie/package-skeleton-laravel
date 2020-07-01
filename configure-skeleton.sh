@@ -60,7 +60,6 @@ for file in $files ; do
     | sed "s/:author_username/$author_username/g" \
     | sed "s/:author_email/$author_email/g" \
     | sed "s/:package_name/$package_name/g" \
-    | sed "s/spatie/$author_name/g" \
     | sed "s/Spatie/$vendor_name/g" \
     | sed "s/_skeleton_/$package_name_underscore/g" \
     | sed "s/skeleton/$package_name/g" \
