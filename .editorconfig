@@ -1,6 +1,3 @@
-; This file is for unifying the coding style for different editors and IDEs.
-; More information at https://editorconfig.org
-
 root = true
 
 [*]
