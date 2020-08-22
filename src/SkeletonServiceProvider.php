@@ -11,16 +11,17 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
+                __DIR__ . '/../config/skeleton.php' => config_path('skeleton.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
+                __DIR__ . '/../resources/views' => base_path('resources/views/vendor/skeleton'),
             ], 'views');
 
-            if (! class_exists('CreatePackageTable')) {
+            $migrationFileName = 'create_skeleton_table.php';
+            if (! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes([
-                    __DIR__ . '/../database/migrations/create_skeleton_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_skeleton_table.php'),
+                    __DIR__ . "/../database/migrations/{$migrationFileName}.stub" => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
                 ], 'migrations');
             }
 
@@ -29,11 +30,23 @@ class SkeletonServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'skeleton');
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/skeleton.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__ . '/../config/skeleton.php', 'skeleton');
+    }
+
+    public static function migrationFileExists(string $migrationFileName): bool
+    {
+        $len = strlen($migrationFileName);
+        foreach (glob(database_path("migrations/*.php")) as $filename) {
+            if ((substr($filename, -$len) === $migrationFileName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
