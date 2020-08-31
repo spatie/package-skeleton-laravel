@@ -45,7 +45,7 @@ vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsantized:0:1})${ve
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
-files=$(grep -E -r -l -i ":author|:package|spatie|skeleton" ./*  | grep -v "$script_name")
+files=$(grep -E -r -l -i ":author|:package|spatie|skeleton" --exclude-dir=vendor ./*  | grep -v "$script_name")
 
 echo "This script will replace the above values in all relevant files in the project directory and reset the git repository."
 if ! confirm "Modify composer.json and .MD Markdown files?" ; then
