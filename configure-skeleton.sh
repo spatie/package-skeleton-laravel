@@ -30,12 +30,12 @@ author_username=$(ask_question "Author username" "$username_guess")
 
 current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
-package_name=$(ask_question "Package name" "$folder_name")
-
-package_description=$(ask_question "Package description" "")
-class_name=$(echo "$package_name" | sed 's/[-_]/ /g' | awk '{for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' | sed 's/[[:space:]]//g')
 
 vendor_name_unsantized=$(ask_question "Vendor name" "spatie")
+package_name=$(ask_question "Package name" "$folder_name")
+package_description=$(ask_question "Package description" "")
+
+class_name=$(echo "$package_name" | sed 's/[-_]/ /g' | awk '{for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' | sed 's/[[:space:]]//g')
 
 echo -e "Author: $author_name ($author_username, $author_email)"
 echo -e "Package: $package_name <$package_description>"
