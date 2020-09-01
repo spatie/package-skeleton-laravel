@@ -5,7 +5,7 @@
         ":vendor_name",
         ":package_name"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/:vendor_name/:package_name",
     "license": "MIT",
     "authors": [
         {
