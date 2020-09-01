@@ -42,10 +42,11 @@ echo -e "Package: $package_name <$package_description>"
 echo -e "Suggested Class Name: $class_name"
 
 vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsantized:0:1})${vendor_name_unsantized:1}"
+vendor_name_lower_case=`echo "$vendor_name_unsantized" | tr '[:upper:]' '[:lower:]'`
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
-files=$(grep -E -r -l -i ":author|:package|spatie|skeleton" --exclude-dir=vendor ./*  | grep -v "$script_name")
+files=$(grep -E -r -l -i ":author|:vendor|:package|spatie|skeleton" --exclude-dir=vendor ./*  | grep -v "$script_name")
 
 echo "This script will replace the above values in all relevant files in the project directory and reset the git repository."
 if ! confirm "Modify composer.json and .MD Markdown files?" ; then
@@ -61,6 +62,7 @@ for file in $files ; do
       sed "s/:author_name/$author_name/g" \
     | sed "s/:author_username/$author_username/g" \
     | sed "s/:author_email/$author_email/g" \
+    | sed "s/:vendor_name/$vendor_name_lowercase/g" \
     | sed "s/:package_name/$package_name/g" \
     | sed "s/Spatie/$vendor_name/g" \
     | sed "s/_skeleton_/$package_name_underscore/g" \
