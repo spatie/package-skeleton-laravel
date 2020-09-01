@@ -1,8 +1,8 @@
 {
-    "name": "spatie/:package_name",
+    "name": ":vendor_name/:package_name",
     "description": ":package_description",
     "keywords": [
-        "spatie",
+        ":vendor_name",
         ":package_name"
     ],
     "homepage": "https://github.com/spatie/:package_name",
