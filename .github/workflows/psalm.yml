@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**.php'
-      - 'psalm.xml'
+      - 'psalm.xml.dist'
 
 jobs:
   psalm:
@@ -30,4 +30,4 @@ jobs:
         run: composer install -n --prefer-dist
 
       - name: Run psalm
-        run: ./vendor/bin/psalm -c psalm.xml
+        run: ./vendor/bin/psalm
