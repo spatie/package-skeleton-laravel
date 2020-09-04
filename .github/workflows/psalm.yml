@@ -21,7 +21,7 @@ jobs:
           coverage: none
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor
           key: composer-${{ hashFiles('composer.lock') }}
