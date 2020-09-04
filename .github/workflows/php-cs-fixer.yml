@@ -3,14 +3,14 @@ name: Check & fix styling
 on: [push]
 
 jobs:
-  style:
+  php-cs-fixer:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Fix style
+      - name: Run PHP CS Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php_cs --allow-risky=yes
