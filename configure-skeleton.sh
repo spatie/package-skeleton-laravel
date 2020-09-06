@@ -42,7 +42,7 @@ echo -e "Package: $package_name <$package_description>"
 echo -e "Suggested Class Name: $class_name"
 
 vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsantized:0:1})${vendor_name_unsantized:1}"
-vendor_name_lower_case=`echo "$vendor_name_unsantized" | tr '[:upper:]' '[:lower:]'`
+vendor_name_lowercase=`echo "$vendor_name_unsantized" | tr '[:upper:]' '[:lower:]'`
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
