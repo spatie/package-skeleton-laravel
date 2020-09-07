@@ -78,6 +78,12 @@ done
 mv "./config/skeleton.php" "./config/${package_name}.php"
 mv "./database/migrations/create_skeleton_table.php.stub" "./database/migrations/create${package_name_underscore}table.php.stub"
 
+if confirm "Enable github workflows"; then
+    for file in $(find ./.github/workflows -name '*.disabled') ; do
+        mv -i "$file" "${file%.disabled}"
+    done
+fi
+
 if confirm "Execute composer install and phpunit test" ; then
     composer install && ./vendor/bin/phpunit
 fi
