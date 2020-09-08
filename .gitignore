@@ -1,11 +1,11 @@
-build
-composer.lock
-docs
-vendor
-coverage
 .phpunit.result.cache
 .idea
 .php_cs
 .php_cs.cache
+build
+composer.lock
+coverage
+docs
 phpunit.xml
 psalm.xml
+vendor
