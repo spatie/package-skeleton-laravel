@@ -5,5 +5,7 @@ vendor
 coverage
 .phpunit.result.cache
 .idea
+.php_cs
 .php_cs.cache
-
+phpunit.xml
+psalm.xml
