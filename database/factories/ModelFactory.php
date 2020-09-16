@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Factories;
+namespace Spatie\Skeleton\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
