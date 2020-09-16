@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "Spatie\\Skeleton\\": "src",
+            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
