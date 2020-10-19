@@ -31,7 +31,7 @@ author_username=$(ask_question "Author username" "$username_guess")
 current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
 
-vendor_name_unsantized=$(ask_question "Vendor name" "spatie")
+vendor_name_unsanitized=$(ask_question "Vendor name" "spatie")
 package_name=$(ask_question "Package name" "$folder_name")
 package_description=$(ask_question "Package description" "")
 
@@ -43,8 +43,8 @@ echo -e "Author: $author_name ($author_username, $author_email)"
 echo -e "Package: $package_name <$package_description>"
 echo -e "Class Name: $class_name"
 
-vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsantized:0:1})${vendor_name_unsantized:1}"
-vendor_name_lowercase=`echo "$vendor_name_unsantized" | tr '[:upper:]' '[:lower:]'`
+vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsanitized:0:1})${vendor_name_unsanitized:1}"
+vendor_name_lowercase=`echo "$vendor_name_unsanitized" | tr '[:upper:]' '[:lower:]'`
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
