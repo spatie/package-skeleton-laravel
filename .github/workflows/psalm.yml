@@ -30,4 +30,4 @@ jobs:
         run: composer install -n --prefer-dist
 
       - name: Run psalm
-        run: ./vendor/bin/psalm
+        run: ./vendor/bin/psalm --output-format=github
