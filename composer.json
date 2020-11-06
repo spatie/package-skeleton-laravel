@@ -16,11 +16,10 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "illuminate/contracts": "^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
         "orchestra/testbench": "^6.0",
         "phpunit/phpunit": "^9.3",
         "vimeo/psalm": "^3.11"
@@ -39,8 +38,7 @@
     "scripts": {
         "psalm": "vendor/bin/psalm",
         "test": "vendor/bin/phpunit --colors=always",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
-        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {
         "sort-packages": true
