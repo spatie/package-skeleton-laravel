@@ -48,7 +48,7 @@ vendor_name_lowercase=`echo "$vendor_name_unsanitized" | tr '[:upper:]' '[:lower
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
 echo
-files=$(grep -E -r -l -i ":author|:vendor|:package|spatie|skeleton" --exclude-dir=vendor ./*  | grep -v "$script_name")
+files=$(grep -E -r -l -i ":author|:vendor|:package|spatie|skeleton" --exclude-dir=vendor ./* ./.github/* | grep -v "$script_name")
 
 echo "This script will replace the above values in all relevant files in the project directory."
 if ! confirm "Modify files?" ; then
