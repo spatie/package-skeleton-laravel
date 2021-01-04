@@ -25,21 +25,25 @@ author_name=$(ask_question "Author name" "$git_name")
 git_email=$(git config user.email)
 author_email=$(ask_question "Author email" "$git_email")
 
+homepage_temp=$(echo $author_email | awk -F '@' '{print $NF}')
+homepage_guess=${homepage_temp//[[:blank:]]/}
+author_homepage=$(ask_question "Author homepage" "$homepage_guess")
+
 username_guess=${author_name//[[:blank:]]/}
 author_username=$(ask_question "Author username" "$username_guess")
 
 current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
 
-vendor_name_unsanitized=$(ask_question "Vendor name" "spatie")
+vendor_name_unsanitized=$(ask_question "Vendor name" "$author_name")
 package_name=$(ask_question "Package name" "$folder_name")
-package_description=$(ask_question "Package description" "")
+package_description=$(ask_question "Package description" "$package_name")
 
 class_name=$(echo "$package_name" | sed 's/[-_]/ /g' | awk '{for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' | sed 's/[[:space:]]//g')
 
 class_name=$(ask_question "Class Name" "$class_name")
 
-echo -e "Author: $author_name ($author_username, $author_email)"
+echo -e "Author: $author_name ($author_username, $author_email) - $author_homepage"
 echo -e "Package: $package_name <$package_description>"
 echo -e "Class Name: $class_name"
 
@@ -65,6 +69,7 @@ for file in $files ; do
     | sed "s/:author_username/$author_username/g" \
     | sed "s/:author_email/$author_email/g" \
     | sed "s/:vendor_name/$vendor_name_lowercase/g" \
+    | sed "s/:author_homepage/$author_homepage/g" \
     | sed "s/:package_name/$package_name/g" \
     | sed "s/Spatie/$vendor_name/g" \
     | sed "s/_skeleton_/$package_name_underscore/g" \

@@ -11,7 +11,7 @@
         {
             "name": ":author_name",
             "email": ":author_email",
-            "homepage": "https://spatie.be",
+            "homepage": ":author_homepage",
             "role": "Developer"
         }
     ],
@@ -57,11 +57,11 @@
     "funding": [
         {
             "type": "github",
-            "url": "https://github.com/sponsors/spatie"
+            "url": "https://github.com/sponsors/:vendor_name"
         },
         {
             "type": "other",
-            "url": "https://spatie.be/open-source/support-us"
+            "url": ":author_homepage"
         }
     ]
 }
