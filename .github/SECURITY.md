@@ -1,3 +1,3 @@
 # Security Policy
 
-If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
+If you discover any security related issues, please email :author_email instead of using the issue tracker.
