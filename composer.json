@@ -52,15 +52,5 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "funding": [
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/:vendor_name"
-        },
-        {
-            "type": "other",
-            "url": ":author_homepage"
-        }
-    ]
+    "prefer-stable": true
 }
