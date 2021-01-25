@@ -67,6 +67,7 @@ for file in $files ; do
     | sed "s/:vendor_name/$vendor_name_lowercase/g" \
     | sed "s/:package_name/$package_name/g" \
     | sed "s/Spatie/$vendor_name/g" \
+    | sed "s/OriginalVendor/Spatie/g" \
     | sed "s/_skeleton_/$package_name_underscore/g" \
     | sed "s/skeleton/$package_name/g" \
     | sed "s/Skeleton/$class_name/g" \
@@ -77,8 +78,10 @@ for file in $files ; do
     new_file=`echo $file | sed -e "s/Skeleton/${class_name}/g"`
     mv "$temp_file" "$new_file"
 done
-mv "./config/skeleton.php" "./config/${package_name}.php"
-mv "./database/migrations/create_skeleton_table.php.stub" "./database/migrations/create${package_name_underscore}table.php.stub"
+
+prefix="laravel-"
+short_package_name=${package_name#"$prefix"}
+mv "./config/skeleton.php" "./config/${short_package_name}.php"
 
 if confirm "Execute composer install and phpunit test" ; then
     composer install && ./vendor/bin/phpunit
