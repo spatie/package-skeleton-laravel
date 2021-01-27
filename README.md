@@ -27,13 +27,13 @@ composer require :vendor_name/:package_name
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag=":package_name-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Spatie\Skeleton\SkeletonServiceProvider" --tag=":package_name-config"
 ```
 
 This is the contents of the published config file:
