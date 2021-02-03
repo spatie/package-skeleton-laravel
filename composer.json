@@ -22,7 +22,8 @@
     "require-dev": {
         "orchestra/testbench": "^6.0",
         "phpunit/phpunit": "^9.3",
-        "spatie/laravel-ray": "^1.9"
+        "spatie/laravel-ray": "^1.9",
+        "vimeo/psalm": "^4.4"
     },
     "autoload": {
         "psr-4": {
