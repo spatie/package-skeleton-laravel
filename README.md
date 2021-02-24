@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_name/:package_name.svg?style=flat-square)](https://packagist.org/packages/:vendor_name/:package_name)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/:vendor_name/:package_name/run-tests?label=tests)](https://github.com/:vendor_name/:package_name/actions?query=workflow%3ATests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/:vendor_name/:package_name/Check%20&%20fix%20styling?label=code%20style)](https://github.com/:vendor_name/:package_name/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/:vendor_name/:package_name.svg?style=flat-square)](https://packagist.org/packages/:vendor_name/:package_name)
 
 **Note:** Run `./configure-skeleton` to get started, or manually replace  ```:author_name``` ```:author_username``` ```:author_email``` ```:vendor_name``` ```:package_name``` ```:package_description``` with their correct values in [README.md](README.md), [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](.github/CONTRIBUTING.md), [LICENSE.md](LICENSE.md) and [composer.json](composer.json) files, then delete this line. You can also run `configure-skeleton.sh` to do this automatically.
