@@ -8,4 +8,5 @@ coverage
 docs
 phpunit.xml
 psalm.xml
+testbench.yaml
 vendor
