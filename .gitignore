@@ -10,3 +10,5 @@ phpunit.xml
 psalm.xml
 testbench.yaml
 vendor
+.DS_Store
+**/.DS_Store
