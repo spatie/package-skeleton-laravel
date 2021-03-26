@@ -98,14 +98,14 @@ if ! confirm "Modify files?"; then
     $safe_exit 1
 fi
 
-grep -E -r -l -i ":author|:vendor|:package|:short|spatie|skeleton" --exclude-dir=vendor ./* ./.github/* \
+grep -E -r -l -i ":author|:vendor|:package|:short|VendorName|skeleton" --exclude-dir=vendor ./* ./.github/* \
 | grep -v "$script_name" \
 | while read -r file ; do
     new_file="$file"
     new_file="${new_file//Skeleton/$ClassName}"
     new_file="${new_file//skeleton/$package_slug}"
     new_file="${new_file//laravel_/}"
-    echo "Updating file $file -> $new_file"
+    echo "adapting file $file -> $new_file"
         temp_file="$file.temp"
         < "$file" \
           sed "s/:author_name/$author_name/g" \
@@ -115,6 +115,7 @@ grep -E -r -l -i ":author|:vendor|:package|:short|spatie|skeleton" --exclude-dir
         | sed "s/:vendor_slug/$vendor_slug/g" \
         | sed "s/VendorName/$VendorName/g" \
         | sed "s/:package_name/$package_name/g" \
+        | sed "s/:package_slug/$package_slug/g" \
         | sed "s/skeleton/$package_slug/g" \
         | sed "s/Skeleton/$ClassName/g" \
         | sed "s/:package_description/$package_description/g" \

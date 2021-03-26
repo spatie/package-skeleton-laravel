@@ -1,5 +1,5 @@
 <?php
-// config for :vendor :package
+// config for VendorName/ClassName
 return [
 
 ];
