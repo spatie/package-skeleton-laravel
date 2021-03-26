@@ -16,7 +16,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name(':package_name')
+            ->name('skeleton')
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_skeleton_table')
