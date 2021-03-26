@@ -1,11 +1,11 @@
 {
-    "name": ":vendor_name/:package_name",
+    "name": ":vendor_slug/:package_name",
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
         ":package_name"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/:vendor_slug/:package_slug",
     "license": "MIT",
     "authors": [
         {
