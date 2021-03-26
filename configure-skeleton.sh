@@ -44,6 +44,7 @@ echo -e "Package: $package_name <$package_description>"
 echo -e "Class Name: $class_name"
 
 vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsanitized:0:1})${vendor_name_unsanitized:1}"
+vendor_name_pascalcase=`echo "$vendor_name_unsanitized" | sed -r 's/(^|-)(\w)/\U\2/g'`
 vendor_name_lowercase=`echo "$vendor_name_unsanitized" | tr '[:upper:]' '[:lower:]'`
 package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
 
@@ -70,7 +71,7 @@ for file in $files ; do
     | sed "s/:vendor_name/$vendor_name_lowercase/g" \
     | sed "s/:package_name/$package_name/g" \
     | sed "s/:short_package_name/$short_package_name/g" \
-    | sed "s/Spatie/$vendor_name/g" \
+    | sed "s/Spatie/$vendor_name_pascalcase/g" \
     | sed "s/OriginalVendor/Spatie/g" \
     | sed "s/_skeleton_/$package_name_underscore/g" \
     | sed "s/skeleton/$package_name/g" \
