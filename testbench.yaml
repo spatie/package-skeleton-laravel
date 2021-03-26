@@ -1,0 +1,2 @@
+providers:
+  - Spatie\Skeleton\SkeletonServiceProvider

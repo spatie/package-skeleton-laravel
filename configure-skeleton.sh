@@ -30,20 +30,32 @@ author_username=$(ask_question "Author username" "$username_guess")
 
 current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
-package_name=$(ask_question "Package name" "$folder_name")
 
-package_description=$(ask_question "Package description" "")
-class_name=$(echo "$package_name" | sed 's/[-_]/ /g' | awk '{for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' | sed 's/\s//g')
+vendor_name_unsanitized=$(ask_question "Vendor name" "$author_name")
+package_name=$(ask_question "Package name" "$folder_name")
+package_description=$(ask_question "Package description" "$package_name")
+
+class_name=$(echo "$package_name" | sed 's/[-_]/ /g' | awk '{for(j=1;j<=NF;j++){ $j=toupper(substr($j,1,1)) substr($j,2) }}1' | sed 's/[[:space:]]//g')
+
+class_name=$(ask_question "Class Name" "$class_name")
 
 echo -e "Author: $author_name ($author_username, $author_email)"
 echo -e "Package: $package_name <$package_description>"
-echo -e "Suggested Class Name: $class_name"
+echo -e "Class Name: $class_name"
+
+vendor_name="$(tr '[:lower:]' '[:upper:]' <<< ${vendor_name_unsanitized:0:1})${vendor_name_unsanitized:1}"
+vendor_name_pascalcase=`echo "$vendor_name_unsanitized" | sed -r 's/(^|-)(\w)/\U\2/g'`
+vendor_name_lowercase=`echo "$vendor_name_unsanitized" | tr '[:upper:]' '[:lower:]'`
+package_name_underscore=`echo "-$package_name-" | tr '-' '_'`
+
+prefix="laravel-"
+short_package_name=${package_name#"$prefix"}
 
 echo
-files=$(grep -E -r -l ":author|:package" ./*  | grep -v "$script_name")
+files=$(grep -E -r -l -i ":author|:vendor|:package|:short|spatie|skeleton" --exclude-dir=vendor ./* ./.github/* | grep -v "$script_name")
 
-echo "This script will replace the above values in all relevant files in the project directory and reset the git repository."
-if ! confirm "Modify composer.json and .MD Markdown files?" ; then
+echo "This script will replace the above values in all relevant files in the project directory."
+if ! confirm "Modify files?" ; then
     $safe_exit 1
 fi
 
@@ -56,13 +68,27 @@ for file in $files ; do
       sed "s/:author_name/$author_name/g" \
     | sed "s/:author_username/$author_username/g" \
     | sed "s/:author_email/$author_email/g" \
+    | sed "s/:vendor_name/$vendor_name_lowercase/g" \
     | sed "s/:package_name/$package_name/g" \
+    | sed "s/:short_package_name/$short_package_name/g" \
+    | sed "s/Spatie/$vendor_name_pascalcase/g" \
+    | sed "s/OriginalVendor/Spatie/g" \
+    | sed "s/_skeleton_/$package_name_underscore/g" \
+    | sed "s/skeleton/$package_name/g" \
+    | sed "s/Skeleton/$class_name/g" \
     | sed "s/:package_description/$package_description/g" \
-    | sed "/^\*\*Note:\*\* Replace/d" \
+    | sed "/^\*\*Note:\*\* Run/d" \
     > "$temp_file"
     rm -f "$file"
-    mv "$temp_file" "$file"
+    new_file=`echo $file | sed -e "s/Skeleton/${class_name}/g"`
+    mv "$temp_file" "$new_file"
 done
+
+mv "./config/skeleton.php" "./config/${short_package_name}.php"
+
+if confirm "Execute composer install and phpunit test" ; then
+    composer install && ./vendor/bin/phpunit
+fi
 
 if confirm 'Let this script delete itself (since you only need it once)?' ; then
     echo "Delete $0 !"
