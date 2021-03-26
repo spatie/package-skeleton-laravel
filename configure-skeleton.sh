@@ -110,12 +110,12 @@ grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton" --exclude-dir=ve
         < "$file" \
           sed "s/:author_name/$author_name/g" \
         | sed "s/:author_username/$author_username/g" \
-        | sed "s/:author_email/$author_email/g" \
+        | sed "s/author@domain.com/$author_email/g" \
         | sed "s/:vendor_name/$vendor_name/g" \
-        | sed "s/:vendor_slug/$vendor_slug/g" \
+        | sed "s/vendor_slug/$vendor_slug/g" \
         | sed "s/VendorName/$VendorName/g" \
         | sed "s/:package_name/$package_name/g" \
-        | sed "s/:package_slug/$package_slug/g" \
+        | sed "s/package_slug/$package_slug/g" \
         | sed "s/skeleton/$package_slug/g" \
         | sed "s/Skeleton/$ClassName/g" \
         | sed "s/:package_description/$package_description/g" \

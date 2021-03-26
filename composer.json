@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
+    "name": "vendor_slug/package_slug",
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
         "laravel",
-        ":package_name"
+        "package_slug"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/vendor_slug/package_slug",
     "license": "MIT",
     "authors": [
         {
             "name": ":author_name",
-            "email": ":author_email",
+            "email": "author@domain.com",
             "role": "Developer"
         }
     ],
