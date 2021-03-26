@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace VendorName\Skeleton;
 
 use OriginalVendor\LaravelPackageTools\Package;
 use OriginalVendor\LaravelPackageTools\PackageServiceProvider;
-use Spatie\Skeleton\Commands\SkeletonCommand;
+use VendorName\Skeleton\Commands\SkeletonCommand;
 
 class SkeletonServiceProvider extends PackageServiceProvider
 {
