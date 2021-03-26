@@ -119,7 +119,7 @@ grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton" --exclude-dir=ve
         | sed "s/skeleton/$package_slug/g" \
         | sed "s/Skeleton/$ClassName/g" \
         | sed "s/:package_description/$package_description/g" \
-        | sed "/^\*\*Note:\*\* Run/d" \
+        | sed "/^\[\]\(delete\) /d" \
         > "$temp_file"
         rm -f "$file"
         mv "$temp_file" "$new_file"
