@@ -85,7 +85,7 @@ package_description=$(ask_question "Package description" "This is my package $Cl
 echo -e "------"
 echo -e "Author    : $author_name ($author_username, $author_email)"
 echo -e "Vendor    : $vendor_name ($vendor_slug)"
-echo -e "Package   : $package_name <$package_description>"
+echo -e "Package   : $package_slug <$package_description>"
 echo -e "Namespace : $VendorName\\$ClassName"
 echo -e "ClassName : $ClassName"
 echo -e "------"
@@ -98,7 +98,7 @@ if ! confirm "Modify files?"; then
     $safe_exit 1
 fi
 
-grep -E -r -l -i ":author|:vendor|:package|:short|VendorName|skeleton" --exclude-dir=vendor ./* ./.github/* \
+grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton" --exclude-dir=vendor ./* ./.github/* \
 | grep -v "$script_name" \
 | while read -r file ; do
     new_file="$file"
