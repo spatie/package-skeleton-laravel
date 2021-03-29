@@ -1,2 +1,2 @@
 providers:
-  - Spatie\Skeleton\SkeletonServiceProvider
+  - VendorName\Skeleton\SkeletonServiceProvider

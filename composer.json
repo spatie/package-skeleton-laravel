@@ -1,16 +1,17 @@
 {
-    "name": ":vendor_name/:package_name",
+    "name": "vendor_slug/package_slug",
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
-        ":package_name"
+        "laravel",
+        "package_slug"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/vendor_slug/package_slug",
     "license": "MIT",
     "authors": [
         {
             "name": ":author_name",
-            "email": ":author_email",
+            "email": "author@domain.com",
             "role": "Developer"
         }
     ],
@@ -29,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src",
-            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories"
+            "VendorName\\Skeleton\\": "src",
+            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "VendorName\\Skeleton\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -49,10 +50,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "VendorName\\Skeleton\\SkeletonServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
             }
         }
     },

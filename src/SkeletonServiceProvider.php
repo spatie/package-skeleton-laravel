@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace VendorName\Skeleton;
 
-use OriginalVendor\LaravelPackageTools\Package;
-use OriginalVendor\LaravelPackageTools\PackageServiceProvider;
-use Spatie\Skeleton\Commands\SkeletonCommand;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+use VendorName\Skeleton\Commands\SkeletonCommand;
 
 class SkeletonServiceProvider extends PackageServiceProvider
 {
@@ -16,7 +16,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name(':package_name')
+            ->name('skeleton')
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_skeleton_table')
