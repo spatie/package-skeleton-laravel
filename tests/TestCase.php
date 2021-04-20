@@ -26,12 +26,7 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        config()->set('database.default', 'testing');
 
         /*
         include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
