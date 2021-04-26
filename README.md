@@ -5,11 +5,14 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/vendor_slug/package_slug/Check%20&%20fix%20styling?label=code%20style)](https://github.com/vendor_slug/package_slug/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/vendor_slug/package_slug.svg?style=flat-square)](https://packagist.org/packages/vendor_slug/package_slug)
 
-[](delete) 1) manually replace `:author_name, :author_username, auhor@domain.com, :vendor_name, vendor_slug, Vendor Name, :package_name, package_slug, skeleton, Skeleton, :package_description` with their correct values
-[](delete) in `CHANGELOG.md, LICENSE.md, README.md, ExampleTest.php, ModelFactory.php, Skeleton.php, SkeletonCommand.php, SkeletonFacade.php, SkeletonServiceProvider.php, TestCase.php, composer.json, create_skeleton_table.php.stub`
-[](delete) and delete `configure-skeleton.sh`
+---
+This package can be used as to scaffold a Laravel package. Follow these steps to get started:
 
-[](delete) 2) You can also run `./configure-skeleton.sh` to do this automatically.
+1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton
+2. Run "./configure.sh" to run a script that will replace all placeholders throughout all the files
+3. Have fun creating your package.
+4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
+---
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
