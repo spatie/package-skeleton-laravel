@@ -76,7 +76,7 @@ current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
 
 package_name=$(ask_question "Package name" "$folder_name")
-package_slug=$(slugify "$package_name" "_")
+package_slug=$(slugify "$package_name" "-")
 
 ClassName=$(titlecase "$package_name")
 ClassName=$(ask_question "Class Name" "$ClassName")
