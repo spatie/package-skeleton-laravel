@@ -105,6 +105,8 @@ grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton" --exclude-dir=ve
     new_file="${new_file//Skeleton/$ClassName}"
     new_file="${new_file//skeleton/$package_slug}"
     new_file="${new_file//laravel_/}"
+    new_file="${new_file//laravel-/}"
+
     echo "adapting file $file -> $new_file"
         temp_file="$file.temp"
         < "$file" \
