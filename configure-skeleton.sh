@@ -98,7 +98,7 @@ if ! confirm "Modify files?"; then
     $safe_exit 1
 fi
 
-grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton" --exclude-dir=vendor ./* ./.github/* \
+grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* \
 | grep -v "$script_name" \
 | while read -r file ; do
     new_file="$file"
