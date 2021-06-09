@@ -110,18 +110,18 @@ grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendo
     echo "adapting file $file -> $new_file"
         temp_file="$file.temp"
         < "$file" \
-          sed "s/:author_name/$author_name/g" \
-        | sed "s/:author_username/$author_username/g" \
-        | sed "s/author@domain.com/$author_email/g" \
-        | sed "s/:vendor_name/$vendor_name/g" \
-        | sed "s/vendor_slug/$vendor_slug/g" \
-        | sed "s/VendorName/$VendorName/g" \
-        | sed "s/:package_name/$package_name/g" \
-        | sed "s/package_slug/$package_slug/g" \
-        | sed "s/skeleton/$package_slug/g" \
-        | sed "s/Skeleton/$ClassName/g" \
-        | sed "s/:package_description/$package_description/g" \
-        | sed "/^\[\]\(delete\) /d" \
+          sed "s#:author_name#$author_name#g" \
+        | sed "s#:author_username#$author_username#g" \
+        | sed "s#author@domain.com#$author_email#g" \
+        | sed "s#:vendor_name#$vendor_name#g" \
+        | sed "s#vendor_slug#$vendor_slug#g" \
+        | sed "s#VendorName#$VendorName#g" \
+        | sed "s#:package_name#$package_name#g" \
+        | sed "s#package_slug#$package_slug#g" \
+        | sed "s#skeleton#$package_slug#g" \
+        | sed "s#Skeleton#$ClassName#g" \
+        | sed "s#:package_description#$package_description#g" \
+        | sed "#^\[\]\(delete\) #d" \
         > "$temp_file"
         rm -f "$file"
         mv "$temp_file" "$new_file"
