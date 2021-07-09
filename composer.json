@@ -25,8 +25,8 @@
         "nunomaduro/collision": "^5.3",
         "orchestra/testbench": "^6.15",
         "phpunit/phpunit": "^9.3",
-        "spatie/laravel-ray": "^1.9",
-        "vimeo/psalm": "^4.4"
+        "spatie/laravel-ray": "^1.23",
+        "vimeo/psalm": "^4.8"
     },
     "autoload": {
         "psr-4": {
