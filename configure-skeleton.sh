@@ -71,6 +71,7 @@ author_username=$(ask_question "Author username" "$username_guess")
 vendor_name=$(ask_question "Vendor name" "$author_username")
 vendor_slug=$(slugify "$vendor_name")
 VendorName=$(titlecase "$vendor_name" "")
+VendorName=$(ask_question "Vendor namespace" "$VendorName")
 
 current_directory=$(pwd)
 folder_name=$(basename "$current_directory")
