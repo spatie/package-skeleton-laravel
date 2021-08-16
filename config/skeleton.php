@@ -1,5 +1,5 @@
 <?php
-// config for VendorName/ClassName
+// config for VendorName/Skeleton
 return [
 
 ];
