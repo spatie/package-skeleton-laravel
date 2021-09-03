@@ -2,7 +2,7 @@
 <?php
 
 function run(string $command): string {
-return trim(shell_exec($command));
+    return trim(shell_exec($command));
 }
 
 run('git reset head --hard');
