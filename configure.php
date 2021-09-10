@@ -113,6 +113,7 @@ foreach ($files as $file) {
         ':package_name' => $packageName,
         ':package_slug' => $packageSlug,
         'Skeleton' => $className,
+        'skeleton' => $packageSlug,
         ':package_description' => $description,
     ]);
 
@@ -121,6 +122,8 @@ foreach ($files as $file) {
         str_contains($file, 'src/SkeletonServiceProvider.php') => rename($file, './src/' . $className . 'ServiceProvider.php'),
         str_contains($file, 'src/SkeletonFacade.php') => rename($file, './src/' . $className . 'Facade.php'),
         str_contains($file, 'src/Commands/SkeletonCommand.php') => rename($file, './src/Commands/' . $className . 'Command.php'),
+        str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlug . '_table.php.stub'),
+        str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlug . '.php'),
         default => [],
     };
 }
