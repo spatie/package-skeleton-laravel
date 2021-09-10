@@ -60,6 +60,14 @@ function replace_in_file(string $file, array $replacements): void {
     );
 }
 
+function remove_prefix(string $prefix, string $content): string {
+    if (str_starts_with($content, $prefix)) {
+        return substr($content, strlen($prefix));
+    }
+
+    return $content;
+}
+
 $gitName = run('git config user.name');
 $authorName = ask('Author name', $gitName);
 
@@ -81,6 +89,7 @@ $folderName = basename($currentDirectory);
 
 $packageName = ask('Package name', $folderName);
 $packageSlug = slugify($packageName);
+$packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
 $className = title_case($packageName);
 $className = ask('Class name', $className);
@@ -122,8 +131,8 @@ foreach ($files as $file) {
         str_contains($file, 'src/SkeletonServiceProvider.php') => rename($file, './src/' . $className . 'ServiceProvider.php'),
         str_contains($file, 'src/SkeletonFacade.php') => rename($file, './src/' . $className . 'Facade.php'),
         str_contains($file, 'src/Commands/SkeletonCommand.php') => rename($file, './src/Commands/' . $className . 'Command.php'),
-        str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlug . '_table.php.stub'),
-        str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlug . '.php'),
+        str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
+        str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlugWithoutPrefix . '.php'),
         default => [],
     };
 }
