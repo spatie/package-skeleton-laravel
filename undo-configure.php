@@ -8,4 +8,7 @@ function run(string $command): string {
 run('git reset head --hard');
 run('git clean -f -d');
 run('rm -fr vendor');
-run('rm composer.lock');
+
+if (file_exists('composer.lock')) {
+    run('rm composer.lock');
+}
