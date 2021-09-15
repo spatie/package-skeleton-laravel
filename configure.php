@@ -109,7 +109,11 @@ if (! confirm('Modify files?', true)) {
     exit(1);
 }
 
-$files = explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename(__FILE__)));
+if (str_starts_with(strtoupper(PHP_OS), 'WIN')) {
+    $files = preg_split("/\\r\\n|\\r|\\n/", run("dir /S /B * | findstr /v /i .github | findstr /v /i vendor | findstr /v /i ".basename(__FILE__)." | findstr /r /i /M /F:/ \":author :vendor :package VendorName skeleton vendor_name vendor_slug author@domain.com\""));
+}else{
+    $files = explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|SIDESO|wa-360dialog|vendor_name|vendor_slug|ctrujillopineda@gmail.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename(__FILE__)));
+}
 
 foreach ($files as $file) {
     replace_in_file($file, [
