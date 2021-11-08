@@ -45,8 +45,8 @@
     },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse",
-        "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest coverage"
     },
     "config": {
         "sort-packages": true
