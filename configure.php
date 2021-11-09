@@ -129,6 +129,7 @@ foreach ($files as $file) {
         'VendorName' => $vendorNamespace,
         ':package_name' => $packageName,
         ':package_slug' => $packageSlug,
+        ':package_slug_without_prefix' => $packageSlugWithoutPrefix,
         'Skeleton' => $className,
         'skeleton' => $packageSlug,
         ':package_description' => $description,
