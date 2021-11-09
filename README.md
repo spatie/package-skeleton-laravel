@@ -45,6 +45,12 @@ You can publish the config file with:
 php artisan vendor:publish --tag=":package_slug_without_prefix-config"
 ```
 
+Optionally, you can publish the views using
+
+```bash
+php artisan vendor:publish --tag="example-views"
+```
+
 This is the contents of the published config file:
 
 ```php
