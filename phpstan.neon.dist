@@ -7,7 +7,6 @@ parameters:
         - src
         - config
         - database
-        - tests
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
