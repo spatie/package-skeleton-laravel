@@ -57,7 +57,7 @@
                 "VendorName\\Skeleton\\SkeletonServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
             }
         }
     },
