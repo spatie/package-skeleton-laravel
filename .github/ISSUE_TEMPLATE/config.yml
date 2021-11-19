@@ -10,7 +10,5 @@ contact_links:
     url: https://github.com/:vendor_name/:package_name/security/policy
     about: Learn how to notify us for sensitive bugs
   - name: Report a bug
-    url: https://github
-  - name: Report a bug
     url: https://github.com/:vendor_name/:package_name/issues/new
     about: Report a reproducable bug
