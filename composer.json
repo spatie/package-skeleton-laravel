@@ -44,7 +44,7 @@
         }
     },
     "scripts": {
-        "phpstan": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest coverage"
     },
