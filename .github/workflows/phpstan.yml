@@ -23,4 +23,4 @@ jobs:
         uses: ramsey/composer-install@v1
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: composer test:types
