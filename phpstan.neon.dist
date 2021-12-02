@@ -1,14 +1,15 @@
 includes:
+    - ./vendor/worksome/coding-style/larastan.neon
     - phpstan-baseline.neon
 
 parameters:
-    level: 4
+    level: max
     paths:
         - src
         - config
         - database
     tmpDir: build/phpstan
-    checkOctaneCompatibility: true
     checkModelProperties: true
-    checkMissingIterableValueType: false
+    parallel:
+            processTimeout: 300.0
 

@@ -70,26 +70,26 @@ function remove_prefix(string $prefix, string $content): string {
 
 function remove_composer_deps(array $names) {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
-    
+
     foreach($data['require-dev'] as $name => $version) {
         if (in_array($name, $names, true)) {
             unset($data['require-dev'][$name]);
         }
     }
-    
+
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
 function remove_composer_script($scriptName) {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
-    
+
     foreach($data['scripts'] as $name => $script) {
         if ($scriptName === $name) {
             unset($data['scripts'][$name]);
             break;
         }
     }
-    
+
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
@@ -136,7 +136,6 @@ $className = ask('Class name', $className);
 $description = ask('Package description', "This is my package {$packageSlug}");
 
 $usePhpStan = confirm('Enable PhpStan?', true);
-$usePhpCsFixer = confirm('Enable PhpCsFixer?', true);
 $useUpdateChangelogWorkflow = confirm('Use automatic changelog updater workflow?', true);
 
 writeln('------');
@@ -147,7 +146,6 @@ writeln("Namespace  : {$vendorNamespace}\\{$className}");
 writeln("Class name : {$className}");
 writeln("---");
 writeln("Packages & Utilities");
-writeln("Use PhpCsFixer       : " . ($usePhpCsFixer ? 'yes' : 'no'));
 writeln("Use Larastan/PhpStan : " . ($usePhpStan ? 'yes' : 'no'));
 writeln("Use Auto-Changelog   : " . ($useUpdateChangelogWorkflow ? 'yes' : 'no'));
 writeln('------');
@@ -187,11 +185,6 @@ foreach ($files as $file) {
     };
 }
 
-if (! $usePhpCsFixer) {
-    safeUnlink(__DIR__ . '/.php_cs.dist.php');
-    safeUnlink(__DIR__ . '/.github/workflows/php-cs-fixer.yml');
-}
-
 if (! $usePhpStan) {
     safeUnlink(__DIR__ . '/phpstan.neon.dist');
     safeUnlink(__DIR__ . '/phpstan-baseline.neon');
@@ -203,7 +196,7 @@ if (! $usePhpStan) {
         'phpstan/phpstan-phpunit',
         'nunomaduro/larastan',
     ]);
-    
+
     remove_composer_script('phpstan');
 }
 

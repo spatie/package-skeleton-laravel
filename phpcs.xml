@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Worksome">
+    <description>Worksome Coding Standard</description>
+
+    <file>./src</file>
+    <file>./tests</file>
+    <file>./config</file>
+    <file>./database</file>
+
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <config name="ignore_warnings_on_exit" value="1"/>
+
+    <rule ref="WorksomeSniff"/>
+
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>.*Test.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.PHP.CommentedOutCode">
+        <properties>
+            <property name="maxPercentage" value="70"/>
+        </properties>
+    </rule>
+
+    <exclude-pattern>*/*.blade.php</exclude-pattern>
+    <rule ref="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature">
+        <properties>
+            <property name="minLineLength" value="120"/>
+        </properties>
+    </rule>
+</ruleset>
