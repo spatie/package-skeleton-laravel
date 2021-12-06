@@ -7,7 +7,7 @@ composer.lock
 coverage
 docs
 phpunit.xml
-psalm.xml
+phpstan.neon
 testbench.yaml
 vendor
 node_modules

@@ -36,13 +36,19 @@ composer require :vendor_slug/:package_slug
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag=":package_slug-migrations"
+php artisan vendor:publish --tag=":package_slug_without_prefix-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="VendorName\Skeleton\SkeletonServiceProvider" --tag=":package_slug-config"
+php artisan vendor:publish --tag=":package_slug_without_prefix-config"
+```
+
+Optionally, you can publish the views using
+
+```bash
+php artisan vendor:publish --tag="example-views"
 ```
 
 This is the contents of the published config file:
