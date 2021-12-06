@@ -177,12 +177,12 @@ foreach ($files as $file) {
     ]);
 
     match (true) {
-        str_contains($file, 'src/Skeleton.php') => rename($file, './src/' . $className . '.php'),
-        str_contains($file, 'src/SkeletonServiceProvider.php') => rename($file, './src/' . $className . 'ServiceProvider.php'),
-        str_contains($file, 'src/Facades/Skeleton.php') => rename($file, './src/Facades/' . $className . '.php'),
-        str_contains($file, 'src/Commands/SkeletonCommand.php') => rename($file, './src/Commands/' . $className . 'Command.php'),
-        str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
-        str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlugWithoutPrefix . '.php'),
+        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'' . $className . '.php'),
+        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'SkeletonServiceProvider.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'' . $className . 'ServiceProvider.php'),
+        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Facades'.DIRECTORY_SEPARATOR.'Skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Facades'.DIRECTORY_SEPARATOR.'' . $className . '.php'),
+        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Commands'.DIRECTORY_SEPARATOR.'SkeletonCommand.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Commands'.DIRECTORY_SEPARATOR.'' . $className . 'Command.php'),
+        str_contains($file, 'database'.DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR.'create_skeleton_table.php.stub') => rename($file, '.'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR.'create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
+        str_contains($file, 'config'.DIRECTORY_SEPARATOR.'skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'' . $packageSlugWithoutPrefix . '.php'),
         default => [],
     };
 }
