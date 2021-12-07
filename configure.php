@@ -93,12 +93,24 @@ function remove_composer_script($scriptName) {
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
+function remove_readme_paragraphs(string $file): void {
+    $contents = file_get_contents($file);
+
+    file_put_contents(
+        $file,
+        preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents
+    );
+}
+
 function safeUnlink(string $filename) {
     if (file_exists($filename) && is_file($filename)) {
         unlink($filename);
     }
 }
 
+function determineSeparator(string $path): string {
+    return str_replace('/', DIRECTORY_SEPARATOR, $path);
+}
 
 function replaceForWindows(): array {
     return preg_split('/\\r\\n|\\r|\\n/', run('dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton vendor_name vendor_slug author@domain.com"'));
@@ -177,12 +189,13 @@ foreach ($files as $file) {
     ]);
 
     match (true) {
-        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'' . $className . '.php'),
-        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'SkeletonServiceProvider.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'' . $className . 'ServiceProvider.php'),
-        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Facades'.DIRECTORY_SEPARATOR.'Skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Facades'.DIRECTORY_SEPARATOR.'' . $className . '.php'),
-        str_contains($file, 'src'.DIRECTORY_SEPARATOR.'Commands'.DIRECTORY_SEPARATOR.'SkeletonCommand.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Commands'.DIRECTORY_SEPARATOR.'' . $className . 'Command.php'),
-        str_contains($file, 'database'.DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR.'create_skeleton_table.php.stub') => rename($file, '.'.DIRECTORY_SEPARATOR.'database'.DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR.'create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
-        str_contains($file, 'config'.DIRECTORY_SEPARATOR.'skeleton.php') => rename($file, '.'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'' . $packageSlugWithoutPrefix . '.php'),
+        str_contains($file, determineSeparator('src/Skeleton.php')) => rename($file, determineSeparator('./src/' . $className . '.php')),
+        str_contains($file, determineSeparator('src/SkeletonServiceProvider.php')) => rename($file, determineSeparator('./src/' . $className . 'ServiceProvider.php')),
+        str_contains($file, determineSeparator('src/Facades/Skeleton.php')) => rename($file, determineSeparator('./src/Facades/' . $className . '.php')),
+        str_contains($file, determineSeparator('src/Commands/SkeletonCommand.php')) => rename($file, determineSeparator('./src/Commands/' . $className . 'Command.php')),
+        str_contains($file, determineSeparator('database/migrations/create_skeleton_table.php.stub')) => rename($file, determineSeparator('./database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub')),
+        str_contains($file, determineSeparator('config/skeleton.php')) => rename($file, determineSeparator('./config/' . $packageSlugWithoutPrefix . '.php')),
+        str_contains($file, 'README.md') => remove_readme_paragraphs($file),
         default => [],
     };
 }
