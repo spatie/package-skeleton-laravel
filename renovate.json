@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "config:base"
+    ],
+    "rangeStrategy": "auto",
+    "semanticCommits": "enabled",
+    "branchConcurrentLimit": 10,
+    "reviewersFromCodeOwners": true
+}
