@@ -41,6 +41,7 @@ php artisan migrate
 ```
 
 You can publish the config file with:
+
 ```bash
 php artisan vendor:publish --tag=":package_slug-config"
 ```
