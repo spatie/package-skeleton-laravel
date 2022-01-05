@@ -145,6 +145,7 @@ $packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
 $className = title_case($packageName);
 $className = ask('Class name', $className);
+$variableName = lcfirst($className);
 $description = ask('Package description', "This is my package {$packageSlug}");
 
 $usePhpStan = confirm('Enable PhpStan?', true);
@@ -185,6 +186,7 @@ foreach ($files as $file) {
         ':package_slug_without_prefix' => $packageSlugWithoutPrefix,
         'Skeleton' => $className,
         'skeleton' => $packageSlug,
+        'variable' => $variableName,
         ':package_description' => $description,
     ]);
 
