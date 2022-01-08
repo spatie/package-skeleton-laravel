@@ -62,8 +62,8 @@ return [
 ## Usage
 
 ```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, VendorName!');
+$variable = new VendorName\Skeleton();
+echo $variable->echoPhrase('Hello, VendorName!');
 ```
 
 ## Testing
