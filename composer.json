@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "nunomaduro/collision": "^5.10",
-        "nunomaduro/larastan": "^2.0",
+        "nunomaduro/larastan": "^1.0 || ^2.0",
         "orchestra/testbench": "^6.22",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-parallel": "^1.0",
