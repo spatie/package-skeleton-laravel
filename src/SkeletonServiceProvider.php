@@ -2,24 +2,21 @@
 
 namespace VendorName\Skeleton;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
-
-class SkeletonServiceProvider extends PackageServiceProvider
+class SkeletonServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    /**
+     * Bootstrap the application services.
+     */
+    public function boot()
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package
-            ->name('skeleton')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+        //
+    }
+
+    /**
+     * Register the application services.
+     */
+    public function register()
+    {
+        //
     }
 }
