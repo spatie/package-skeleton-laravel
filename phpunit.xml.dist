@@ -28,12 +28,11 @@
             <directory suffix=".php">./src</directory>
         </include>
         <report>
-            <html outputDirectory="build/coverage"/>
-            <text outputFile="build/coverage.txt"/>
-            <clover outputFile="build/logs/clover.xml"/>
+            <html outputDirectory="phpunit/coverage"/>
+            <text outputFile="phpunit/coverage.txt"/>
         </report>
     </coverage>
     <logging>
-        <junit outputFile="build/report.junit.xml"/>
+        <junit outputFile="phpunit/test-result.xml"/>
     </logging>
 </phpunit>
