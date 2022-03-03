@@ -23,6 +23,9 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <server name="DB_CONNECTION" value="testing"/>
+    </php>
     <coverage>
         <include>
             <directory suffix=".php">./src</directory>
