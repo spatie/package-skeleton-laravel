@@ -26,7 +26,7 @@ function writeln(string $line): void {
 }
 
 function run(string $command): string {
-    return trim(shell_exec($command));
+    return trim((string) shell_exec($command));
 }
 
 function str_after(string $subject, string $search): string {
