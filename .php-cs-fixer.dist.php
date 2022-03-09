@@ -69,21 +69,20 @@ return (new PhpCsFixer\Config())->setRules([
     /*
      * Class Notation
      */
-    //'class_attributes_separation' => ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']], // Not yet released
-    'class_attributes_separation' => ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none']],
+    'class_attributes_separation' => ['elements' => ['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']],
     'class_definition' => [
         'multi_line_extends_each_single_line' => false,
         'single_item_single_line' => false,
         'single_line' => false,
     ],
     'final_class' => false, // risky
-    'final_internal_class' => false, //risky
+    'final_internal_class' => false, // risky
     'final_public_method_for_abstract_class' => false, // risky
     'no_blank_lines_after_class_opening' => true,
     'no_null_property_initialization' => false,
     'no_php4_constructor' => true, // risky
     'no_unneeded_final_method' => true, // risky
-    'ordered_class_elements' => ['order' => ['use_trait', 'constant', 'property_static', 'property', 'construct']],
+    'ordered_class_elements' => ['order' => ['use_trait', 'constant', 'property_static', 'property', 'case', 'construct']],
     'ordered_interfaces' => ['order' => 'alpha', 'direction' => 'ascend'], // risky
     'ordered_traits' => true, // risky
     'protected_to_private' => false,
@@ -104,7 +103,7 @@ return (new PhpCsFixer\Config())->setRules([
     'multiline_comment_opening_closing' => true,
     'no_empty_comment' => true,
     'no_trailing_whitespace_in_comment' => true,
-    //'single_line_comment_spacing' => true, // not yet released
+    'single_line_comment_spacing' => true,
     'single_line_comment_style' => ['comment_types' => ['hash']],
     /*
      * Constant Notation
@@ -146,7 +145,7 @@ return (new PhpCsFixer\Config())->setRules([
     'combine_nested_dirname' => true, // risky
     'fopen_flag_order' => true, // risky
     'fopen_flags' => ['b_mode' => false], // risky
-    'function_declaration' => ['closure_function_spacing' => 'one'],
+    'function_declaration' => ['closure_function_spacing' => 'one', 'trailing_comma_single_line' => false],
     'function_typehint_space' => true,
     'implode_call' => true, // risky
     'lambda_not_used_import' => true,
@@ -161,7 +160,7 @@ return (new PhpCsFixer\Config())->setRules([
         'strict' => true,
     ],
     'no_spaces_after_function_name' => true,
-    //'no_trailing_comma_in_singleline_function_call' => true, // Not yet released
+    'no_trailing_comma_in_singleline_function_call' => true,
     'no_unreachable_default_argument_value' => true,
     'no_useless_sprintf' => true,
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
@@ -259,7 +258,7 @@ return (new PhpCsFixer\Config())->setRules([
      */
     'php_unit_construct' => true, // risky
     'php_unit_dedicate_assert' => true, // risky
-    'php_unit_dedicate_assert_internal_type' => true, //risky
+    'php_unit_dedicate_assert_internal_type' => true, // risky
     'php_unit_expectation' => true, // risky
     'php_unit_fqcn_annotation' => true,
     'php_unit_internal_class' => false,
