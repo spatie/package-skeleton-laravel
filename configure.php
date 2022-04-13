@@ -120,21 +120,15 @@ function replaceForAllOtherOSes(): array {
     return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename(__FILE__)));
 }
 
-$gitName = run('git config user.name');
-$authorName = ask('Author name', $gitName);
+$authorName = 'grebban';
 
-$gitEmail = run('git config user.email');
-$authorEmail = ask('Author email', $gitEmail);
+$authorEmail = 'hello@grebban.com';
 
-$usernameGuess = explode(':', run('git config remote.origin.url'))[1];
-$usernameGuess = dirname($usernameGuess);
-$usernameGuess = basename($usernameGuess);
-$authorUsername = ask('Author username', $usernameGuess);
+$authorUsername = 'grebban';
 
-$vendorName = ask('Vendor name', $authorUsername);
+$vendorName = 'grebban';
 $vendorSlug = slugify($vendorName);
 $vendorNamespace = ucwords($vendorName);
-$vendorNamespace = ask('Vendor namespace', $vendorNamespace);
 
 $currentDirectory = getcwd();
 $folderName = basename($currentDirectory);
