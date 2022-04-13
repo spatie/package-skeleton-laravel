@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": "~7.3.33",
+        "php": "7.3.*",
         "illuminate/support": "~5.6.39"
     },
     "require-dev": {
