@@ -5,5 +5,7 @@
     "rangeStrategy": "auto",
     "semanticCommits": "enabled",
     "branchConcurrentLimit": 10,
-    "reviewersFromCodeOwners": true
+    "reviewersFromCodeOwners": true,
+    "stabilityDays": 2,
+    "prCreation": "not-pending"
 }
