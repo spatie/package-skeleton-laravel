@@ -3,7 +3,7 @@
 namespace VendorName\Skeleton\Database\Factories;
 
 /*
-class ModelFactory extends Factory
+class ModelFactory extends \Illuminate\Database\Eloquent\Factories\Factory
 {
     protected $model = YourModel::class;
 
