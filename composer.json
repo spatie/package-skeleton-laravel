@@ -27,6 +27,7 @@
     "require-dev": {
         "orchestra/testbench": "3.6.7",
         "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.7",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^7.0",
