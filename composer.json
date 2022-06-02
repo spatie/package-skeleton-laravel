@@ -1,5 +1,5 @@
 {
-    "name": ":vendor_slug/:package_slug",
+    "name": "vendor_slug/package_slug",
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
@@ -25,12 +25,12 @@
         "illuminate/support": "~5.6.39"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.4",
         "orchestra/testbench": "3.6.7",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "squizlabs/php_codesniffer": "^3.5.4"
     },
     "autoload": {
         "psr-4": {
@@ -46,10 +46,17 @@
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest coverage"
+        "test-coverage": "vendor/bin/pest coverage",
+        "phpfix": "vendor/bin/phpcbf --standard=phpcs.xml",
+        "phpcs": "vendor/bin/phpcs --standard=phpcs.xml"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true,
+            "kylekatarnls/update-helper": true
+        }
     },
     "extra": {
         "laravel": {

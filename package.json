@@ -1,0 +1,15 @@
+{
+    "name": "package-skeleton-laravel",
+    "version": "1.0.0",
+    "description": "Grebban Laravel package scaffold.",
+    "repository": "git@github.com:grebban/package-skeleton-laravel.git",
+    "private": true,
+    "scripts": {
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^16.2.4",
+        "@commitlint/config-conventional": "^16.2.4",
+        "husky": "^8.0.1"
+    }
+}
