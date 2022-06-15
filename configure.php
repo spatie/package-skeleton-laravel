@@ -189,6 +189,7 @@ foreach ($files as $file) {
         ':package_name' => $packageName,
         ':package_slug' => $packageSlug,
         ':package_slug_without_prefix' => $packageSlugWithoutPrefix,
+        'vendor_slug/package_slug' => $vendorSlug.'/'.$packageSlug,
         'Skeleton' => $className,
         'skeleton' => $packageSlug,
         'migration_table_name' => title_snake($packageSlug),
