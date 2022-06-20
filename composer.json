@@ -47,7 +47,7 @@
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest coverage",
+        "test-coverage": "export XDEBUG_MODE=coverage && vendor/bin/pest coverage",
         "phpfix": "vendor/bin/phpcbf --standard=phpcs.xml",
         "phpcs": "vendor/bin/phpcs --standard=phpcs.xml"
     },
