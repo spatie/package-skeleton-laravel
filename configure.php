@@ -155,6 +155,7 @@ $description = ask('Package description', "This is my package {$packageSlug}");
 
 $usePhpStan = confirm('Enable PhpStan?', true);
 $usePhpCsFixer = confirm('Enable PhpCsFixer?', true);
+$useDependabot = confirm('Enable Dependabot?', true);
 $useUpdateChangelogWorkflow = confirm('Use automatic changelog updater workflow?', true);
 
 writeln('------');
@@ -167,6 +168,7 @@ writeln("---");
 writeln("Packages & Utilities");
 writeln("Use PhpCsFixer       : " . ($usePhpCsFixer ? 'yes' : 'no'));
 writeln("Use Larastan/PhpStan : " . ($usePhpStan ? 'yes' : 'no'));
+writeln("Use Dependabot       : " . ($useDependabot ? 'yes' : 'no'));
 writeln("Use Auto-Changelog   : " . ($useUpdateChangelogWorkflow ? 'yes' : 'no'));
 writeln('------');
 
@@ -226,6 +228,11 @@ if (! $usePhpStan) {
     ]);
 
     remove_composer_script('phpstan');
+}
+
+if (! $useDependabot) {
+    safeUnlink(__DIR__ . '/.github/dependabot.yml');
+    safeUnlink(__DIR__ . '/.github/workflows/dependabot-auto-merge.yml');
 }
 
 if (! $useUpdateChangelogWorkflow) {
