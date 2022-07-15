@@ -1,6 +1,4 @@
 .idea
-.php_cs
-.php_cs.cache
 .phpunit.result.cache
 build
 composer.lock
@@ -11,4 +9,3 @@ phpstan.neon
 testbench.yaml
 vendor
 node_modules
-.php-cs-fixer.cache
