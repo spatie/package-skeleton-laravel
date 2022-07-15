@@ -1,8 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-function ask(string $question, string $default = ''): string {
-    $answer = readline($question . ($default ? " ({$default})" : null) . ': ');
+function ask(string $question, string $default = ''): string
+{
+    $answer = readline($question.($default ? " ({$default})" : null).': ');
 
     if (! $answer) {
         return $default;
@@ -11,8 +12,9 @@ function ask(string $question, string $default = ''): string {
     return $answer;
 }
 
-function confirm(string $question, bool $default = false): bool {
-    $answer = ask($question . ' (' . ($default ? 'Y/n' : 'y/N') . ')');
+function confirm(string $question, bool $default = false): bool
+{
+    $answer = ask($question.' ('.($default ? 'Y/n' : 'y/N').')');
 
     if (! $answer) {
         return $default;
@@ -21,15 +23,18 @@ function confirm(string $question, bool $default = false): bool {
     return strtolower($answer) === 'y';
 }
 
-function writeln(string $line): void {
-    echo $line . PHP_EOL;
+function writeln(string $line): void
+{
+    echo $line.PHP_EOL;
 }
 
-function run(string $command): string {
+function run(string $command): string
+{
     return trim((string) shell_exec($command));
 }
 
-function str_after(string $subject, string $search): string {
+function str_after(string $subject, string $search): string
+{
     $pos = strrpos($subject, $search);
 
     if ($pos === false) {
@@ -39,11 +44,13 @@ function str_after(string $subject, string $search): string {
     return substr($subject, $pos + strlen($search));
 }
 
-function slugify(string $subject): string {
+function slugify(string $subject): string
+{
     return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $subject), '-'));
 }
 
-function title_case(string $subject): string {
+function title_case(string $subject): string
+{
     return str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $subject)));
 }
 
@@ -52,7 +59,8 @@ function title_snake(string $subject, string $replace = '_'): string
     return str_replace(['-', '_'], $replace, $subject);
 }
 
-function replace_in_file(string $file, array $replacements): void {
+function replace_in_file(string $file, array $replacements): void
+{
     $contents = file_get_contents($file);
 
     file_put_contents(
@@ -65,7 +73,8 @@ function replace_in_file(string $file, array $replacements): void {
     );
 }
 
-function remove_prefix(string $prefix, string $content): string {
+function remove_prefix(string $prefix, string $content): string
+{
     if (str_starts_with($content, $prefix)) {
         return substr($content, strlen($prefix));
     }
@@ -73,10 +82,11 @@ function remove_prefix(string $prefix, string $content): string {
     return $content;
 }
 
-function remove_composer_deps(array $names) {
+function remove_composer_deps(array $names)
+{
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 
-    foreach($data['require-dev'] as $name => $version) {
+    foreach ($data['require-dev'] as $name => $version) {
         if (in_array($name, $names, true)) {
             unset($data['require-dev'][$name]);
         }
@@ -85,10 +95,11 @@ function remove_composer_deps(array $names) {
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
-function remove_composer_script($scriptName) {
+function remove_composer_script($scriptName)
+{
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 
-    foreach($data['scripts'] as $name => $script) {
+    foreach ($data['scripts'] as $name => $script) {
         if ($scriptName === $name) {
             unset($data['scripts'][$name]);
             break;
@@ -98,7 +109,8 @@ function remove_composer_script($scriptName) {
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
-function remove_readme_paragraphs(string $file): void {
+function remove_readme_paragraphs(string $file): void
+{
     $contents = file_get_contents($file);
 
     file_put_contents(
@@ -107,22 +119,26 @@ function remove_readme_paragraphs(string $file): void {
     );
 }
 
-function safeUnlink(string $filename) {
+function safeUnlink(string $filename)
+{
     if (file_exists($filename) && is_file($filename)) {
         unlink($filename);
     }
 }
 
-function determineSeparator(string $path): string {
+function determineSeparator(string $path): string
+{
     return str_replace('/', DIRECTORY_SEPARATOR, $path);
 }
 
-function replaceForWindows(): array {
+function replaceForWindows(): array
+{
     return preg_split('/\\r\\n|\\r|\\n/', run('dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton migration_table_name vendor_name vendor_slug author@domain.com"'));
 }
 
-function replaceForAllOtherOSes(): array {
-    return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename(__FILE__)));
+function replaceForAllOtherOSes(): array
+{
+    return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v '.basename(__FILE__)));
 }
 
 $gitName = run('git config user.name');
@@ -165,13 +181,13 @@ writeln("Vendor     : {$vendorName} ({$vendorSlug})");
 writeln("Package    : {$packageSlug} <{$description}>");
 writeln("Namespace  : {$vendorNamespace}\\{$className}");
 writeln("Class name : {$className}");
-writeln("---");
-writeln("Packages & Utilities");
-writeln("Use PhpCsFixer       : " . ($usePhpCsFixer ? 'yes' : 'no'));
-writeln("Use Larastan/PhpStan : " . ($usePhpStan ? 'yes' : 'no'));
-writeln("Use Dependabot       : " . ($useDependabot ? 'yes' : 'no'));
-writeln("Use Ray App          : " . ($useLaravelRay ? 'yes' : 'no'));
-writeln("Use Auto-Changelog   : " . ($useUpdateChangelogWorkflow ? 'yes' : 'no'));
+writeln('---');
+writeln('Packages & Utilities');
+writeln('Use PhpCsFixer       : '.($usePhpCsFixer ? 'yes' : 'no'));
+writeln('Use Larastan/PhpStan : '.($usePhpStan ? 'yes' : 'no'));
+writeln('Use Dependabot       : '.($useDependabot ? 'yes' : 'no'));
+writeln('Use Ray App          : '.($useLaravelRay ? 'yes' : 'no'));
+writeln('Use Auto-Changelog   : '.($useUpdateChangelogWorkflow ? 'yes' : 'no'));
 writeln('------');
 
 writeln('This script will replace the above values in all relevant files in the project directory.');
@@ -201,26 +217,26 @@ foreach ($files as $file) {
     ]);
 
     match (true) {
-        str_contains($file, determineSeparator('src/Skeleton.php')) => rename($file, determineSeparator('./src/' . $className . '.php')),
-        str_contains($file, determineSeparator('src/SkeletonServiceProvider.php')) => rename($file, determineSeparator('./src/' . $className . 'ServiceProvider.php')),
-        str_contains($file, determineSeparator('src/Facades/Skeleton.php')) => rename($file, determineSeparator('./src/Facades/' . $className . '.php')),
-        str_contains($file, determineSeparator('src/Commands/SkeletonCommand.php')) => rename($file, determineSeparator('./src/Commands/' . $className . 'Command.php')),
-        str_contains($file, determineSeparator('database/migrations/create_skeleton_table.php.stub')) => rename($file, determineSeparator('./database/migrations/create_' . title_snake($packageSlugWithoutPrefix) . '_table.php.stub')),
-        str_contains($file, determineSeparator('config/skeleton.php')) => rename($file, determineSeparator('./config/' . $packageSlugWithoutPrefix . '.php')),
+        str_contains($file, determineSeparator('src/Skeleton.php')) => rename($file, determineSeparator('./src/'.$className.'.php')),
+        str_contains($file, determineSeparator('src/SkeletonServiceProvider.php')) => rename($file, determineSeparator('./src/'.$className.'ServiceProvider.php')),
+        str_contains($file, determineSeparator('src/Facades/Skeleton.php')) => rename($file, determineSeparator('./src/Facades/'.$className.'.php')),
+        str_contains($file, determineSeparator('src/Commands/SkeletonCommand.php')) => rename($file, determineSeparator('./src/Commands/'.$className.'Command.php')),
+        str_contains($file, determineSeparator('database/migrations/create_skeleton_table.php.stub')) => rename($file, determineSeparator('./database/migrations/create_'.title_snake($packageSlugWithoutPrefix).'_table.php.stub')),
+        str_contains($file, determineSeparator('config/skeleton.php')) => rename($file, determineSeparator('./config/'.$packageSlugWithoutPrefix.'.php')),
         str_contains($file, 'README.md') => remove_readme_paragraphs($file),
         default => [],
     };
 }
 
 if (! $usePhpCsFixer) {
-    safeUnlink(__DIR__ . '/.php_cs.dist.php');
-    safeUnlink(__DIR__ . '/.github/workflows/php-cs-fixer.yml');
+    safeUnlink(__DIR__.'/.php_cs.dist.php');
+    safeUnlink(__DIR__.'/.github/workflows/php-cs-fixer.yml');
 }
 
 if (! $usePhpStan) {
-    safeUnlink(__DIR__ . '/phpstan.neon.dist');
-    safeUnlink(__DIR__ . '/phpstan-baseline.neon');
-    safeUnlink(__DIR__ . '/.github/workflows/phpstan.yml');
+    safeUnlink(__DIR__.'/phpstan.neon.dist');
+    safeUnlink(__DIR__.'/phpstan-baseline.neon');
+    safeUnlink(__DIR__.'/.github/workflows/phpstan.yml');
 
     remove_composer_deps([
         'phpstan/extension-installer',
@@ -233,8 +249,8 @@ if (! $usePhpStan) {
 }
 
 if (! $useDependabot) {
-    safeUnlink(__DIR__ . '/.github/dependabot.yml');
-    safeUnlink(__DIR__ . '/.github/workflows/dependabot-auto-merge.yml');
+    safeUnlink(__DIR__.'/.github/dependabot.yml');
+    safeUnlink(__DIR__.'/.github/workflows/dependabot-auto-merge.yml');
 }
 
 if (! $useLaravelRay) {
@@ -242,7 +258,7 @@ if (! $useLaravelRay) {
 }
 
 if (! $useUpdateChangelogWorkflow) {
-    safeUnlink(__DIR__ . '/.github/workflows/update-changelog.yml');
+    safeUnlink(__DIR__.'/.github/workflows/update-changelog.yml');
 }
 
 confirm('Execute `composer install` and run tests?') && run('composer install && composer test');
