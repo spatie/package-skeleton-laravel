@@ -1,4 +1,4 @@
-name: PHPStan
+name: Static Analysis
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   phpstan:
-    name: phpstan
+    name: PHPStan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
