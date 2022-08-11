@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VendorName\Skeleton\Tests;
 
@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 use VendorName\Skeleton\SkeletonServiceProvider;
 
+/**
+ * @coversNothing
+ */
 class TestCase extends Orchestra
 {
     protected function setUp(): void
@@ -13,7 +16,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -24,7 +27,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
 
