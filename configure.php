@@ -230,6 +230,7 @@ foreach ($files as $file) {
 
 if (! $useLaravelPint) {
     safeUnlink(__DIR__.'/.github/workflows/fix-php-code-style-issues.yml');
+    safeUnlink(__DIR__.'/pint.json');
 }
 
 if (! $usePhpStan) {
