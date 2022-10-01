@@ -161,6 +161,13 @@ $currentDirectory = getcwd();
 $folderName = basename($currentDirectory);
 
 $packageName = ask('Package name', $folderName);
+while(str_contains(strtolower($packageName), "laravel"))
+{
+    echo("You should not include the word 'Laravel' in your package name. \n");
+    echo("Laravel Framework vendor:publish tags already contains laravel- prefix. \n");
+    echo("So please avoid including Laravel in your package name. \n");
+    $packageName = ask('Package name', $folderName);
+}
 $packageSlug = slugify($packageName);
 $packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
