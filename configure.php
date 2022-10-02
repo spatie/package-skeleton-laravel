@@ -161,11 +161,13 @@ $currentDirectory = getcwd();
 $folderName = basename($currentDirectory);
 
 $packageName = ask('Package name', $folderName);
-while(str_contains(strtolower($packageName), "laravel"))
+if(str_contains(strtolower($packageName), "laravel"))
 {
-    echo("You should not include the word 'Laravel' in your package name. \n");
-    echo("Laravel Framework vendor:publish tags already contains laravel- prefix. \n");
-    echo("So please avoid including Laravel in your package name. \n");
+    echo("If your package uses hasView(), then vendor:publish will remove \n");
+    echo("laravel- prefix from your package name. That will cause problem \n");
+    echo("since Laravel tries to look for resources/vendor/packagename-view \n");
+    echo("but your packagename is now laravel less. \n");
+    echo("Perhaps consider using another name? Or you may insist. \n");
     $packageName = ask('Package name', $folderName);
 }
 $packageSlug = slugify($packageName);
