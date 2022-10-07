@@ -154,7 +154,7 @@ $authorUsername = ask('Author username', $usernameGuess);
 
 $vendorName = ask('Vendor name', $authorUsername);
 $vendorSlug = slugify($vendorName);
-$vendorNamespace = ucwords($vendorName);
+$vendorNamespace = str_replace('-', '', ucwords($vendorName));
 $vendorNamespace = ask('Vendor namespace', $vendorNamespace);
 
 $currentDirectory = getcwd();
