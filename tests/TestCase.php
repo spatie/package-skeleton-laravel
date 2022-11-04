@@ -19,9 +19,11 @@ class TestCase extends Orchestra
 
     protected function getPackageProviders($app)
     {
-        return [
-            SkeletonServiceProvider::class,
-        ];
+        $composerFile = file_get_contents(__DIR__.'/../composer.json');
+        $json = json_decode($composerFile);
+        $providers = $json->extra->laravel->providers;
+
+        return $providers;
     }
 
     public function getEnvironmentSetUp($app)
