@@ -16,11 +16,11 @@
         }
     ],
     "require": {
-        "php": "^7.3"
+        "php": ">=8.0.2"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.3",
-        "phpunit/phpunit": "^8.2"
+        "phpunit/phpunit": "^9"
     },
     "autoload": {
         "psr-4": {
