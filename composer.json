@@ -44,6 +44,7 @@
         }
     },
     "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
         "cs": "vendor/bin/php-cs-fixer fix",
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
@@ -55,7 +56,11 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "laravel": {

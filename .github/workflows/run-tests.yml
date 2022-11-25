@@ -13,7 +13,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.1]
+        php: [8.2, 8.1]
         laravel: [9.*]
         stability: [prefer-lowest, prefer-stable]
         include:
@@ -42,6 +42,9 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: List Installed Dependencies
+        run: composer show -D
 
       - name: Execute tests
         run: vendor/bin/pest
