@@ -22,15 +22,14 @@
     },
     "require-dev": {
         "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^6.1",
+        "nunomaduro/collision": "^7.9",
         "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^8.0",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^9.6",
         "spatie/laravel-ray": "^1.26"
     },
     "autoload": {
