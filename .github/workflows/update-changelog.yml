@@ -1,8 +1,8 @@
-name: "Update Changelog"
+name: update-changelog
 
 on:
   release:
-    types: [released]
+    types: [ released ]
 
 permissions:
   contents: write
@@ -17,7 +17,7 @@ jobs:
         with:
           ref: main
 
-      - name: Update Changelog
+      - name: Update CHANGELOG
         uses: stefanzweifel/changelog-updater-action@v1
         with:
           latest-version: ${{ github.event.release.name }}

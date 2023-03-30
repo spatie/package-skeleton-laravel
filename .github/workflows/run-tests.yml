@@ -2,9 +2,9 @@ name: run-tests
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   test:
@@ -12,16 +12,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        php: [8.2, 8.1]
-        laravel: [10.*]
-        stability: [prefer-lowest, prefer-stable]
+        os: [ ubuntu-latest ]
+        php: [ 8.2, 8.1 ]
+        laravel: [ 10, 9 ]
         include:
           - laravel: 10.*
             testbench: 8.*
             carbon: ^2.63
+          - laravel: 9.*
+            testbench: 7.*
+            carbon: ^2.63
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: "PHP: v${{ matrix.php }} / Laravel: v${{ matrix.laravel }} on ${{ matrix.os }}"
 
     steps:
       - name: Checkout code

@@ -30,18 +30,7 @@ function writeln(string $line): void
 
 function run(string $command): string
 {
-    return trim((string) shell_exec($command));
-}
-
-function str_after(string $subject, string $search): string
-{
-    $pos = strrpos($subject, $search);
-
-    if ($pos === false) {
-        return $subject;
-    }
-
-    return substr($subject, $pos + strlen($search));
+    return trim((string)shell_exec($command));
 }
 
 function slugify(string $subject): string
@@ -82,7 +71,7 @@ function remove_prefix(string $prefix, string $content): string
     return $content;
 }
 
-function remove_composer_deps(array $names)
+function remove_composer_deps(array $names): void
 {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 
@@ -95,7 +84,7 @@ function remove_composer_deps(array $names)
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
-function remove_composer_script($scriptName)
+function remove_composer_script($scriptName): void
 {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
 
@@ -113,13 +102,10 @@ function remove_readme_paragraphs(string $file): void
 {
     $contents = file_get_contents($file);
 
-    file_put_contents(
-        $file,
-        preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents
-    );
+    file_put_contents($file, preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents);
 }
 
-function safeUnlink(string $filename)
+function safeUnlink(string $filename): void
 {
     if (file_exists($filename) && is_file($filename)) {
         unlink($filename);
@@ -133,12 +119,18 @@ function determineSeparator(string $path): string
 
 function replaceForWindows(): array
 {
-    return preg_split('/\\r\\n|\\r|\\n/', run('dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton migration_table_name vendor_name vendor_slug author@domain.com"'));
+    return preg_split(
+        '/\\r\\n|\\r|\\n/',
+        run('dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton migration_table_name vendor_name vendor_slug author@domain.com"')
+    );
 }
 
 function replaceForAllOtherOSes(): array
 {
-    return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v '.basename(__FILE__)));
+    return explode(
+        PHP_EOL,
+        run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v '.basename(__FILE__))
+    );
 }
 
 $gitName = run('git config user.name');
@@ -157,37 +149,38 @@ $vendorSlug = slugify($vendorName);
 $vendorNamespace = str_replace('-', '', ucwords($vendorName));
 $vendorNamespace = ask('Vendor namespace', $vendorNamespace);
 
-$currentDirectory = getcwd();
-$folderName = basename($currentDirectory);
-
-$packageName = ask('Package name', $folderName);
+$packageName = ask('Package name', basename(getcwd()));
 $packageSlug = slugify($packageName);
 $packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
 $className = title_case($packageName);
 $className = ask('Class name', $className);
 $variableName = lcfirst($className);
-$description = ask('Package description', "This is my package {$packageSlug}");
+$description = ask('Package description', "This is my package $packageSlug");
 
-$usePhpStan = confirm('Enable PhpStan?', true);
-$useLaravelPint = confirm('Enable Laravel Pint?', true);
+$laravelVersion = ask('Laravel Version', '10.0');
+
 $useDependabot = confirm('Enable Dependabot?', true);
-$useLaravelRay = confirm('Use Ray for debugging?', true);
-$useUpdateChangelogWorkflow = confirm('Use automatic changelog updater workflow?', true);
+$useUpdateChangelogWorkflow = confirm('Use CHANGELOG Updater workflow?', true);
+$useRector = confirm('Enable Rector?', true);
+$useLaravelPint = confirm('Enable Laravel Pint?');
+$usePhpStan = confirm('Enable PhpStan?');
 
 writeln('------');
-writeln("Author     : {$authorName} ({$authorUsername}, {$authorEmail})");
-writeln("Vendor     : {$vendorName} ({$vendorSlug})");
-writeln("Package    : {$packageSlug} <{$description}>");
-writeln("Namespace  : {$vendorNamespace}\\{$className}");
-writeln("Class name : {$className}");
+writeln("Author: $authorName ($authorUsername, $authorEmail)");
+writeln("Vendor: $vendorName ($vendorSlug)");
+writeln("Package: $packageSlug <$description>");
+writeln("Namespace: $vendorNamespace\\$className");
+writeln("Class name: $className");
+writeln('---');
+writeln("Laravel Version: $laravelVersion");
 writeln('---');
 writeln('Packages & Utilities');
-writeln('Use Laravel/Pint       : '.($useLaravelPint ? 'yes' : 'no'));
-writeln('Use Larastan/PhpStan : '.($usePhpStan ? 'yes' : 'no'));
-writeln('Use Dependabot       : '.($useDependabot ? 'yes' : 'no'));
-writeln('Use Ray App          : '.($useLaravelRay ? 'yes' : 'no'));
-writeln('Use Auto-Changelog   : '.($useUpdateChangelogWorkflow ? 'yes' : 'no'));
+writeln('Use Dependabot: '.($useDependabot ? 'yes' : 'no'));
+writeln('Use Auto-Changelog: '.($useUpdateChangelogWorkflow ? 'yes' : 'no'));
+writeln('Use Rector: '.($useRector ? 'yes' : 'no'));
+writeln('Use Laravel Pint: '.($useLaravelPint ? 'yes' : 'no'));
+writeln('Use PhpStan: '.($usePhpStan ? 'yes' : 'no'));
 writeln('------');
 
 writeln('This script will replace the above values in all relevant files in the project directory.');
@@ -196,7 +189,9 @@ if (! confirm('Modify files?', true)) {
     exit(1);
 }
 
-$files = (str_starts_with(strtoupper(PHP_OS), 'WIN') ? replaceForWindows() : replaceForAllOtherOSes());
+$files = (str_starts_with(strtoupper(PHP_OS), 'WIN')
+    ? replaceForWindows()
+    : replaceForAllOtherOSes());
 
 foreach ($files as $file) {
     replace_in_file($file, [
@@ -214,6 +209,7 @@ foreach ($files as $file) {
         'migration_table_name' => title_snake($packageSlug),
         'variable' => $variableName,
         ':package_description' => $description,
+        ':laravel_version' => $laravelVersion,
     ]);
 
     match (true) {
@@ -228,8 +224,15 @@ foreach ($files as $file) {
     };
 }
 
+if (! $useRector) {
+    safeUnlink(__DIR__.'/rector.php');
+
+    remove_composer_deps(['rector/rector']);
+
+    remove_composer_script('lint');
+}
+
 if (! $useLaravelPint) {
-    safeUnlink(__DIR__.'/.github/workflows/fix-php-code-style-issues.yml');
     safeUnlink(__DIR__.'/pint.json');
 }
 
@@ -245,7 +248,7 @@ if (! $usePhpStan) {
         'nunomaduro/larastan',
     ]);
 
-    remove_composer_script('phpstan');
+    remove_composer_script('analyse');
 }
 
 if (! $useDependabot) {
@@ -253,14 +256,10 @@ if (! $useDependabot) {
     safeUnlink(__DIR__.'/.github/workflows/dependabot-auto-merge.yml');
 }
 
-if (! $useLaravelRay) {
-    remove_composer_deps(['spatie/laravel-ray']);
-}
-
 if (! $useUpdateChangelogWorkflow) {
     safeUnlink(__DIR__.'/.github/workflows/update-changelog.yml');
 }
 
-confirm('Execute `composer install` and run tests?') && run('composer install && composer test');
+confirm('Execute `composer install`?') && run('composer install');
 
 confirm('Let this script delete itself?', true) && unlink(__FILE__);
