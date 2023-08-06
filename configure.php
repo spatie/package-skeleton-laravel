@@ -175,6 +175,8 @@ $useDependabot = confirm('Enable Dependabot?', true);
 $useLaravelRay = confirm('Use Ray for debugging?', true);
 $useUpdateChangelogWorkflow = confirm('Use automatic changelog updater workflow?', true);
 
+$displaySponsorButton = confirm('Display a "Sponsor" button?', true);
+
 writeln('------');
 writeln("Author     : {$authorName} ({$authorUsername}, {$authorEmail})");
 writeln("Vendor     : {$vendorName} ({$vendorSlug})");
