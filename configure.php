@@ -190,6 +190,7 @@ writeln('Use Larastan/PhpStan : '.($usePhpStan ? 'yes' : 'no'));
 writeln('Use Dependabot       : '.($useDependabot ? 'yes' : 'no'));
 writeln('Use Ray App          : '.($useLaravelRay ? 'yes' : 'no'));
 writeln('Use Auto-Changelog   : '.($useUpdateChangelogWorkflow ? 'yes' : 'no'));
+writeln('Display Sponsor Btn  : '.($displaySponsorButton ? 'yes' : 'no'));
 writeln('------');
 
 writeln('This script will replace the above values in all relevant files in the project directory.');
