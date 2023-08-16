@@ -46,9 +46,13 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@php vendor/bin/testbench package:discover --ansi",
+        "post-autoload-dump": "@composer run prepare",
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": [
+            "@composer run prepare",
+            "@php vendor/bin/testbench workbench:build --ansi"
+        ],
         "start": [
             "@composer run build",
             "@php vendor/bin/testbench serve",
