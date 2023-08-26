@@ -55,7 +55,7 @@
         ],
         "start": [
             "@composer run build",
-            "@php vendor/bin/testbench serve",
+            "@php vendor/bin/testbench serve"
         ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
