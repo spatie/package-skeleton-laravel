@@ -16,4 +16,8 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+
+    public function down() {
+        Schema::drop('migration_table_name_table');
+    }
 };
