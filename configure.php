@@ -198,7 +198,7 @@ function searchCommitsForGithubUsername(): string
 function guessGithubUsernameUsingCli()
 {
     try {
-        if (preg_match('/ogged in to github\.com as ([a-zA-Z-_]+).+/', shell_exec('gh auth status -h github.com'), $matches) === 1) {
+        if (preg_match('/ogged in to github\.com as ([a-zA-Z-_]+).+/', shell_exec('gh auth status -h github.com 2>&1'), $matches)) {
             return $matches[1];
         }
     } catch (Exception $e) {
