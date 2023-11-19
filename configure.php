@@ -150,7 +150,7 @@ function getGithubApiEndpoint(string $endpoint): ?stdClass
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTPGET => true,
             CURLOPT_HTTPHEADER => [
-                'User-Agent: spatie-configure-script/1.0'
+                'User-Agent: spatie-configure-script/1.0',
             ],
         ]);
 
@@ -171,26 +171,27 @@ function getGithubApiEndpoint(string $endpoint): ?stdClass
 
 function searchCommitsForGithubUsername(): string
 {
-    $authorName = strtolower(trim(shell_exec("git config user.name")));
+    $authorName = strtolower(trim(shell_exec('git config user.name')));
 
     $committersRaw = shell_exec("git log --author='@users.noreply.github.com' --pretty='%an:%ae' --reverse");
     $committersLines = explode("\n", $committersRaw);
-    $committers = array_filter(array_map(function($line) use ($authorName) {
+    $committers = array_filter(array_map(function ($line) use ($authorName) {
         $line = trim($line);
         [$name, $email] = explode(':', $line) + [null, null];
 
         return [
             'name' => $name,
             'email' => $email,
-            'isMatch' => strtolower($name) === $authorName && !str_contains($name, '[bot]')
+            'isMatch' => strtolower($name) === $authorName && ! str_contains($name, '[bot]'),
         ];
-    }, $committersLines), fn($item) => $item['isMatch']);
+    }, $committersLines), fn ($item) => $item['isMatch']);
 
     if (empty($committers)) {
         return '';
     }
 
     $firstCommitter = reset($committers);
+
     return explode('@', $firstCommitter['email'])[0] ?? '';
 }
 
@@ -210,17 +211,17 @@ function guessGithubUsernameUsingCli()
 function guessGithubUsername(): string
 {
     $username = searchCommitsForGithubUsername();
-    if (!empty($username)) {
+    if (! empty($username)) {
         return $username;
     }
 
     $username = guessGithubUsernameUsingCli();
-    if (!empty($username)) {
+    if (! empty($username)) {
         return $username;
     }
 
     // fall back to using the username from the git remote
-    $remoteUrl = shell_exec("git config remote.origin.url");
+    $remoteUrl = shell_exec('git config remote.origin.url');
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
 
     return $remoteUrlParts[1] ?? '';
@@ -228,7 +229,7 @@ function guessGithubUsername(): string
 
 function guessGithubVendorInfo($authorName, $username): array
 {
-    $remoteUrl = shell_exec("git config remote.origin.url");
+    $remoteUrl = shell_exec('git config remote.origin.url');
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
 
     $response = getGithubApiEndpoint("orgs/{$remoteUrlParts[1]}");
