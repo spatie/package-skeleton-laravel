@@ -235,7 +235,7 @@ function guessGitHubVendorInfo($authorName, $username): array
     $response = getGitHubApiEndpoint("orgs/{$remoteUrlParts[1]}");
 
     if ($response === null) {
-        return $username;
+        return [$authorName, $username];
     }
 
     return [$response->name ?? $authorName, $response->login ?? $username];
