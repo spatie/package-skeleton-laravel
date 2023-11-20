@@ -141,7 +141,7 @@ function replaceForAllOtherOSes(): array
     return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v '.basename(__FILE__)));
 }
 
-function getGithubApiEndpoint(string $endpoint): ?stdClass
+function getGitHubApiEndpoint(string $endpoint): ?stdClass
 {
     try {
         $curl = curl_init("https://api.github.com/{$endpoint}");
@@ -169,7 +169,7 @@ function getGithubApiEndpoint(string $endpoint): ?stdClass
     return null;
 }
 
-function searchCommitsForGithubUsername(): string
+function searchCommitsForGitHubUsername(): string
 {
     $authorName = strtolower(trim(shell_exec('git config user.name')));
 
@@ -195,7 +195,7 @@ function searchCommitsForGithubUsername(): string
     return explode('@', $firstCommitter['email'])[0] ?? '';
 }
 
-function guessGithubUsernameUsingCli()
+function guessGitHubUsernameUsingCli()
 {
     try {
         if (preg_match('/ogged in to github\.com as ([a-zA-Z-_]+).+/', shell_exec('gh auth status -h github.com 2>&1'), $matches)) {
@@ -208,14 +208,14 @@ function guessGithubUsernameUsingCli()
     return '';
 }
 
-function guessGithubUsername(): string
+function guessGitHubUsername(): string
 {
-    $username = searchCommitsForGithubUsername();
+    $username = searchCommitsForGitHubUsername();
     if (! empty($username)) {
         return $username;
     }
 
-    $username = guessGithubUsernameUsingCli();
+    $username = guessGitHubUsernameUsingCli();
     if (! empty($username)) {
         return $username;
     }
@@ -227,12 +227,12 @@ function guessGithubUsername(): string
     return $remoteUrlParts[1] ?? '';
 }
 
-function guessGithubVendorInfo($authorName, $username): array
+function guessGitHubVendorInfo($authorName, $username): array
 {
     $remoteUrl = shell_exec('git config remote.origin.url');
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
 
-    $response = getGithubApiEndpoint("orgs/{$remoteUrlParts[1]}");
+    $response = getGitHubApiEndpoint("orgs/{$remoteUrlParts[1]}");
 
     if ($response === null) {
         return $username;
@@ -246,12 +246,12 @@ $authorName = ask('Author name', $gitName);
 
 $gitEmail = run('git config user.email');
 $authorEmail = ask('Author email', $gitEmail);
-$authorUsername = ask('Author username', guessGithubUsername());
+$authorUsername = ask('Author username', guessGitHubUsername());
 
-$guessGithubVendorInfo = guessGithubVendorInfo($authorName, $authorUsername);
+$guessGitHubVendorInfo = guessGitHubVendorInfo($authorName, $authorUsername);
 
-$vendorName = ask('Vendor name', $guessGithubVendorInfo[0]);
-$vendorUsername = ask('Vendor username', $guessGithubVendorInfo[1] ?? slugify($vendorName));
+$vendorName = ask('Vendor name', $guessGitHubVendorInfo[0]);
+$vendorUsername = ask('Vendor username', $guessGitHubVendorInfo[1] ?? slugify($vendorName));
 $vendorSlug = slugify($vendorUsername);
 
 $vendorNamespace = str_replace('-', '', ucwords($vendorName));
