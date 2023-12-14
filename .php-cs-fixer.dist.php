@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()->in([
     'config',
@@ -18,6 +18,9 @@ return (new PhpCsFixer\Config())
             'syntax' => 'short',
         ],
         'assign_null_coalescing_to_coalesce_equal' => true,
+        'attribute_empty_parentheses' => [
+            'use_parentheses' => false,
+        ],
         'backtick_to_shell_exec' => true,
         'binary_operator_spaces' => [
             'default' => 'single_space',
@@ -35,12 +38,15 @@ return (new PhpCsFixer\Config())
             ],
         ],
         'blank_line_between_import_groups' => false,
-        'braces' => [
-            'allow_single_line_anonymous_class_with_empty_body' => true,
-            'allow_single_line_closure' => true,
-            'position_after_anonymous_constructs' => 'same',
-            'position_after_control_structures' => 'same',
-            'position_after_functions_and_oop_constructs' => 'next',
+        'blank_lines_before_namespace' => true,
+        'braces_position' => [
+            'allow_single_line_anonymous_functions' => true,
+            'allow_single_line_empty_anonymous_classes' => true,
+            'anonymous_classes_opening_brace' => 'same_line',
+            'anonymous_functions_opening_brace' => 'same_line',
+            'classes_opening_brace' => 'next_line_unless_newline_at_signature_end',
+            'control_structures_opening_brace' => 'same_line',
+            'functions_opening_brace' => 'next_line_unless_newline_at_signature_end',
         ],
         'cast_spaces' => [
             'space' => 'single',
@@ -76,11 +82,6 @@ return (new PhpCsFixer\Config())
         'control_structure_continuation_position' => [
             'position' => 'same_line',
         ],
-        'curly_braces_position' => [
-            'allow_single_line_anonymous_functions' => true,
-            'allow_single_line_empty_anonymous_classes' => true,
-            'anonymous_classes_opening_brace' => 'same_line',
-        ],
         'date_time_create_from_format_call' => true,
         'date_time_immutable' => true,
         'declare_equal_normalize' => [
@@ -104,8 +105,11 @@ return (new PhpCsFixer\Config())
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'fopen_flag_order' => true,
-        'fully_qualified_strict_types' => true,
+        'fully_qualified_strict_types' => [
+            'leading_backslash_in_global_namespace' => true,
+        ],
         'function_declaration' => [
+            'closure_fn_spacing' => 'one',
             'closure_function_spacing' => 'one',
             'trailing_comma_single_line' => false,
         ],
@@ -119,13 +123,13 @@ return (new PhpCsFixer\Config())
                 5 => 'pi',
             ],
         ],
-        'function_typehint_space' => true,
         'general_phpdoc_annotation_remove' => [
             'annotations' => [
                 0 => 'author',
                 1 => 'class',
                 2 => 'namespace',
             ],
+            'case_sensitive' => true,
         ],
         'get_class_to_class_keyword' => true,
         'global_namespace_import' => [
@@ -146,11 +150,13 @@ return (new PhpCsFixer\Config())
             'syntax' => 'short',
         ],
         'logical_operators' => true,
+        'long_to_shorthand_operator' => true,
         'magic_constant_casing' => true,
         'magic_method_casing' => true,
         'mb_str_functions' => true,
         'method_argument_space' => [
             'after_heredoc' => true,
+            'attribute_placement' => 'standalone',
             'keep_multiple_spaces_after_comma' => false,
             'on_multiline' => 'ensure_fully_multiline',
         ],
@@ -169,8 +175,8 @@ return (new PhpCsFixer\Config())
             'scope' => 'namespaced',
             'strict' => true,
         ],
-        'native_function_type_declaration_casing' => true,
-        'new_with_braces' => [
+        'native_type_declaration_casing' => true,
+        'new_with_parentheses' => [
             'anonymous_class' => true,
             'named_class' => true,
         ],
@@ -221,11 +227,19 @@ return (new PhpCsFixer\Config())
         'no_superfluous_phpdoc_tags' => [
             'allow_mixed' => true,
             'allow_unused_params' => false,
-            'remove_inheritdoc' => true,
+            'remove_inheritdoc' => false,
         ],
-        'no_trailing_comma_in_list_call' => true,
-        'no_trailing_comma_in_singleline_array' => true,
-        'no_trailing_comma_in_singleline_function_call' => true,
+        'no_trailing_comma_in_singleline' => [
+            'elements' => [
+                0 => 'arguments',
+                1 => 'array',
+                2 => 'array_destructuring',
+                3 => 'group_import',
+            ],
+        ],
+        'no_unneeded_braces' => [
+            'namespaces' => false,
+        ],
         'no_unneeded_control_parentheses' => [
             'statements' => [
                 0 => 'break',
@@ -240,7 +254,6 @@ return (new PhpCsFixer\Config())
                 9 => 'yield_from',
             ],
         ],
-        'no_unneeded_curly_braces' => true,
         'no_unneeded_final_method' => [
             'private_methods' => true,
         ],
@@ -248,6 +261,7 @@ return (new PhpCsFixer\Config())
         'no_unreachable_default_argument_value' => true,
         'no_unset_cast' => true,
         'no_unused_imports' => true,
+        'no_useless_concat_operator' => true,
         'no_useless_else' => true,
         'no_useless_nullsafe_operator' => true,
         'no_useless_return' => true,
@@ -259,6 +273,9 @@ return (new PhpCsFixer\Config())
             'use_escape_sequences_in_strings' => true,
         ],
         'normalize_index_brace' => true,
+        'nullable_type_declaration' => [
+            'syntax' => 'question_mark',
+        ],
         'nullable_type_declaration_for_default_null_value' => [
             'use_nullable_type_declaration' => true,
         ],
@@ -269,6 +286,7 @@ return (new PhpCsFixer\Config())
             'position' => 'beginning',
         ],
         'ordered_class_elements' => [
+            'case_sensitive' => false,
             'order' => [
                 0 => 'use_trait',
                 1 => 'constant',
@@ -280,6 +298,7 @@ return (new PhpCsFixer\Config())
             'sort_algorithm' => 'none',
         ],
         'ordered_imports' => [
+            'case_sensitive' => false,
             'imports_order' => [
                 0 => 'class',
                 1 => 'function',
@@ -288,11 +307,21 @@ return (new PhpCsFixer\Config())
             'sort_algorithm' => 'alpha',
         ],
         'ordered_interfaces' => [
+            'case_sensitive' => false,
             'direction' => 'ascend',
             'order' => 'alpha',
         ],
-        'ordered_traits' => true,
+        'ordered_traits' => [
+            'case_sensitive' => false,
+        ],
+        'ordered_types' => [
+            'case_sensitive' => false,
+            'null_adjustment' => 'always_last',
+            'sort_algorithm' => 'none',
+        ],
         'php_unit_construct' => true,
+        'php_unit_data_provider_return_type' => true,
+        'php_unit_data_provider_static' => true,
         'php_unit_dedicate_assert' => true,
         'php_unit_dedicate_assert_internal_type' => true,
         'php_unit_expectation' => true,
@@ -351,6 +380,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_access' => true,
         'phpdoc_no_alias_tag' => [
             'replacements' => [
+                'inheritDoc' => 'inheritdoc',
                 'type' => 'var',
                 'link' => 'see',
             ],
@@ -363,7 +393,8 @@ return (new PhpCsFixer\Config())
                 0 => 'param',
                 1 => 'return',
                 2 => 'throws',
-                3 => 'phpcsSuppress',
+                3 => 'inheritdoc',
+                4 => 'phpcsSuppress',
             ],
         ],
         'phpdoc_order_by_value' => [
@@ -372,6 +403,8 @@ return (new PhpCsFixer\Config())
                 1 => 'throws',
             ],
         ],
+        'phpdoc_param_order' => true,
+        'phpdoc_return_self_reference' => true,
         'phpdoc_scalar' => true,
         'phpdoc_single_line_var_spacing' => true,
         'phpdoc_summary' => true,
@@ -385,6 +418,7 @@ return (new PhpCsFixer\Config())
             ],
         ],
         'phpdoc_types_order' => [
+            'case_sensitive' => false,
             'null_adjustment' => 'always_last',
             'sort_algorithm' => 'alpha',
         ],
@@ -419,12 +453,16 @@ return (new PhpCsFixer\Config())
                 0 => 'hash',
             ],
         ],
+        'single_line_empty_body' => true,
         'single_quote' => [
             'strings_containing_single_quote_chars' => false,
         ],
-        'single_space_after_construct' => true,
+        'single_space_around_construct' => true,
         'space_after_semicolon' => [
             'remove_in_empty_for_expressions' => true,
+        ],
+        'spaces_inside_parentheses' => [
+            'space' => 'none',
         ],
         'standardize_not_equals' => true,
         'statement_indentation' => true,
@@ -442,6 +480,7 @@ return (new PhpCsFixer\Config())
             ],
         ],
         'trim_array_spaces' => true,
+        'type_declaration_spaces' => true,
         'types_spaces' => [
             'space' => 'none',
             'space_multiple_catch' => 'none',
