@@ -1,9 +1,8 @@
-phpunit
-vendor
 .php-cs-fixer.php
 .php-cs-fixer.cache
 .phpunit.result.cache
 composer.lock
+phpunit
 phpunit.xml
 phpstan.neon
 vendor

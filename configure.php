@@ -141,19 +141,119 @@ function replaceForAllOtherOSes(): array
     return explode(PHP_EOL, run('grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|migration_table_name|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v '.basename(__FILE__)));
 }
 
+function getGitHubApiEndpoint(string $endpoint): ?stdClass
+{
+    try {
+        $curl = curl_init("https://api.github.com/{$endpoint}");
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTPGET => true,
+            CURLOPT_HTTPHEADER => [
+                'User-Agent: spatie-configure-script/1.0',
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        if ($statusCode === 200) {
+            return json_decode($response);
+        }
+    } catch (Exception $e) {
+        // ignore
+    }
+
+    return null;
+}
+
+function searchCommitsForGitHubUsername(): string
+{
+    $authorName = strtolower(trim(shell_exec('git config user.name')));
+
+    $committersRaw = shell_exec("git log --author='@users.noreply.github.com' --pretty='%an:%ae' --reverse");
+    $committersLines = explode("\n", $committersRaw);
+    $committers = array_filter(array_map(function ($line) use ($authorName) {
+        $line = trim($line);
+        [$name, $email] = explode(':', $line) + [null, null];
+
+        return [
+            'name' => $name,
+            'email' => $email,
+            'isMatch' => strtolower($name) === $authorName && ! str_contains($name, '[bot]'),
+        ];
+    }, $committersLines), fn ($item) => $item['isMatch']);
+
+    if (empty($committers)) {
+        return '';
+    }
+
+    $firstCommitter = reset($committers);
+
+    return explode('@', $firstCommitter['email'])[0] ?? '';
+}
+
+function guessGitHubUsernameUsingCli()
+{
+    try {
+        if (preg_match('/ogged in to github\.com as ([a-zA-Z-_]+).+/', shell_exec('gh auth status -h github.com 2>&1'), $matches)) {
+            return $matches[1];
+        }
+    } catch (Exception $e) {
+        // ignore
+    }
+
+    return '';
+}
+
+function guessGitHubUsername(): string
+{
+    $username = searchCommitsForGitHubUsername();
+    if (! empty($username)) {
+        return $username;
+    }
+
+    $username = guessGitHubUsernameUsingCli();
+    if (! empty($username)) {
+        return $username;
+    }
+
+    // fall back to using the username from the git remote
+    $remoteUrl = shell_exec('git config remote.origin.url');
+    $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
+
+    return $remoteUrlParts[1] ?? '';
+}
+
+function guessGitHubVendorInfo($authorName, $username): array
+{
+    $remoteUrl = shell_exec('git config remote.origin.url');
+    $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
+
+    $response = getGitHubApiEndpoint("orgs/{$remoteUrlParts[1]}");
+
+    if ($response === null) {
+        return [$authorName, $username];
+    }
+
+    return [$response->name ?? $authorName, $response->login ?? $username];
+}
+
 $gitName = run('git config user.name');
 $authorName = ask('Author name', $gitName);
 
 $gitEmail = run('git config user.email');
 $authorEmail = ask('Author email', $gitEmail);
+$authorUsername = ask('Author username', guessGitHubUsername());
 
-$usernameGuess = explode(':', run('git config remote.origin.url'))[1];
-$usernameGuess = dirname($usernameGuess);
-$usernameGuess = basename($usernameGuess);
-$authorUsername = ask('Author username', $usernameGuess);
+$guessGitHubVendorInfo = guessGitHubVendorInfo($authorName, $authorUsername);
 
-$vendorName = ask('Vendor name', $authorUsername);
-$vendorSlug = slugify($vendorName);
+$vendorName = ask('Vendor name', $guessGitHubVendorInfo[0]);
+$vendorUsername = ask('Vendor username', $guessGitHubVendorInfo[1] ?? slugify($vendorName));
+$vendorSlug = slugify($vendorUsername);
+
 $vendorNamespace = str_replace('-', '', ucwords($vendorName));
 $vendorNamespace = ask('Vendor namespace', $vendorNamespace);
 
@@ -183,7 +283,7 @@ writeln("Namespace  : {$vendorNamespace}\\{$className}");
 writeln("Class name : {$className}");
 writeln('---');
 writeln('Packages & Utilities');
-writeln('Use Laravel/Pint       : '.($useLaravelPint ? 'yes' : 'no'));
+writeln('Use Laravel/Pint     : '.($useLaravelPint ? 'yes' : 'no'));
 writeln('Use Larastan/PhpStan : '.($usePhpStan ? 'yes' : 'no'));
 writeln('Use Dependabot       : '.($useDependabot ? 'yes' : 'no'));
 writeln('Use Ray App          : '.($useLaravelRay ? 'yes' : 'no'));
