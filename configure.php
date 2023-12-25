@@ -342,7 +342,7 @@ if (! $usePhpStan) {
         'phpstan/extension-installer',
         'phpstan/phpstan-deprecation-rules',
         'phpstan/phpstan-phpunit',
-        'nunomaduro/larastan',
+        'larastan/larastan',
     ]);
 
     remove_composer_script('phpstan');
