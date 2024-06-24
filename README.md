@@ -1,48 +1,108 @@
-# :package_description
+# :package_slug
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+## api-app-skeleton
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+:package_description
 
-## Support us
+## Installation - Package Development (*Current Workflow*)
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+### From Here - *Child* `Package`
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+- Navigate to location and install composer dependencies.
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+  ```sh:
+  $ pwd
+  /var/www
+  $ cd /var/www/packages/:vendor_slug/skeleton 
+  $ composer install
+  ```
 
-## Installation
+> *During Package DEV*: There may be a need to modify the installer to remove the central dependency of package tools, until context aware include invocation of include.
+
+### From `Backend-API` - *Parent* `Application`
+
+- Modify the *base* `composer.json` and `app.php` configuration files, adding this `VendorName\\Skeleton` Package and `Skeleton\SkeletonServiceProvider`Class.
+  - `/composer.json~32-33`
+
+    ```json:/composer.json~32-33
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "VendorName\\Skeleton\\": "packages/:vendor_slug/:package_slug/src/",
+            "VendorName\\Skeleton\\": "packages/:vendor_slug/skeleton/src/"
+        }
+    },
+    ```
+
+  - `/config/app.php~165-166`
+
+    ```php:config/app.php~165-166
+    'providers' => ServiceProvider::defaultProviders()->merge([
+
+        /*
+         * Package Service Providers...
+         * Required for discovery (non auto, as that only applies to the `vendor` dir)
+         * while under dev in `Packages`
+         */
+        VendorName\Skeleton\SkeletonServiceProvider::class,
+        VendorName\Skeleton\SkeletonServiceProvider::class,
+    ```
+
+- Discover packages, and generate optimized autoload files.
+
+    ```bash
+    composer dump-autoload
+    ```
+
+
+  - Publish and run the migrations with:
+
+    ```bash
+    php artisan vendor:publish --tag="skeleton-migrations"
+    php artisan migrate
+    ```
+
+  - Publish the config file with:
+
+    ```bash
+    php artisan vendor:publish --tag="skeleton-config"
+    ```
+
+  - Publish the (graceful failure html only) views using
+
+    ```bash
+    php artisan vendor:publish --tag="skeleton-views"
+    ```
+
+- Make sure Vite is running and picks up changes
+
+## ~~Installation~~ - **Post** Development (Composer/Packagist Published)
+
+- Initialize *this* child repository, after modifying the base config above
+
+    ```bash
+    composer require packages/:vendor_slug/skeleton
+    ```
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require :vendor_slug/skeleton
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
+php artisan vendor:publish --tag="skeleton-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
+php artisan vendor:publish --tag="skeleton-config"
 ```
 
 This is the contents of the published config file:
@@ -55,14 +115,14 @@ return [
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-views"
+php artisan vendor:publish --tag="skeleton-views"
 ```
 
 ## Usage
 
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+$objSkeleton = new VendorName\Skeleton();
+echo $objSkeleton->echoPhrase('Hello, VendorName!');
 ```
 
 ## Testing
@@ -90,4 +150,13 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Proprietary private software. Please see [License File](LICENSE.md) for more information.
+
+## Stats - *requires hosting/adapter*
+
+*`TODO: CREATE A TOKEN ENABLED WEB HOSTED APP ON CENTRAL DOMAIN TO HANDLE THE INTERNAL REQUESTS FOR ROUTING, ACTIONS, HOOKS, EVENTS, AND STATUS CALLS LIKE THESE`*
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/backend-login.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/backend-login)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/backend-login/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/backend-login/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/backend-login/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/backend-login/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/backend-login.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/backend-login)

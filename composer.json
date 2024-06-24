@@ -3,6 +3,10 @@
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
+        "j-johnson-designs",
+        "j-j-designs-dev",
+        "i-am-ai",
+        "babalu",
         "laravel",
         ":package_slug"
     ],
@@ -12,7 +16,7 @@
         {
             "name": ":author_name",
             "email": "author@domain.com",
-            "role": "Developer"
+            "role": "Architect"
         }
     ],
     "require": {
@@ -21,16 +25,16 @@
         "illuminate/contracts": "^10.0||^11.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.14",
-        "nunomaduro/collision": "^8.1.1||^7.10.0",
-        "larastan/larastan": "^2.9",
-        "orchestra/testbench": "^9.0.0||^8.22.0",
-        "pestphp/pest": "^2.34",
-        "pestphp/pest-plugin-arch": "^2.7",
-        "pestphp/pest-plugin-laravel": "^2.3",
-        "phpstan/extension-installer": "^1.3",
-        "phpstan/phpstan-deprecation-rules": "^1.1",
-        "phpstan/phpstan-phpunit": "^1.3",
+        "laravel/pint": "^1.16",
+        "nunomaduro/collision": "^8.1.1",
+        "larastan/larastan": "^2.9.7",
+        "orchestra/testbench": "^9.1.2",
+        "pestphp/pest": "^2.34.7",
+        "pestphp/pest-plugin-arch": "^2.7.0",
+        "pestphp/pest-plugin-laravel": "^2.4.0",
+        "phpstan/extension-installer": "^1.3.1",
+        "phpstan/phpstan-deprecation-rules": "^1.2.0",
+        "phpstan/phpstan-phpunit": "^1.4.0",
         "spatie/laravel-ray": "^1.35"
     },
     "autoload": {
@@ -46,7 +50,19 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
+        "post-autoload-dump": [
+            "echo 'Local DEV Note: packages/:vendor_slug/skeleton/composer.json:48'",
+            "echo 'From Inside Docker To Support Post Testing, Which Looks For Db Connect:'",
+            "echo @composer run prepare",
+            "echo 'Local DEV Note: packages/:vendor_slug/skeleton/composer.json:51'",
+            "echo 'After package development, run the following commands to publish assets - SHOULD BE IN FRONTEND, THIS IS Backend LOGIC ONLY:'",
+            "echo 'cd ../../.. && @php artisan vendor:publish --tag=skeleton-inertia'",
+            "echo @composer run publish",
+            "echo 'After package development, decouple Package Tools for removal, as they collide here - SHOULD BE IN FRONTEND, THIS IS Backend LOGIC ONLY:'",
+            "echo @composer run optimize"
+        ],
+        "publish": "cd ../../.. && php artisan vendor:publish --tag=skeleton-inertia",
+        "optimize": "cd ../../.. && php artisan optimize",
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
@@ -68,7 +84,8 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
-        }
+        },
+        "process-timeout": 700
     },
     "extra": {
         "laravel": {
@@ -78,8 +95,10 @@
             "aliases": {
                 "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
             }
+        },
+        "branch-alias": {
+            "dev-main": "1.10-dev"
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

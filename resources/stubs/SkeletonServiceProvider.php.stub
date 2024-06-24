@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class SkeletonServiceProvider extends ServiceProvider {
+    public function boot() {
+        $this->loadRoutesFrom(
+            __DIR__.'/../../packages/babalu-community/skeleton/routes/web-skeleton.php'
+        );
+        $this->loadRoutesFrom(
+            __DIR__.'/../../packages/babalu-community/skeleton/routes/auth-skeleton.php'
+        );
+        $this->loadViewsFrom(
+            __DIR__.'/../../resources/views/vendor/skeleton', 'skeleton'
+        
+    }
+
+    public function register() {
+        // $this->app->bind('skeleton', function() {
+        //     return new Skeleton;
+        // });
+        $this->app->make(
+            'BabaluCommunity\Skeleton\Http\Controllers\SkeletonController'
+        );
+    }
+}
