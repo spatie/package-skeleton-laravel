@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "weexduunx/laravel-wolof",
+    "description": "Laravel Wolof est un package destiné aux développeurs sénégalais ou parlant Wolof, qui leur permet de coder et d'interagir avec Laravel en utilisant leur langue locale. Ce package traduit les messages d'erreur, les validations, et les commandes artisan en Wolof, facilitant ainsi l'apprentissage et l'utilisation de Laravel dans un environnement plus accessible",
     "keywords": [
-        ":vendor_name",
+        "idrissaNdiouck",
         "laravel",
-        ":package_slug"
+        "laravel-wolof"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/weexduunx/laravel-wolof",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "idrissaNdiouck",
+            "email": "indiouck04@yahoo.fr",
             "role": "Developer"
         }
     ],
@@ -35,19 +35,19 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "IdrissaNdiouck\\LaravelWolof\\": "src/",
+            "IdrissaNdiouck\\LaravelWolof\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "IdrissaNdiouck\\LaravelWolof\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-laravel-wolof --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -73,10 +73,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "IdrissaNdiouck\\LaravelWolof\\LaravelWolofServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "LaravelWolof": "IdrissaNdiouck\\LaravelWolof\\Facades\\LaravelWolof"
             }
         }
     },

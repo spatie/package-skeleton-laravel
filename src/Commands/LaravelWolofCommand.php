@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace IdrissaNdiouck\LaravelWolof\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelWolofCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-wolof';
 
     public $description = 'My command';
 
