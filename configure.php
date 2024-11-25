@@ -221,7 +221,7 @@ function guessGitHubUsername(): string
     }
 
     // fall back to using the username from the git remote
-    $remoteUrl = shell_exec('git config remote.origin.url');
+    $remoteUrl = shell_exec('git config remote.origin.url') ?? '';
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
 
     return $remoteUrlParts[1] ?? '';
@@ -229,8 +229,12 @@ function guessGitHubUsername(): string
 
 function guessGitHubVendorInfo($authorName, $username): array
 {
-    $remoteUrl = shell_exec('git config remote.origin.url');
+    $remoteUrl = shell_exec('git config remote.origin.url') ?? '';
     $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
+
+    if (! isset($remoteUrlParts[1])) {
+        return [$authorName, $username];
+    }
 
     $response = getGitHubApiEndpoint("orgs/{$remoteUrlParts[1]}");
 
