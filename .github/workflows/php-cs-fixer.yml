@@ -1,4 +1,4 @@
-name: Fix PHP Code Style Issues
+name: Check & Fix Styling
 
 on:
   workflow_dispatch:
@@ -7,13 +7,9 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
-  php-code-styling:
+  php-cs-fixer:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -21,10 +17,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@2.4
+      - name: Run PHP CS Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --config=.php-cs-fixer.dist.php --allow-risky=yes
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Fix styling

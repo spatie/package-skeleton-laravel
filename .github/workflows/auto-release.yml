@@ -1,0 +1,100 @@
+name: Auto Release
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths-ignore:
+      - '.github/**'
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v4
+        with:
+          application_id: ${{ vars.FUELVIEWS_BOT_APP_ID }}
+          application_private_key: ${{ secrets.FUELVIEWS_BOT_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main'
+          fetch-depth: '0'
+          token: ${{ steps.get_workflow_token.outputs.token }}
+
+      - name: Bump version and push tag
+        id: bump_version
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          RELEASE_BRANCHES: main
+          BRANCH_HISTORY: last
+
+      - name: Generate Release Notes
+        id: generate_release_notes
+        shell: bash
+        env:
+          TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+          NEW_TAG: ${{ steps.bump_version.outputs.new_tag }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          response=$(curl -s -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$OWNER/$REPO/releases/generate-notes \
+            -d @- <<EOF
+          {
+            "tag_name": "$NEW_TAG",
+            "target_commitish": "main"
+          }
+          EOF
+          )
+          # Check if the response contains an error
+          if echo "$response" | grep -q '"message":'; then
+            echo "Error generating release notes:"
+            echo "$response"
+            exit 1
+          fi
+          body=$(echo "$response" | jq -r '.body')
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$body" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          latest-version: ${{ steps.bump_version.outputs.new_tag }}
+          release-notes: ${{ steps.generate_release_notes.outputs.body }}
+          path-to-changelog: "CHANGELOG.md"
+
+      - name: Amend updated CHANGELOG
+        env:
+          GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+        run: |
+          git config user.name "fuelviews-app[bot]"
+          git config user.email "fuelviews-app[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit --amend --no-edit
+          git push origin main --force
+
+      - name: Release
+        id: release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+        with:
+          tag_name: ${{ steps.bump_version.outputs.new_tag }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
+
