@@ -3,7 +3,6 @@
 namespace VendorName\Skeleton\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\TestCase as Orchestra;
 use VendorName\Skeleton\SkeletonServiceProvider;
 
