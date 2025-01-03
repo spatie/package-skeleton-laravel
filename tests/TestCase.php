@@ -30,7 +30,7 @@ class TestCase extends Orchestra
 		
 		/*
 		 foreach (\Illuminate\Support\Facades\File::allFiles(__DIR__ . '/database/migrations') as $migration) {
-		    (require $migration->getRealPath())->up();
+		    (include $migration->getRealPath())->up();
 		 }
 		 */
     }
