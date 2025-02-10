@@ -20,7 +20,9 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --config=.php-cs-fixer.dist.php --allow-risky=yes
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
