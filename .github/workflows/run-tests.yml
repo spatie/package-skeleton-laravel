@@ -9,6 +9,10 @@ on:
       - 'composer.json'
       - 'composer.lock'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -27,6 +31,7 @@ jobs:
             testbench: 9.*
           - laravel: 10.*
             testbench: 8.*
+    
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
