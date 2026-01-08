@@ -1,68 +1,116 @@
-# :package_description
+# PayChangu Laravel SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mzati/paychangusdk.svg?style=flat-square)](https://packagist.org/packages/mzati/paychangusdk)
+[![Tests](https://img.shields.io/github/actions/workflow/status/Mzati1/PaychanguLaravelSDK/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/Mzati1/PaychanguLaravelSDK/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/mzati/paychangusdk.svg?style=flat-square)](https://packagist.org/packages/mzati/paychangusdk)
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments and verifying transactions using the PayChangu API.
 
-## Support us
+## Features
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- **Easy Payment Initialization**: Generate checkout URLs with minimal setup.
+- **Transaction Verification**: Verify payment status using transaction references.
+- **Modular Design**: Easily extensible for future API endpoints.
+- **Laravel Friendly**: Includes Facades and Service Providers for seamless integration.
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+composer require mzati/paychangusdk
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
+php artisan vendor:publish --tag="paychangu-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | PayChangu API Private Key
+    |--------------------------------------------------------------------------
+    |
+    | This is the private key used to authenticate with the PayChangu API.
+    |
+    */
+    'private_key' => env('PAYCHANGU_API_PRIVATE_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | PayChangu Payment URL
+    |--------------------------------------------------------------------------
+    |
+    | This is the base URL for the PayChangu payment API.
+    |
+    */
+    'payment_url' => env('PAYCHANGU_PAYMENT_URL'),
 ];
 ```
 
-Optionally, you can publish the views using
+## Configuration
 
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
+Add the following variables to your `.env` file:
+
+```env
+PAYCHANGU_API_PRIVATE_KEY=your_private_key_here
+PAYCHANGU_PAYMENT_URL=https://api.paychangu.com/v1/mobile-money/payments
 ```
 
 ## Usage
 
+### Initialize a Payment
+
+To start a payment process, use the `Paychangu` facade. This will return a checkout URL where you can redirect the user.
+
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use Mzati\Paychangu\Facades\Paychangu;
+
+$response = Paychangu::payments()->initiate([
+    'amount' => 5000,
+    'email' => 'customer@example.com',
+    'first_name' => 'John',
+    'last_name' => 'Doe',
+    'currency' => 'MWK', // Optional, defaults to MWK
+    'return_url' => 'https://yoursite.com/payment/success',
+    'callback_url' => 'https://yoursite.com/payment/callback',
+    'meta' => [
+        'order_id' => '12345',
+        'custom_field' => 'custom_value'
+    ]
+]);
+
+if ($response['success']) {
+    return redirect($response['checkout_url']);
+}
+
+// Handle error
+dd($response['error']);
+```
+
+### Verify a Transaction
+
+To verify a transaction, use the transaction reference (`tx_ref`) returned during initialization or in the callback.
+
+```php
+use Mzati\Paychangu\Facades\Paychangu;
+
+$txRef = 'TXN_1234567890'; // The transaction reference
+$verification = Paychangu::transactions()->verify($txRef);
+
+if ($verification['success']) {
+    // Payment was successful
+    $data = $verification['data'];
+    // Update your database...
+} else {
+    // Payment failed or is pending
+    $error = $verification['error'];
+}
 ```
 
 ## Testing
@@ -85,7 +133,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Mzati Tembo](https://github.com/Mzati1)
 - [All Contributors](../../contributors)
 
 ## License

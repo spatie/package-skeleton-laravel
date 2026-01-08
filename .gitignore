@@ -30,3 +30,6 @@ phpstan.neon
 testbench.yaml
 /docs
 /coverage
+
+# Internal Documentation
+DEVELOPMENT.md

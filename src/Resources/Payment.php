@@ -1,0 +1,66 @@
+<?php
+
+namespace Mzati\Paychangu\Resources;
+
+use Illuminate\Support\Str;
+
+class Payment extends BaseResource
+{
+    /**
+     * Initialize a new payment.
+     * 
+     * @param array $data
+     * @return array
+     */
+    public function initiate(array $data): array
+    {
+        $txRef = 'TXN_' . now()->timestamp . '_' . mt_rand(1000, 9999);
+        $uuid = Str::uuid()->toString();
+
+        $metaData = $data['meta'] ?? [];
+        if (isset($data['agenda'])) {
+            $metaData['agenda'] = $data['agenda'];
+        }
+        if (isset($data['customization'])) {
+            $metaData['customization'] = $data['customization'];
+        }
+
+        $payload = [
+            'currency' => $data['currency'] ?? 'MWK',
+            'uuid' => $uuid,
+            'tx_ref' => $txRef,
+            'amount' => $data['amount'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'return_url' => $data['return_url'] ?? null,
+            'callback_url' => $data['callback_url'] ?? null,
+            'meta' => $metaData,
+        ];
+
+        // Filter out null values
+        $payload = array_filter($payload, fn($value) => !is_null($value));
+
+        // The base URL in config is PAYCHANGU_PAYMENT_URL
+        // The endpoint for initialization is the root of that URL (based on previous context)
+        // So we send a POST to ''
+        $response = $this->client->post('', $payload);
+
+        if (isset($response['status']) && $response['status'] === 'success') {
+            return [
+                'success' => true,
+                'checkout_url' => $response['data']['checkout_url'] ?? null,
+                'tx_ref' => $response['data']['data']['tx_ref'] ?? $txRef,
+                'amount' => $response['data']['data']['amount'] ?? $data['amount'],
+                'currency' => $response['data']['data']['currency'] ?? ($data['currency'] ?? 'MWK'),
+                'original_response' => $response
+            ];
+        }
+
+        return [
+            'success' => false,
+            'error' => $response['message'] ?? 'Payment initialization failed',
+            'original_response' => $response
+        ];
+    }
+}

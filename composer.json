@@ -1,24 +1,33 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "mzati/paychangusdk",
+    "description": "Laravel SDK for integrating PayChangu payment services into PHP applications",
     "keywords": [
-        ":vendor_name",
+        "mzati",
         "laravel",
-        ":package_slug"
+        "paychangu",
+        "fintech",
+        "payment_gateway",
+        "sdk",
+        "payments",
+        "malawi",
+        "paychangusdk",
+        "api",
+        "africa"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/Mzati1/PaychanguLaravelSDK",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Mzati Tembo",
+            "email": "mzatitembo01@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.4",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.0||^12.0"
+        "guzzlehttp/guzzle": "^7.10",
+        "illuminate/contracts": "^11.0||^12.0",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -35,14 +44,23 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Mzati\\Paychangu\\": "src/",
+            "Mzati\\Paychangu\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Mzati\\Paychangu\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mzati\\Paychangu\\PaychanguServiceProvider"
+            ],
+            "aliases": {
+                "Paychangu": "Mzati\\Paychangu\\Facades\\Paychangu"
+            }
         }
     },
     "scripts": {
@@ -58,16 +76,6 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
-            }
         }
     },
     "minimum-stability": "dev",
