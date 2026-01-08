@@ -51,22 +51,22 @@
     },
     "autoload": {
         "psr-4": {
-            "Mzati\\Paychangu\\": "src/",
-            "Mzati\\Paychangu\\Database\\Factories\\": "database/factories/"
+            "": "src/",
+            "Paychangu\\Laravel\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mzati\\Paychangu\\Tests\\": "tests/"
+            "Paychangu\\Laravel\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Mzati\\Paychangu\\PaychanguServiceProvider"
+                "Paychangu\\Laravel\\PaychanguServiceProvider"
             ],
             "aliases": {
-                "Paychangu": "Mzati\\Paychangu\\Facades\\Paychangu"
+                "Paychangu": "Paychangu\\Laravel\\Facades\\Paychangu"
             }
         }
     },
