@@ -28,148 +28,151 @@ Publish the config file:
 php artisan vendor:publish --tag="paychangu-config"
 ```
 
-## Configuration
+This is the contents of the published config file:
 
-This package supports both **Test** and **Live** environments. You can switch between them using an environment variable.
+```php
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | PayChangu API Private Key
+    |--------------------------------------------------------------------------
+    |
+    | This is the private key used to authenticate with the PayChangu API.
+    |
+    */
+    'private_key' => env('PAYCHANGU_API_PRIVATE_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | PayChangu API Base URL
+    |--------------------------------------------------------------------------
+    |
+    | This is the root URL for the PayChangu API.
+    | Specific endpoints (checkout, mobile-money) will be constructed from this.
+    |
+    */
+    'api_base_url' => env('PAYCHANGU_API_BASE_URL', 'https://api.paychangu.com/'),
+];
+```
+
+## Configuration
 
 Add the following variables to your `.env` file:
 
 ```env
-# Environment: 'test' or 'live'
-PAYCHANGU_ENVIRONMENT=test
-
-# API Keys
-PAYCHANGU_API_TEST_KEY=your_test_public_key
-PAYCHANGU_API_LIVE_KEY=your_live_public_key
-
-# Base URL (Optional, defaults to https://api.paychangu.com/)
+PAYCHANGU_API_PRIVATE_KEY=your_private_key_here
+# Optional: Override Base URL (Defaults to https://api.paychangu.com/)
 PAYCHANGU_API_BASE_URL=https://api.paychangu.com/
 ```
-
-When `PAYCHANGU_ENVIRONMENT` is set to `test`, the SDK will automatically use `PAYCHANGU_API_TEST_KEY`. When set to `live`, it will use `PAYCHANGU_API_LIVE_KEY`.
 
 ## Usage
 
 ### 1. Hosted Checkout (Payment Link)
 
-Use this method to generate a payment link that redirects users to a secure PayChangu hosted page to complete their payment.
+Use this to redirect users to a PayChangu hosted page.
 
 ```php
 use Mzati\Paychangu\Facades\Paychangu;
 
-try {
-    $response = Paychangu::create_checkout_link([
-        'amount' => 5000,
-        'email' => 'customer@example.com',
-        'first_name' => 'John',
-        'last_name' => 'Doe',
-        'currency' => 'MWK',
-        'return_url' => 'https://yoursite.com/success',
-        'callback_url' => 'https://yoursite.com/callback',
-        'meta' => [
-            'order_id' => 'ORD-123',
-            'custom_field' => 'value'
-        ]
-    ]);
+$response = Paychangu::create_checkout_link([
+    'amount' => 5000,
+    'email' => 'customer@example.com',
+    'first_name' => 'John',
+    'last_name' => 'Doe',
+    'currency' => 'MWK',
+    'return_url' => 'https://yoursite.com/success',
+    'callback_url' => 'https://yoursite.com/callback',
+    'meta' => ['order_id' => '123']
+]);
 
-    if ($response['status'] === 'success') {
-        // Redirect the user to the checkout page
-        return redirect($response['checkout_url']);
-    }
-
-    // Handle error
-    return back()->with('error', 'Unable to initiate payment.');
-
-} catch (\Exception $e) {
-    // Handle exception
-    return back()->with('error', $e->getMessage());
+if ($response['success']) {
+    return redirect($response['checkout_url']);
 }
 ```
 
 **Verify Checkout Transaction:**
 
-After the user returns from the payment page (to your `return_url`), you should verify the transaction using the transaction reference (often passed as `tx_ref` or similar in the query string, or you can track it via your `order_id`).
-
 ```php
 $verification = Paychangu::verify_checkout('TXN_1234567890');
-
-if ($verification['status'] === 'success' && $verification['data']['status'] === 'successful') {
-    // Payment was successful
-}
 ```
 
 ---
 
 ### 2. Direct Mobile Money (Custom UI)
 
-Use this method if you want to build your own UI and charge a user's mobile wallet directly.
+Use this to charge a user's mobile wallet directly from your application.
 
-**Step 1: Get Supported Operators**
-
-Fetch the list of available mobile money operators (e.g., Airtel Money, TNM Mpamba) to display to the user.
+**Step 1: Get Operators**
+Fetch available mobile money operators (e.g., Airtel, TNM).
 
 ```php
 $operators = Paychangu::mobile_money_operators();
-
-// Example Output:
-// [
-//   ['ref_id' => 'airtel_money', 'name' => 'Airtel Money'],
-//   ['ref_id' => 'tnm_mpamba', 'name' => 'TNM Mpamba']
-// ]
+// Returns list of operators with ref_id
 ```
 
-**Step 2: Initiate Charge**
-
-Once the user selects an operator and enters their phone number, initiate the charge.
+**Step 2: Charge Wallet**
 
 ```php
-$chargeData = [
-    'mobile_money_operator_ref_id' => 'airtel_money', // From Step 1
+$response = Paychangu::create_mobile_money_payment([
+    'mobile_money_operator_ref_id' => 'operator_ref_id_from_step_1',
     'mobile' => '0991234567',
     'amount' => 5000,
-    'charge_id' => 'unique_charge_id_' . time(), // You must generate a unique ID
-    'email' => 'customer@example.com', // Optional
-    'first_name' => 'John', // Optional
-    'last_name' => 'Doe', // Optional
-];
+    'charge_id' => 'unique_charge_id_generated_by_you',
+    'email' => 'customer@example.com', // optional
+    'first_name' => 'John', // optional
+    'last_name' => 'Doe', // optional
+]);
 
-$response = Paychangu::create_mobile_money_payment($chargeData);
-
-if ($response['status'] === 'success') {
-    // The user will receive a USSD prompt on their phone to authorize the payment.
-    // You should now poll for status or wait for a webhook.
+if ($response['success']) {
+    // Payment initiated, user will get a prompt
 }
 ```
 
-**Step 3: Verify Payment / Check Status**
+## Structure
 
-You can check the status of the mobile money payment using the `charge_id` you generated.
+The package is structured to be modular and easy to understand:
 
-```php
-$verification = Paychangu::verify_mobile_money_payment('unique_charge_id_123456');
+- **Facades**: `Paychangu` facade provides a static interface to the main class.
+- **Resources**: Contains the core logic for different API features (Checkout, MobileMoney, Verification).
+- **Http**: Handles HTTP requests to the PayChangu API using Guzzle.
+- **Tests**: Comprehensive test suite using Pest.
 
-if ($verification['status'] === 'success' && $verification['data']['status'] === 'successful') {
-    // Payment complete
-}
+```
+src/
+├── Facades/
+│   └── Paychangu.php
+├── Http/
+│   └── Client.php
+├── Resources/
+│   ├── BaseResource.php
+│   ├── Checkout.php
+│   ├── MobileMoney/
+│   │   └── MobileMoney.php
+│   └── Verification.php
+├── Paychangu.php
+└── PaychanguServiceProvider.php
 ```
 
-**Step 4: Get Payment Details**
+## Development
 
-Retrieve full details of a specific mobile money transaction.
+We use [Pest](https://pestphp.com/) for testing and [PHPStan](https://phpstan.org/) for static analysis.
 
-```php
-$details = Paychangu::get_mobile_money_payment_details('unique_charge_id_123456');
-```
-
-## Testing
-
+Run tests:
 ```bash
 composer test
 ```
 
-## Internal Structure
+Run static analysis:
+```bash
+composer analyse
+```
 
-For a detailed explanation of how the files work and the internal workflow, please see [STRUCTURE.md](STRUCTURE.md).
+Format code:
+```bash
+composer format
+```
+
+For more details, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Changelog
 
@@ -181,12 +184,12 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+If you discover a security vulnerability within this package, please send an e-mail to Mzati Tembo via [mzatitembo01@gmail.com](mailto:mzatitembo01@gmail.com).
 
 ## Credits
 
 - [Mzati Tembo](https://github.com/Mzati1)
-- [All Contributors](../../contributors)
+- [All Contributors](https://github.com/Mzati1/PaychanguLaravelSDK/graphs/contributors)
 
 ## License
 

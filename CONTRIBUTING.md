@@ -1,42 +1,61 @@
-# Contributing to PayChangu Laravel SDK
+# Contributing
 
-Thank you for considering contributing to the PayChangu Laravel SDK!
+Thank you for considering contributing to the PayChangu Laravel SDK! The contribution guide can be found in the [PayChangu Laravel SDK documentation](https://github.com/Mzati1/PaychanguLaravelSDK).
 
 ## Development Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Mzati1/PaychanguLaravelSDK.git
-   cd PaychanguLaravelSDK
-   ```
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/Mzati1/PaychanguLaravelSDK.git
+    cd PaychanguLaravelSDK
+    ```
 
-2. **Install Dependencies**
-   ```bash
-   composer install
-   ```
+2.  Install dependencies:
+    ```bash
+    composer install
+    ```
 
-3. **Run Tests**
-   We use Pest for testing.
-   ```bash
-   composer test
-   ```
+3.  Setup pre-commit hooks (optional but recommended):
+    ```bash
+    composer run prepare
+    ```
 
-## Coding Standards
+## Testing
 
-- Follow PSR-12 coding standards.
-- Ensure all new features include relevant tests.
-- Run static analysis before submitting a PR:
-  ```bash
-  composer analyse
-  ```
+We use [Pest](https://pestphp.com/) for testing.
 
-## Pull Requests
+To run the test suite:
 
-1. Fork the repository.
-2. Create a new branch for your feature or fix.
-3. Commit your changes with clear messages.
-4. Push to your fork and submit a Pull Request.
+```bash
+composer test
+```
 
-## Security
+To run tests with coverage:
 
-If you discover any security related issues, please email instead of using the issue tracker.
+```bash
+composer test-coverage
+```
+
+## Static Analysis
+
+We use [PHPStan](https://phpstan.org/) for static analysis.
+
+To run static analysis:
+
+```bash
+composer analyse
+```
+
+## Code Formatting
+
+We use [Laravel Pint](https://laravel.com/docs/pint) to fix code style issues.
+
+To format the code:
+
+```bash
+composer format
+```
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within this package, please send an e-mail to Mzati Tembo via [mzatitembo01@gmail.com](mailto:mzatitembo01@gmail.com). All security vulnerabilities will be promptly addressed.
