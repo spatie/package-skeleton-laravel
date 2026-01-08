@@ -328,6 +328,10 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 - [Mzati](https://github.com/Mzati1)
 
+## Support
+
+For support, email developer@paychangu.com or visit our [support page](https://devs.paychangu.com/support).
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
