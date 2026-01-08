@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Http;
+namespace Paychangu\Laravel\Http;
 
 use Exception;
 use GuzzleHttp\Client as GuzzleClient;

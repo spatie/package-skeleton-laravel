@@ -1,8 +1,8 @@
 <?php
 
-namespace Mzati\Paychangu\Resources;
+namespace Paychangu\Laravel\Resources;
 
-use Mzati\Paychangu\Http\Client;
+use Paychangu\Laravel\Http\Client;
 
 abstract class BaseResource
 {

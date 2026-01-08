@@ -1,9 +1,9 @@
 <?php
 
-namespace Mzati\Paychangu\Tests;
+namespace Paychangu\Laravel\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Mzati\Paychangu\PaychanguServiceProvider;
+use Paychangu\Laravel\PaychanguServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

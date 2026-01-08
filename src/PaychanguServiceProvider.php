@@ -1,6 +1,6 @@
 <?php
 
-namespace Mzati\Paychangu;
+namespace Paychangu\Laravel;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

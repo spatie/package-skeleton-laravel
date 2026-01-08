@@ -1,8 +1,8 @@
 <?php
 
-use Mzati\Paychangu\Paychangu;
-use Mzati\Paychangu\Resources\Checkout;
-use Mzati\Paychangu\Resources\MobileMoney\MobileMoney;
+use Paychangu\Laravel\Paychangu;
+use Paychangu\Laravel\Resources\Checkout;
+use Paychangu\Laravel\Resources\MobileMoney\MobileMoney;
 use Illuminate\Support\Facades\Config;
 
 it('constructs checkout url correctly from base url', function () {

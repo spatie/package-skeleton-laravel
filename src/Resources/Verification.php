@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources;
+namespace Paychangu\Laravel\Resources;
 
 use InvalidArgumentException;
 

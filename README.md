@@ -74,7 +74,7 @@ PAYCHANGU_API_BASE_URL=https://api.paychangu.com/
 Use this to redirect users to a PayChangu hosted page.
 
 ```php
-use Mzati\Paychangu\Facades\Paychangu;
+use Paychangu\Laravel\Facades\Paychangu;
 
 $response = Paychangu::create_checkout_link([
     'amount' => 5000,

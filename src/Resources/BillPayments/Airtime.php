@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources\BillPayments;
+namespace Paychangu\Laravel\Resources\BillPayments;
 
 use InvalidArgumentException;
-use Mzati\Paychangu\Resources\BaseResource;
+use Paychangu\Laravel\Resources\BaseResource;
 
 class Airtime extends BaseResource
 {

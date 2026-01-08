@@ -1,6 +1,6 @@
 <?php
 
-use Mzati\Paychangu\Paychangu;
+use Paychangu\Laravel\Paychangu;
 use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {

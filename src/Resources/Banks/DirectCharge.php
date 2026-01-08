@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources\Banks;
+namespace Paychangu\Laravel\Resources\Banks;
 
 use InvalidArgumentException;
-use Mzati\Paychangu\Resources\BaseResource;
+use Paychangu\Laravel\Resources\BaseResource;
 
 class DirectCharge extends BaseResource
 {

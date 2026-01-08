@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources\Payouts;
+namespace Paychangu\Laravel\Resources\Payouts;
 
 use InvalidArgumentException;
-use Mzati\Paychangu\Resources\BaseResource;
+use Paychangu\Laravel\Resources\BaseResource;
 
 class MobileMoneyPayout extends BaseResource
 {

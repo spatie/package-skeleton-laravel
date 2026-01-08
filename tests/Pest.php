@@ -1,5 +1,5 @@
 <?php
 
-use Mzati\Paychangu\Tests\TestCase;
+use Paychangu\Laravel\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

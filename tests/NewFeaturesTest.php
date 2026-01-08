@@ -1,12 +1,12 @@
 <?php
 
-use Mzati\Paychangu\Paychangu;
-use Mzati\Paychangu\Resources\Banks\Card;
-use Mzati\Paychangu\Resources\Banks\DirectCharge;
-use Mzati\Paychangu\Resources\BillPayments\Airtime;
-use Mzati\Paychangu\Resources\BillPayments\Bill;
-use Mzati\Paychangu\Resources\Payouts\BankPayout;
-use Mzati\Paychangu\Resources\Payouts\MobileMoneyPayout;
+use Paychangu\Laravel\Paychangu;
+use Paychangu\Laravel\Resources\Banks\Card;
+use Paychangu\Laravel\Resources\Banks\DirectCharge;
+use Paychangu\Laravel\Resources\BillPayments\Airtime;
+use Paychangu\Laravel\Resources\BillPayments\Bill;
+use Paychangu\Laravel\Resources\Payouts\BankPayout;
+use Paychangu\Laravel\Resources\Payouts\MobileMoneyPayout;
 
 it('can access direct charge resource', function () {
     $paychangu = new Paychangu();

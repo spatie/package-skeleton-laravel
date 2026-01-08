@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu;
+namespace Paychangu\Laravel;
 
 use Illuminate\Support\Str;
-use Mzati\Paychangu\Http\Client;
-use Mzati\Paychangu\Resources\Banks\Card;
-use Mzati\Paychangu\Resources\Banks\DirectCharge;
-use Mzati\Paychangu\Resources\BillPayments\Airtime;
-use Mzati\Paychangu\Resources\BillPayments\Bill;
-use Mzati\Paychangu\Resources\Checkout;
-use Mzati\Paychangu\Resources\MobileMoney\MobileMoney;
-use Mzati\Paychangu\Resources\Payouts\BankPayout;
-use Mzati\Paychangu\Resources\Payouts\MobileMoneyPayout;
-use Mzati\Paychangu\Resources\Verification;
+use Paychangu\Laravel\Http\Client;
+use Paychangu\Laravel\Resources\Banks\Card;
+use Paychangu\Laravel\Resources\Banks\DirectCharge;
+use Paychangu\Laravel\Resources\BillPayments\Airtime;
+use Paychangu\Laravel\Resources\BillPayments\Bill;
+use Paychangu\Laravel\Resources\Checkout;
+use Paychangu\Laravel\Resources\MobileMoney\MobileMoney;
+use Paychangu\Laravel\Resources\Payouts\BankPayout;
+use Paychangu\Laravel\Resources\Payouts\MobileMoneyPayout;
+use Paychangu\Laravel\Resources\Verification;
 
 class Paychangu
 {

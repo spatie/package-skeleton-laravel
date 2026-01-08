@@ -1,12 +1,12 @@
 <?php
 
-use Mzati\Paychangu\Facades\Paychangu;
-use Mzati\Paychangu\Resources\Checkout;
-use Mzati\Paychangu\Resources\MobileMoney\MobileMoney;
-use Mzati\Paychangu\Resources\Verification;
+use Paychangu\Laravel\Facades\Paychangu;
+use Paychangu\Laravel\Resources\Checkout;
+use Paychangu\Laravel\Resources\MobileMoney\MobileMoney;
+use Paychangu\Laravel\Resources\Verification;
 
 it('can resolve paychangu facade', function () {
-    expect(Paychangu::getFacadeRoot())->toBeInstanceOf(\Mzati\Paychangu\Paychangu::class);
+    expect(Paychangu::getFacadeRoot())->toBeInstanceOf(\Paychangu\Laravel\Paychangu::class);
 });
 
 it('can access checkout resource', function () {

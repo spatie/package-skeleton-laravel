@@ -1,11 +1,11 @@
 <?php
 
-namespace Mzati\Paychangu\Facades;
+namespace Paychangu\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Mzati\Paychangu\Paychangu
+ * @see \Paychangu\Laravel\Paychangu
  */
 class Paychangu extends Facade
 {
