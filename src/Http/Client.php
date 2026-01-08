@@ -19,10 +19,10 @@ class Client
     public function __construct(string $secretKey, string $baseUrl)
     {
         $this->secretKey = $secretKey;
-        $this->baseUrl = rtrim($baseUrl, '/');
+        $this->baseUrl = $baseUrl;
 
         $this->client = new GuzzleClient([
-            'base_uri' => $this->baseUrl.'/',
+            'base_uri' => $this->baseUrl,
             'headers' => [
                 'Authorization' => 'Bearer '.$this->secretKey,
                 'Accept' => 'application/json',
@@ -78,7 +78,7 @@ class Client
             return json_decode($content, true) ?? [];
         } catch (GuzzleException $e) {
             // If Guzzle throws an exception (e.g. 4xx/5xx), try to decode the response body for API errors
-            if ($e->hasResponse()) {
+            if ($e instanceof \GuzzleHttp\Exception\RequestException && $e->hasResponse()) {
                 $responseBody = $e->getResponse()->getBody()->getContents();
                 $errorData = json_decode($responseBody, true);
 
