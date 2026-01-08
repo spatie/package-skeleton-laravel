@@ -19,6 +19,7 @@ use Paychangu\Laravel\Resources\Verification;
 class Paychangu
 {
     protected string $privateKey;
+
     protected string $apiBaseUrl;
 
     public function __construct()
@@ -347,56 +348,63 @@ class Paychangu
     public function checkout(): Checkout
     {
         // Constructed as: https://api.paychangu.com/payment
-        $url = $this->apiBaseUrl . 'payment';
+        $url = $this->apiBaseUrl.'payment';
         $client = new Client($this->privateKey, $url);
+
         return new Checkout($client);
     }
 
     public function mobile_money(): MobileMoney
     {
         // Constructed as: https://api.paychangu.com/mobile-money/
-        $url = $this->apiBaseUrl . 'mobile-money/';
+        $url = $this->apiBaseUrl.'mobile-money/';
         $client = new Client($this->privateKey, $url);
+
         return new MobileMoney($client);
     }
 
     public function direct_charge(): DirectCharge
     {
         // Constructed as: https://api.paychangu.com/direct-charge/
-        $url = $this->apiBaseUrl . 'direct-charge/';
+        $url = $this->apiBaseUrl.'direct-charge/';
         $client = new Client($this->privateKey, $url);
+
         return new DirectCharge($client);
     }
 
     public function card(): Card
     {
         // Constructed as: https://api.paychangu.com/charge-card/
-        $url = $this->apiBaseUrl . 'charge-card/';
+        $url = $this->apiBaseUrl.'charge-card/';
         $client = new Client($this->privateKey, $url);
+
         return new Card($client);
     }
 
     public function mobile_money_payout(): MobileMoneyPayout
     {
         // Constructed as: https://api.paychangu.com/mobile-money/
-        $url = $this->apiBaseUrl . 'mobile-money/';
+        $url = $this->apiBaseUrl.'mobile-money/';
         $client = new Client($this->privateKey, $url);
+
         return new MobileMoneyPayout($client);
     }
 
     public function bank_payout(): BankPayout
     {
         // Constructed as: https://api.paychangu.com/direct-charge/
-        $url = $this->apiBaseUrl . 'direct-charge/';
+        $url = $this->apiBaseUrl.'direct-charge/';
         $client = new Client($this->privateKey, $url);
+
         return new BankPayout($client);
     }
 
     public function bill(): Bill
     {
         // Constructed as: https://api.paychangu.com/bills/
-        $url = $this->apiBaseUrl . 'bills/';
+        $url = $this->apiBaseUrl.'bills/';
         $client = new Client($this->privateKey, $url);
+
         return new Bill($client);
     }
 
@@ -404,16 +412,18 @@ class Paychangu
     {
         // Constructed as: https://api.paychangu.com/bills/
         // Airtime endpoints are also under /bills/
-        $url = $this->apiBaseUrl . 'bills/';
+        $url = $this->apiBaseUrl.'bills/';
         $client = new Client($this->privateKey, $url);
+
         return new Airtime($client);
     }
 
     public function verification(): Verification
     {
         // Verification typically uses the payment/checkout base
-        $url = $this->apiBaseUrl . 'payment';
+        $url = $this->apiBaseUrl.'payment';
         $client = new Client($this->privateKey, $url);
+
         return new Verification($client);
     }
 }

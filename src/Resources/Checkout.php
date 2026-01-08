@@ -14,6 +14,7 @@ class Checkout extends BaseResource
      *
      * @param  array  $data  The checkout data (amount, email, etc.).
      * @return array The API response containing the checkout URL.
+     *
      * @throws InvalidArgumentException
      */
     public function create(array $data): array

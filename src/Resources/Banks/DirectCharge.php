@@ -14,6 +14,7 @@ class DirectCharge extends BaseResource
      *
      * @param  array  $data  The charge details.
      * @return array The API response.
+     *
      * @throws InvalidArgumentException
      */
     public function create(array $data): array
@@ -46,6 +47,7 @@ class DirectCharge extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The transaction details.
+     *
      * @throws InvalidArgumentException
      */
     public function details(string $chargeId): array

@@ -37,6 +37,7 @@ class Bill extends BaseResource
      *
      * @param  string  $billerId  The biller ID.
      * @return array The biller details.
+     *
      * @throws InvalidArgumentException
      */
     public function getBillerDetails(string $billerId): array
@@ -66,6 +67,7 @@ class Bill extends BaseResource
      *
      * @param  array  $data  The bill validation data.
      * @return array The validation result.
+     *
      * @throws InvalidArgumentException
      */
     public function validate(array $data): array
@@ -98,6 +100,7 @@ class Bill extends BaseResource
      *
      * @param  array  $data  The payment details.
      * @return array The API response.
+     *
      * @throws InvalidArgumentException
      */
     public function pay(array $data): array
@@ -130,6 +133,7 @@ class Bill extends BaseResource
      *
      * @param  string  $reference  The transaction reference.
      * @return array The transaction details.
+     *
      * @throws InvalidArgumentException
      */
     public function getTransactionDetails(string $reference): array

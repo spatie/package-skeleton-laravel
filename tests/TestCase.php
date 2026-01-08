@@ -3,8 +3,8 @@
 namespace Paychangu\Laravel\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Paychangu\Laravel\PaychanguServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Paychangu\Laravel\PaychanguServiceProvider;
 
 class TestCase extends Orchestra
 {

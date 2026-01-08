@@ -36,6 +36,7 @@ class MobileMoney extends BaseResource
      *
      * @param  array  $data  The charge details.
      * @return array The API response.
+     *
      * @throws InvalidArgumentException
      */
     public function charge(array $data): array
@@ -68,6 +69,7 @@ class MobileMoney extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The verification result.
+     *
      * @throws InvalidArgumentException
      */
     public function verify(string $chargeId): array
@@ -97,6 +99,7 @@ class MobileMoney extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The payment details.
+     *
      * @throws InvalidArgumentException
      */
     public function details(string $chargeId): array

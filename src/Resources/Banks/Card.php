@@ -14,13 +14,14 @@ class Card extends BaseResource
      *
      * @param  array  $data  The card and charge details.
      * @return array The API response.
+     *
      * @throws InvalidArgumentException
      */
     public function create(array $data): array
     {
         $requiredKeys = [
-            'card_number', 'expiry', 'cvv', 'cardholder_name', 
-            'amount', 'currency', 'charge_id', 'redirect_url'
+            'card_number', 'expiry', 'cvv', 'cardholder_name',
+            'amount', 'currency', 'charge_id', 'redirect_url',
         ];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
@@ -49,6 +50,7 @@ class Card extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The verification result.
+     *
      * @throws InvalidArgumentException
      */
     public function verify(string $chargeId): array
@@ -78,6 +80,7 @@ class Card extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The refund result.
+     *
      * @throws InvalidArgumentException
      */
     public function refund(string $chargeId): array

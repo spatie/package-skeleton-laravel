@@ -38,6 +38,7 @@ class BankPayout extends BaseResource
      *
      * @param  array  $data  The payout details.
      * @return array The API response.
+     *
      * @throws InvalidArgumentException
      */
     public function create(array $data): array
@@ -70,6 +71,7 @@ class BankPayout extends BaseResource
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The payout details.
+     *
      * @throws InvalidArgumentException
      */
     public function details(string $chargeId): array
