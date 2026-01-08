@@ -7,6 +7,8 @@
 
 A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments (Hosted Checkout, Mobile Money, Card, Bank) and managing payouts, bill payments, and airtime.
 
+> **📚 API Reference**: For complete API documentation, visit [PayChangu Developer Docs](https://developer.paychangu.com/docs/welcome)
+
 ## Features
 
 - **Hosted Checkout**: Generate checkout URLs for easy payments.

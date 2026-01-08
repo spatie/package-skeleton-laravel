@@ -30,6 +30,6 @@ class TestCase extends Orchestra
 
         // Mock config
         config()->set('paychangu.private_key', 'test_secret_key');
-        config()->set('paychangu.payment_url', 'https://api.paychangu.com');
+       config()->set('paychangu.api_base_url', 'https://api.paychangu.com/');
     }
 }

@@ -51,7 +51,7 @@
     },
     "autoload": {
         "psr-4": {
-            "": "src/",
+            "Paychangu\\Laravel\\": "src/",
             "Paychangu\\Laravel\\Database\\Factories\\": "database/factories/"
         }
     },
