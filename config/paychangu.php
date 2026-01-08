@@ -13,13 +13,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | PayChangu Payment URL
+    | PayChangu API Base URL
     |--------------------------------------------------------------------------
     |
-    | This is the base URL for the PayChangu payment API.
-    | Endpoints will be constructed by appending to this URL.
-    | e.g. /verify
+    | This is the root URL for the PayChangu API.
+    | Specific endpoints (checkout, mobile-money) will be constructed from this.
     |
     */
-    'payment_url' => env('PAYCHANGU_PAYMENT_URL'),
+    'api_base_url' => env('PAYCHANGU_API_BASE_URL', 'https://api.paychangu.com/'),
 ];

@@ -14,8 +14,8 @@ class MobileMoney extends BaseResource
      */
     public function getOperators(): array
     {
-        // Fetch operators from the mobile-money endpoint (relative to payments base URL)
-        $response = $this->client->get('../');
+        // Fetch operators from the mobile-money endpoint (base URL is /mobile-money/)
+        $response = $this->client->get('');
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -44,7 +44,8 @@ class MobileMoney extends BaseResource
             }
         }
 
-        $response = $this->client->post('initialize', $data);
+        // Endpoint: /mobile-money/payments/initialize
+        $response = $this->client->post('payments/initialize', $data);
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -69,7 +70,8 @@ class MobileMoney extends BaseResource
             throw new InvalidArgumentException('Charge ID cannot be empty.');
         }
 
-        $response = $this->client->get("{$chargeId}/verify");
+        // Endpoint: /mobile-money/payments/{id}/verify
+        $response = $this->client->get("payments/{$chargeId}/verify");
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -94,7 +96,8 @@ class MobileMoney extends BaseResource
             throw new InvalidArgumentException('Charge ID cannot be empty.');
         }
 
-        $response = $this->client->get("{$chargeId}/details");
+        // Endpoint: /mobile-money/payments/{id}/details
+        $response = $this->client->get("payments/{$chargeId}/details");
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [

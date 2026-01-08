@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mzati\Paychangu;
 
+use Illuminate\Support\Str;
 use Mzati\Paychangu\Http\Client;
 use Mzati\Paychangu\Resources\Checkout;
 use Mzati\Paychangu\Resources\MobileMoney\MobileMoney;
@@ -11,14 +12,18 @@ use Mzati\Paychangu\Resources\Verification;
 
 class Paychangu
 {
-    protected Client $client;
+    protected string $privateKey;
+    protected string $apiBaseUrl;
 
     public function __construct()
     {
-        $privateKey = config('paychangu.private_key') ?? '';
-        $paymentUrl = config('paychangu.payment_url') ?? '';
+        $this->privateKey = config('paychangu.private_key') ?? '';
+        $this->apiBaseUrl = config('paychangu.api_base_url') ?? 'https://api.paychangu.com/';
 
-        $this->client = new Client($privateKey, $paymentUrl);
+        // Ensure trailing slash
+        if (! Str::endsWith($this->apiBaseUrl, '/')) {
+            $this->apiBaseUrl .= '/';
+        }
     }
 
     /*
@@ -89,16 +94,25 @@ class Paychangu
 
     public function checkout(): Checkout
     {
-        return new Checkout($this->client);
+        // Constructed as: https://api.paychangu.com/payment
+        $url = $this->apiBaseUrl . 'payment';
+        $client = new Client($this->privateKey, $url);
+        return new Checkout($client);
     }
 
     public function mobile_money(): MobileMoney
     {
-        return new MobileMoney($this->client);
+        // Constructed as: https://api.paychangu.com/mobile-money/
+        $url = $this->apiBaseUrl . 'mobile-money/';
+        $client = new Client($this->privateKey, $url);
+        return new MobileMoney($client);
     }
 
     public function verification(): Verification
     {
-        return new Verification($this->client);
+        // Verification typically uses the payment/checkout base
+        $url = $this->apiBaseUrl . 'payment';
+        $client = new Client($this->privateKey, $url);
+        return new Verification($client);
     }
 }
