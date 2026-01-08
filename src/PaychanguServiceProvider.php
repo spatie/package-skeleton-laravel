@@ -22,7 +22,7 @@ class PaychanguServiceProvider extends PackageServiceProvider
     public function packageRegistered()
     {
         $this->app->singleton('paychangu', function ($app) {
-            return new Paychangu();
+            return new Paychangu;
         });
     }
 }

@@ -3,8 +3,8 @@
 namespace Mzati\Paychangu\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Mzati\Paychangu\PaychanguServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
@@ -27,7 +27,7 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
-        
+
         // Mock config
         config()->set('paychangu.private_key', 'test_secret_key');
         config()->set('paychangu.payment_url', 'https://api.paychangu.com');

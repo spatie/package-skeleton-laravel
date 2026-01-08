@@ -12,8 +12,6 @@ class Checkout extends BaseResource
     /**
      * Initialize a new checkout payment (Hosted Page).
      *
-     * @param array $data
-     * @return array
      * @throws InvalidArgumentException
      */
     public function create(array $data): array
@@ -25,7 +23,7 @@ class Checkout extends BaseResource
             }
         }
 
-        $txRef = 'TXN_' . now()->timestamp . '_' . mt_rand(1000, 9999);
+        $txRef = 'TXN_'.now()->timestamp.'_'.mt_rand(1000, 9999);
         $uuid = Str::uuid()->toString();
 
         $metaData = $data['meta'] ?? [];
@@ -50,7 +48,7 @@ class Checkout extends BaseResource
         ];
 
         // Filter out null values
-        $payload = array_filter($payload, fn($value) => !is_null($value));
+        $payload = array_filter($payload, fn ($value) => ! is_null($value));
 
         $response = $this->client->post('', $payload);
 
@@ -61,14 +59,14 @@ class Checkout extends BaseResource
                 'tx_ref' => $response['data']['data']['tx_ref'] ?? $txRef,
                 'amount' => $response['data']['data']['amount'] ?? $data['amount'],
                 'currency' => $response['data']['data']['currency'] ?? ($data['currency'] ?? 'MWK'),
-                'original_response' => $response
+                'original_response' => $response,
             ];
         }
 
         return [
             'success' => false,
             'error' => $response['message'] ?? 'Payment initialization failed',
-            'original_response' => $response
+            'original_response' => $response,
         ];
     }
 }

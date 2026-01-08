@@ -11,14 +11,12 @@ class Verification extends BaseResource
     /**
      * Verify a transaction by its reference.
      *
-     * @param string $txRef
-     * @return array
      * @throws InvalidArgumentException
      */
     public function verify(string $txRef): array
     {
         if (empty($txRef)) {
-            throw new InvalidArgumentException("Transaction reference cannot be empty.");
+            throw new InvalidArgumentException('Transaction reference cannot be empty.');
         }
 
         $txRef = strip_tags($txRef);

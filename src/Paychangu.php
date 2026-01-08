@@ -29,9 +29,6 @@ class Paychangu
 
     /**
      * Create a new checkout link (hosted payment page).
-     *
-     * @param array $data
-     * @return array
      */
     public function create_checkout_link(array $data): array
     {
@@ -40,9 +37,6 @@ class Paychangu
 
     /**
      * Verify a hosted checkout transaction.
-     *
-     * @param string $txRef
-     * @return array
      */
     public function verify_checkout(string $txRef): array
     {
@@ -57,8 +51,6 @@ class Paychangu
 
     /**
      * Get all supported mobile money operators.
-     *
-     * @return array
      */
     public function mobile_money_operators(): array
     {
@@ -67,9 +59,6 @@ class Paychangu
 
     /**
      * Charge a mobile money account directly.
-     *
-     * @param array $data
-     * @return array
      */
     public function create_mobile_money_payment(array $data): array
     {
@@ -78,9 +67,6 @@ class Paychangu
 
     /**
      * Verify a mobile money payment.
-     *
-     * @param string $chargeId
-     * @return array
      */
     public function verify_mobile_money_payment(string $chargeId): array
     {
@@ -89,9 +75,6 @@ class Paychangu
 
     /**
      * Get details of a mobile money payment.
-     *
-     * @param string $chargeId
-     * @return array
      */
     public function get_mobile_money_payment_details(string $chargeId): array
     {
