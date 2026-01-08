@@ -83,7 +83,12 @@ class Client
                 $errorData = json_decode($responseBody, true);
 
                 $message = $errorData['message'] ?? $e->getMessage();
-                throw new Exception("PayChangu API Error: {$message}", $e->getCode(), $e);
+
+                if (is_array($message)) {
+                    $message = json_encode($message);
+                }
+
+                throw new Exception("PayChangu API Error: {$message}", (int) $e->getCode(), $e);
             }
 
             throw new Exception('PayChangu Connection Error: '.$e->getMessage(), $e->getCode(), $e);
