@@ -1,8 +1,8 @@
 # PayChangu Laravel SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mzati/paychangusdk.svg?style=flat-square)](https://packagist.org/packages/mzati/paychangusdk)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
 [![Tests](https://img.shields.io/github/actions/workflow/status/Mzati1/PaychanguLaravelSDK/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/Mzati1/PaychanguLaravelSDK/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/mzati/paychangusdk.svg?style=flat-square)](https://packagist.org/packages/mzati/paychangusdk)
+[![Total Downloads](https://img.shields.io/packagist/dt/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
 
 A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments (Hosted Checkout, Mobile Money, Card, Bank) and managing payouts, bill payments, and airtime.
 
@@ -22,7 +22,7 @@ A robust and modular Laravel SDK for integrating PayChangu payment services. Thi
 You can install the package via composer:
 
 ```bash
-composer require mzati/paychangusdk
+composer require paychangu/laravel
 ```
 
 Publish the config file:
