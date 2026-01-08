@@ -1,5 +1,5 @@
 {
-    "name": "paychangu/paychangusdk",
+    "name": "mzati/paychangusdk",
     "description": "Laravel SDK for integrating PayChangu payment services into PHP applications",
     "keywords": [
         "paychangu",
