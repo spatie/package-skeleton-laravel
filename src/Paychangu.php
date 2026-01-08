@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mzati\Paychangu;
 
 use Mzati\Paychangu\Http\Client;
-use Mzati\Paychangu\Resources\Payment;
-use Mzati\Paychangu\Resources\Transaction;
+use Mzati\Paychangu\Resources\Checkout;
+use Mzati\Paychangu\Resources\MobileMoney\MobileMoney;
+use Mzati\Paychangu\Resources\Verification;
 
 class Paychangu
 {
@@ -18,19 +21,101 @@ class Paychangu
         $this->client = new Client($privateKey, $paymentUrl);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Checkout (Hosted Page) Methods
+    |--------------------------------------------------------------------------
+    */
+
     /**
-     * Get the payment resource.
+     * Create a new checkout link (hosted payment page).
+     *
+     * @param array $data
+     * @return array
      */
-    public function payments(): Payment
+    public function create_checkout_link(array $data): array
     {
-        return new Payment($this->client);
+        return $this->checkout()->create($data);
     }
 
     /**
-     * Get the transaction resource.
+     * Verify a hosted checkout transaction.
+     *
+     * @param string $txRef
+     * @return array
      */
-    public function transactions(): Transaction
+    public function verify_checkout(string $txRef): array
     {
-        return new Transaction($this->client);
+        return $this->verification()->verify($txRef);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mobile Money Methods
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get all supported mobile money operators.
+     *
+     * @return array
+     */
+    public function mobile_money_operators(): array
+    {
+        return $this->mobile_money()->getOperators();
+    }
+
+    /**
+     * Charge a mobile money account directly.
+     *
+     * @param array $data
+     * @return array
+     */
+    public function create_mobile_money_payment(array $data): array
+    {
+        return $this->mobile_money()->charge($data);
+    }
+
+    /**
+     * Verify a mobile money payment.
+     *
+     * @param string $chargeId
+     * @return array
+     */
+    public function verify_mobile_money_payment(string $chargeId): array
+    {
+        return $this->mobile_money()->verify($chargeId);
+    }
+
+    /**
+     * Get details of a mobile money payment.
+     *
+     * @param string $chargeId
+     * @return array
+     */
+    public function get_mobile_money_payment_details(string $chargeId): array
+    {
+        return $this->mobile_money()->details($chargeId);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resource Accessors
+    |--------------------------------------------------------------------------
+    */
+
+    public function checkout(): Checkout
+    {
+        return new Checkout($this->client);
+    }
+
+    public function mobile_money(): MobileMoney
+    {
+        return new MobileMoney($this->client);
+    }
+
+    public function verification(): Verification
+    {
+        return new Verification($this->client);
     }
 }

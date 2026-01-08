@@ -4,14 +4,15 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/Mzati1/PaychanguLaravelSDK/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/Mzati1/PaychanguLaravelSDK/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/mzati/paychangusdk.svg?style=flat-square)](https://packagist.org/packages/mzati/paychangusdk)
 
-A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments and verifying transactions using the PayChangu API.
+A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments (Hosted Checkout & Direct Mobile Money) and verifying transactions.
 
 ## Features
 
-- **Easy Payment Initialization**: Generate checkout URLs with minimal setup.
-- **Transaction Verification**: Verify payment status using transaction references.
-- **Modular Design**: Easily extensible for future API endpoints.
-- **Laravel Friendly**: Includes Facades and Service Providers for seamless integration.
+- **Hosted Checkout**: Generate checkout URLs for easy payments.
+- **Direct Mobile Money**: Charge mobile money wallets (Airtel Money, Mpamba) directly.
+- **Verification**: Verify both checkout transactions and mobile money charges.
+- **Modular Design**: Easily extensible.
+- **Secure**: Strict typing and input validation.
 
 ## Installation
 
@@ -21,36 +22,10 @@ You can install the package via composer:
 composer require mzati/paychangusdk
 ```
 
-You can publish the config file with:
+Publish the config file:
 
 ```bash
 php artisan vendor:publish --tag="paychangu-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-    /*
-    |--------------------------------------------------------------------------
-    | PayChangu API Private Key
-    |--------------------------------------------------------------------------
-    |
-    | This is the private key used to authenticate with the PayChangu API.
-    |
-    */
-    'private_key' => env('PAYCHANGU_API_PRIVATE_KEY'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | PayChangu Payment URL
-    |--------------------------------------------------------------------------
-    |
-    | This is the base URL for the PayChangu payment API.
-    |
-    */
-    'payment_url' => env('PAYCHANGU_PAYMENT_URL'),
-];
 ```
 
 ## Configuration
@@ -59,58 +34,83 @@ Add the following variables to your `.env` file:
 
 ```env
 PAYCHANGU_API_PRIVATE_KEY=your_private_key_here
-PAYCHANGU_PAYMENT_URL=https://api.paychangu.com/v1/mobile-money/payments
+# Base URL for Mobile Money Payments
+PAYCHANGU_PAYMENT_URL=https://api.paychangu.com/mobile-money/payments
 ```
 
 ## Usage
 
-### Initialize a Payment
+### 1. Hosted Checkout (Payment Link)
 
-To start a payment process, use the `Paychangu` facade. This will return a checkout URL where you can redirect the user.
+Use this to redirect users to a PayChangu hosted page.
 
 ```php
 use Mzati\Paychangu\Facades\Paychangu;
 
-$response = Paychangu::payments()->initiate([
+$response = Paychangu::create_checkout_link([
     'amount' => 5000,
     'email' => 'customer@example.com',
     'first_name' => 'John',
     'last_name' => 'Doe',
-    'currency' => 'MWK', // Optional, defaults to MWK
-    'return_url' => 'https://yoursite.com/payment/success',
-    'callback_url' => 'https://yoursite.com/payment/callback',
-    'meta' => [
-        'order_id' => '12345',
-        'custom_field' => 'custom_value'
-    ]
+    'currency' => 'MWK',
+    'return_url' => 'https://yoursite.com/success',
+    'callback_url' => 'https://yoursite.com/callback',
+    'meta' => ['order_id' => '123']
 ]);
 
 if ($response['success']) {
     return redirect($response['checkout_url']);
 }
-
-// Handle error
-dd($response['error']);
 ```
 
-### Verify a Transaction
-
-To verify a transaction, use the transaction reference (`tx_ref`) returned during initialization or in the callback.
+**Verify Checkout Transaction:**
 
 ```php
-use Mzati\Paychangu\Facades\Paychangu;
+$verification = Paychangu::verify_checkout('TXN_1234567890');
+```
 
-$txRef = 'TXN_1234567890'; // The transaction reference
-$verification = Paychangu::transactions()->verify($txRef);
+---
 
-if ($verification['success']) {
-    // Payment was successful
-    $data = $verification['data'];
-    // Update your database...
-} else {
-    // Payment failed or is pending
-    $error = $verification['error'];
+### 2. Direct Mobile Money (Custom UI)
+
+Use this to charge a user's mobile wallet directly from your application.
+
+**Step 1: Get Operators**
+Fetch available mobile money operators (e.g., Airtel, TNM).
+
+```php
+$operators = Paychangu::mobile_money_operators();
+// Returns list of operators with ref_id
+```
+
+**Step 2: Charge Wallet**
+
+```php
+$response = Paychangu::create_mobile_money_payment([
+    'mobile_money_operator_ref_id' => 'operator_ref_id_from_step_1',
+    'mobile' => '0991234567',
+    'amount' => 5000,
+    'charge_id' => 'unique_charge_id_generated_by_you',
+    'email' => 'customer@example.com', // optional
+    'first_name' => 'John', // optional
+    'last_name' => 'Doe', // optional
+]);
+
+if ($response['success']) {
+    // Payment initiated, user will get a prompt
 }
+```
+
+**Step 3: Verify Payment**
+
+```php
+$verification = Paychangu::verify_mobile_money_payment('unique_charge_id_generated_by_you');
+```
+
+**Step 4: Get Payment Details**
+
+```php
+$details = Paychangu::get_mobile_money_payment_details('unique_charge_id_generated_by_you');
 ```
 
 ## Testing
@@ -118,6 +118,10 @@ if ($verification['success']) {
 ```bash
 composer test
 ```
+
+## Internal Structure
+
+For a detailed explanation of how the files work and the internal workflow, please see [STRUCTURE.md](STRUCTURE.md).
 
 ## Changelog
 

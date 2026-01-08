@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mzati\Paychangu\Http;
 
 use GuzzleHttp\Client as GuzzleClient;

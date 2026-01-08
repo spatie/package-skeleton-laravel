@@ -1,19 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Mzati\Paychangu\Resources;
 
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
-class Payment extends BaseResource
+class Checkout extends BaseResource
 {
     /**
-     * Initialize a new payment.
-     * 
+     * Initialize a new checkout payment (Hosted Page).
+     *
      * @param array $data
      * @return array
+     * @throws InvalidArgumentException
      */
-    public function initiate(array $data): array
+    public function create(array $data): array
     {
+        $requiredKeys = ['amount', 'email', 'first_name', 'last_name'];
+        foreach ($requiredKeys as $key) {
+            if (empty($data[$key])) {
+                throw new InvalidArgumentException("Missing required field: {$key}");
+            }
+        }
+
         $txRef = 'TXN_' . now()->timestamp . '_' . mt_rand(1000, 9999);
         $uuid = Str::uuid()->toString();
 
@@ -41,9 +52,6 @@ class Payment extends BaseResource
         // Filter out null values
         $payload = array_filter($payload, fn($value) => !is_null($value));
 
-        // The base URL in config is PAYCHANGU_PAYMENT_URL
-        // The endpoint for initialization is the root of that URL (based on previous context)
-        // So we send a POST to ''
         $response = $this->client->post('', $payload);
 
         if (isset($response['status']) && $response['status'] === 'success') {
