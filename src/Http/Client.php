@@ -79,17 +79,18 @@ class Client
         } catch (GuzzleException $e) {
             // If Guzzle throws an exception (e.g. 4xx/5xx), try to decode the response body for API errors
             if ($e instanceof \GuzzleHttp\Exception\RequestException && $e->hasResponse()) {
-                $responseBody = $e->getResponse()->getBody()->getContents();
-                $errorData = json_decode($responseBody, true);
+    $responseBody = $e->getResponse()->getBody()->getContents();
+    $errorData = json_decode($responseBody, true);
 
-                $message = $errorData['message'] ?? $e->getMessage();
+    $message = $errorData['message'] ?? $e->getMessage();
 
-                if (is_array($message)) {
-                    $message = json_encode($message);
-                }
+    // Handle array messages properly
+    if (is_array($message)) {
+        $message = json_encode($message);
+    }
 
-                throw new Exception("PayChangu API Error: {$message}", (int) $e->getCode(), $e);
-            }
+    throw new Exception('PayChangu API Error: ' . $message, (int) $e->getCode(), $e);
+}
 
             throw new Exception('PayChangu Connection Error: '.$e->getMessage(), $e->getCode(), $e);
         }
