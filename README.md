@@ -1,7 +1,9 @@
 # PayChangu Laravel SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
+[![Latest Version](https://img.shields.io/packagist/v/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
 [![Total Downloads](https://img.shields.io/packagist/dt/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
+[![GitHub stars](https://img.shields.io/github/stars/paychangu/laravel?style=flat-square)](https://github.com/Mzati1/PaychanguLaravelSDK/stargazers)
+[![License](https://img.shields.io/packagist/l/paychangu/laravel.svg?style=flat-square)](https://packagist.org/packages/paychangu/laravel)
 
 A robust and modular Laravel SDK for integrating PayChangu payment services. This package simplifies the process of initializing payments (Hosted Checkout, Mobile Money, Card, Bank) and managing payouts, bill payments, and airtime.
 
