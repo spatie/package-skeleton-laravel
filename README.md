@@ -327,7 +327,6 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Mzati](https://github.com/Mzati1)
-- [All Contributors](../../contributors)
 
 ## License
 
