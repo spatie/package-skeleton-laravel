@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources\MobileMoney;
+namespace Mzati\Paychangu\Resources\Payouts;
 
 use InvalidArgumentException;
 use Mzati\Paychangu\Resources\BaseResource;
 
-class MobileMoney extends BaseResource
+class MobileMoneyPayout extends BaseResource
 {
     /**
      * Get all mobile money operators.
@@ -32,22 +32,22 @@ class MobileMoney extends BaseResource
     }
 
     /**
-     * Charge a mobile money account directly.
+     * Initialize a mobile money payout.
      *
-     * @param  array  $data  The charge details.
+     * @param  array  $data  The payout details.
      * @return array The API response.
      * @throws InvalidArgumentException
      */
-    public function charge(array $data): array
+    public function create(array $data): array
     {
-        $requiredKeys = ['mobile_money_operator_ref_id', 'mobile', 'amount', 'charge_id'];
+        $requiredKeys = ['mobile', 'mobile_money_operator_ref_id', 'amount', 'charge_id'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");
             }
         }
 
-        $response = $this->client->post('payments/initialize', $data);
+        $response = $this->client->post('payouts/initialize', $data);
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -58,45 +58,16 @@ class MobileMoney extends BaseResource
 
         return [
             'success' => false,
-            'error' => $response['message'] ?? 'Mobile money charge failed',
+            'error' => $response['message'] ?? 'Mobile money payout initialization failed',
             'original_response' => $response,
         ];
     }
 
     /**
-     * Verify a mobile money payment.
+     * Get details of a mobile money payout (charge).
      *
      * @param  string  $chargeId  The charge ID.
-     * @return array The verification result.
-     * @throws InvalidArgumentException
-     */
-    public function verify(string $chargeId): array
-    {
-        if (empty($chargeId)) {
-            throw new InvalidArgumentException('Charge ID cannot be empty.');
-        }
-
-        $response = $this->client->get("payments/{$chargeId}/verify");
-
-        if (isset($response['status']) && $response['status'] === 'success') {
-            return [
-                'success' => true,
-                'data' => $response['data'],
-            ];
-        }
-
-        return [
-            'success' => false,
-            'error' => $response['message'] ?? 'Verification failed',
-            'data' => $response['data'] ?? null,
-        ];
-    }
-
-    /**
-     * Get details of a single mobile money payment.
-     *
-     * @param  string  $chargeId  The charge ID.
-     * @return array The payment details.
+     * @return array The payout details.
      * @throws InvalidArgumentException
      */
     public function details(string $chargeId): array
@@ -116,8 +87,8 @@ class MobileMoney extends BaseResource
 
         return [
             'success' => false,
-            'error' => $response['message'] ?? 'Failed to fetch details',
-            'data' => $response['data'] ?? null,
+            'error' => $response['message'] ?? 'Failed to fetch payout details',
+            'original_response' => $response,
         ];
     }
 }

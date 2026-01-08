@@ -2,52 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Mzati\Paychangu\Resources\MobileMoney;
+namespace Mzati\Paychangu\Resources\Banks;
 
 use InvalidArgumentException;
 use Mzati\Paychangu\Resources\BaseResource;
 
-class MobileMoney extends BaseResource
+class Card extends BaseResource
 {
     /**
-     * Get all mobile money operators.
+     * Charge a card.
      *
-     * @return array The list of operators.
-     */
-    public function getOperators(): array
-    {
-        $response = $this->client->get('');
-
-        if (isset($response['status']) && $response['status'] === 'success') {
-            return [
-                'success' => true,
-                'data' => $response['data'],
-            ];
-        }
-
-        return [
-            'success' => false,
-            'error' => $response['message'] ?? 'Failed to fetch operators',
-        ];
-    }
-
-    /**
-     * Charge a mobile money account directly.
-     *
-     * @param  array  $data  The charge details.
+     * @param  array  $data  The card and charge details.
      * @return array The API response.
      * @throws InvalidArgumentException
      */
-    public function charge(array $data): array
+    public function create(array $data): array
     {
-        $requiredKeys = ['mobile_money_operator_ref_id', 'mobile', 'amount', 'charge_id'];
+        $requiredKeys = [
+            'card_number', 'expiry', 'cvv', 'cardholder_name', 
+            'amount', 'currency', 'charge_id', 'redirect_url'
+        ];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");
             }
         }
 
-        $response = $this->client->post('payments/initialize', $data);
+        $response = $this->client->post('payments', $data);
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -58,13 +39,13 @@ class MobileMoney extends BaseResource
 
         return [
             'success' => false,
-            'error' => $response['message'] ?? 'Mobile money charge failed',
+            'error' => $response['message'] ?? 'Card charge failed',
             'original_response' => $response,
         ];
     }
 
     /**
-     * Verify a mobile money payment.
+     * Verify a card charge.
      *
      * @param  string  $chargeId  The charge ID.
      * @return array The verification result.
@@ -76,7 +57,7 @@ class MobileMoney extends BaseResource
             throw new InvalidArgumentException('Charge ID cannot be empty.');
         }
 
-        $response = $this->client->get("payments/{$chargeId}/verify");
+        $response = $this->client->get("verify/{$chargeId}");
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -87,25 +68,25 @@ class MobileMoney extends BaseResource
 
         return [
             'success' => false,
-            'error' => $response['message'] ?? 'Verification failed',
-            'data' => $response['data'] ?? null,
+            'error' => $response['message'] ?? 'Card charge verification failed',
+            'original_response' => $response,
         ];
     }
 
     /**
-     * Get details of a single mobile money payment.
+     * Refund a card charge.
      *
      * @param  string  $chargeId  The charge ID.
-     * @return array The payment details.
+     * @return array The refund result.
      * @throws InvalidArgumentException
      */
-    public function details(string $chargeId): array
+    public function refund(string $chargeId): array
     {
         if (empty($chargeId)) {
             throw new InvalidArgumentException('Charge ID cannot be empty.');
         }
 
-        $response = $this->client->get("payments/{$chargeId}/details");
+        $response = $this->client->post("refund/{$chargeId}", []);
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
@@ -116,8 +97,8 @@ class MobileMoney extends BaseResource
 
         return [
             'success' => false,
-            'error' => $response['message'] ?? 'Failed to fetch details',
-            'data' => $response['data'] ?? null,
+            'error' => $response['message'] ?? 'Card charge refund failed',
+            'original_response' => $response,
         ];
     }
 }

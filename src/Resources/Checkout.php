@@ -12,6 +12,8 @@ class Checkout extends BaseResource
     /**
      * Initialize a new checkout payment (Hosted Page).
      *
+     * @param  array  $data  The checkout data (amount, email, etc.).
+     * @return array The API response containing the checkout URL.
      * @throws InvalidArgumentException
      */
     public function create(array $data): array
@@ -47,7 +49,6 @@ class Checkout extends BaseResource
             'meta' => $metaData,
         ];
 
-        // Filter out null values
         $payload = array_filter($payload, fn ($value) => ! is_null($value));
 
         $response = $this->client->post('', $payload);
