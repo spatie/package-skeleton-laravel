@@ -21,7 +21,7 @@ class Verification extends BaseResource
 
         $txRef = strip_tags($txRef);
 
-        $response = $this->client->get("verify/{$txRef}");
+        $response = $this->client->get("verify-payment/{$txRef}");
 
         if (isset($response['status']) && $response['status'] === 'success') {
             return [
