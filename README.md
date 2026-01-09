@@ -78,7 +78,7 @@ PAYCHANGU_API_BASE_URL=https://api.paychangu.com/
 Use this to redirect users to a PayChangu hosted page.
 
 ```php
-use Mzati\Paychangu\Laravel\Facades\Paychangu;
+use Paychangu\Laravel\Facades\Paychangu;
 
 $response = Paychangu::create_checkout_link([
     'amount' => 5000,
@@ -116,10 +116,10 @@ $operators = Paychangu::mobile_money_operators();
 
 ```php
 $response = Paychangu::create_mobile_money_payment([
-    'mobile' => '0999123456',
-    'mobile_money_operator_ref_id' => 'mpamba_ref_id', // Get from operators list
+    'mobile' => '0999123456', // Phone number in format 265... or 099...
+    'mobile_money_operator_ref_id' => 'mpamba_ref_id', // Get from mobile_money_operators()
     'amount' => 1000,
-    'charge_id' => 'unique_charge_id_123',
+    'charge_id' => 'unique_charge_id_123', // Must be unique for every transaction
 ]);
 ```
 
@@ -143,9 +143,9 @@ $details = Paychangu::get_mobile_money_payment_details('unique_charge_id_123');
 
 ```php
 $response = Paychangu::create_direct_charge_payment([
-    'currency' => 'MWK',
+    'currency' => 'MWK', // Currency code (e.g., 'MWK', 'USD')
     'amount' => 50000,
-    'charge_id' => 'bank_charge_001',
+    'charge_id' => 'bank_charge_001', // Must be unique for every transaction
 ]);
 ```
 
@@ -164,13 +164,13 @@ $details = Paychangu::get_direct_charge_details('bank_charge_001');
 ```php
 $response = Paychangu::create_card_payment([
     'card_number' => '4000123456789010',
-    'expiry' => '12/25',
+    'expiry' => '12/25', // Format: MM/YY
     'cvv' => '123',
     'cardholder_name' => 'John Doe',
     'amount' => 5000,
     'currency' => 'MWK',
-    'charge_id' => 'card_charge_001',
-    'redirect_url' => 'https://yoursite.com/card-callback',
+    'charge_id' => 'card_charge_001', // Must be unique for every transaction
+    'redirect_url' => 'https://yoursite.com/card-callback', // URL to redirect after payment
 ]);
 ```
 
@@ -200,10 +200,14 @@ $operators = Paychangu::mobile_money_payout_operators();
 
 ```php
 $response = Paychangu::create_mobile_money_payout([
-    'mobile' => '0888123456',
-    'mobile_money_operator_ref_id' => 'airtel_money_ref_id',
+    'mobile' => '0888123456', // Phone number in format 265... or 088...
+    'mobile_money_operator_ref_id' => 'airtel_money_ref_id', // Get from mobile_money_payout_operators()
     'amount' => 2000,
-    'charge_id' => 'payout_001',
+    'charge_id' => 'payout_001', // Must be unique for every transaction
+    // Optional fields:
+    // 'email' => 'customer@example.com',
+    // 'first_name' => 'John',
+    // 'last_name' => 'Doe',
 ]);
 ```
 
@@ -227,11 +231,16 @@ $banks = Paychangu::get_supported_banks_for_payout('MWK');
 
 ```php
 $response = Paychangu::create_bank_payout([
-    'bank_uuid' => 'bank_uuid_here',
+    'bank_uuid' => 'bank_uuid_here', // Get from get_supported_banks_for_payout()
     'amount' => 100000,
-    'charge_id' => 'bank_payout_001',
+    'charge_id' => 'bank_payout_001', // Must be unique
     'bank_account_name' => 'Jane Doe',
     'bank_account_number' => '100200300',
+    // Optional fields:
+    // 'payout_method' => 'bank_transfer', // Defaults to 'bank_transfer' if not provided
+    // 'email' => 'customer@example.com',
+    // 'first_name' => 'Jane',
+    // 'last_name' => 'Doe',
 ]);
 ```
 

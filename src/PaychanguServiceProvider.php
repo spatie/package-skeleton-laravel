@@ -22,6 +22,8 @@ class PaychanguServiceProvider extends PackageServiceProvider
     public function packageRegistered()
     {
         $this->app->singleton('paychangu', function ($app) {
+            // Paychangu constructor is now defensive and handles missing config gracefully
+            // This allows the package to be uninstalled without errors
             return new Paychangu;
         });
     }

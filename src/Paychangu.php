@@ -24,8 +24,21 @@ class Paychangu
 
     public function __construct()
     {
-        $this->privateKey = config('paychangu.private_key') ?? '';
-        $this->apiBaseUrl = config('paychangu.api_base_url') ?? 'https://api.paychangu.com/';
+        // Safely get config values, handling cases where config might not be available (e.g., during uninstall)
+        if (function_exists('config')) {
+            try {
+                $this->privateKey = config('paychangu.private_key') ?? '';
+                $this->apiBaseUrl = config('paychangu.api_base_url') ?? 'https://api.paychangu.com/';
+            } catch (\Throwable $e) {
+                // During uninstall or if config service is not available, use defaults
+                $this->privateKey = '';
+                $this->apiBaseUrl = 'https://api.paychangu.com/';
+            }
+        } else {
+            // Config helper not available (e.g., during uninstall)
+            $this->privateKey = '';
+            $this->apiBaseUrl = 'https://api.paychangu.com/';
+        }
 
         // Ensure trailing slash
         if (! Str::endsWith($this->apiBaseUrl, '/')) {
