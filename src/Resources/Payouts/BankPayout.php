@@ -51,7 +51,7 @@ class BankPayout extends BaseResource
         }
 
         // Add payout_method if not provided (defaults to bank_transfer per API docs)
-        if (!isset($data['payout_method'])) {
+        if (! isset($data['payout_method'])) {
             $data['payout_method'] = 'bank_transfer';
         }
 
