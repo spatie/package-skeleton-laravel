@@ -19,7 +19,7 @@ class Checkout extends BaseResource
      */
     public function create(array $data): array
     {
-        $requiredKeys = ['amount', 'email', 'first_name', 'last_name'];
+        $requiredKeys = ['amount', 'callback_url', 'return_url'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");
@@ -33,21 +33,19 @@ class Checkout extends BaseResource
         if (isset($data['agenda'])) {
             $metaData['agenda'] = $data['agenda'];
         }
-        if (isset($data['customization'])) {
-            $metaData['customization'] = $data['customization'];
-        }
 
         $payload = [
             'currency' => $data['currency'] ?? 'MWK',
             'uuid' => $uuid,
             'tx_ref' => $txRef,
             'amount' => $data['amount'],
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
-            'return_url' => $data['return_url'] ?? null,
-            'callback_url' => $data['callback_url'] ?? null,
+            'first_name' => $data['first_name'] ?? null,
+            'last_name' => $data['last_name'] ?? null,
+            'email' => $data['email'] ?? null,
+            'return_url' => $data['return_url'],
+            'callback_url' => $data['callback_url'],
             'meta' => $metaData,
+            'customization' => $data['customization'] ?? null,
         ];
 
         $payload = array_filter($payload, fn ($value) => ! is_null($value));

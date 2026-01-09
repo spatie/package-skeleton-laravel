@@ -43,16 +43,15 @@ class BankPayout extends BaseResource
      */
     public function create(array $data): array
     {
-        $requiredKeys = ['bank_uuid', 'amount', 'charge_id', 'bank_account_name', 'bank_account_number'];
+        if (! isset($data['payout_method'])) {
+            $data['payout_method'] = 'bank_transfer';
+        }
+
+        $requiredKeys = ['payout_method', 'bank_uuid', 'amount', 'charge_id', 'bank_account_name', 'bank_account_number'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");
             }
-        }
-
-        // Add payout_method if not provided (defaults to bank_transfer per API docs)
-        if (! isset($data['payout_method'])) {
-            $data['payout_method'] = 'bank_transfer';
         }
 
         $response = $this->client->post('payouts/initialize', $data);

@@ -19,7 +19,11 @@ class DirectCharge extends BaseResource
      */
     public function create(array $data): array
     {
-        $requiredKeys = ['currency', 'amount', 'charge_id'];
+        if (! isset($data['payment_method'])) {
+            $data['payment_method'] = 'mobile_bank_transfer';
+        }
+
+        $requiredKeys = ['currency', 'amount', 'payment_method', 'charge_id'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");

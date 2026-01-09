@@ -19,7 +19,7 @@ class Airtime extends BaseResource
      */
     public function create(array $data): array
     {
-        $requiredKeys = ['phone', 'amount', 'reference'];
+        $requiredKeys = ['phone', 'amount'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");

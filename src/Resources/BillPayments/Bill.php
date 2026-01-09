@@ -105,7 +105,7 @@ class Bill extends BaseResource
      */
     public function pay(array $data): array
     {
-        $requiredKeys = ['biller', 'account', 'amount', 'reference'];
+        $requiredKeys = ['biller', 'account'];
         foreach ($requiredKeys as $key) {
             if (empty($data[$key])) {
                 throw new InvalidArgumentException("Missing required field: {$key}");

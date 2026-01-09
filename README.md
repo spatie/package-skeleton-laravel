@@ -76,18 +76,19 @@ PAYCHANGU_API_BASE_URL=https://api.paychangu.com/
 ### 1. Hosted Checkout (Payment Link)
 
 Use this to redirect users to a PayChangu hosted page.
+Required fields: amount, callback_url, return_url.
 
 ```php
 use Paychangu\Laravel\Facades\Paychangu;
 
 $response = Paychangu::create_checkout_link([
     'amount' => 5000,
-    'email' => 'customer@example.com',
-    'first_name' => 'John',
-    'last_name' => 'Doe',
     'currency' => 'MWK',
     'return_url' => 'https://yoursite.com/success',
     'callback_url' => 'https://yoursite.com/callback',
+    'email' => 'customer@example.com',
+    'first_name' => 'John',
+    'last_name' => 'Doe',
     'meta' => ['order_id' => '123']
 ]);
 
@@ -145,6 +146,7 @@ $details = Paychangu::get_mobile_money_payment_details('unique_charge_id_123');
 $response = Paychangu::create_direct_charge_payment([
     'currency' => 'MWK', // Currency code (e.g., 'MWK', 'USD')
     'amount' => 50000,
+    'payment_method' => 'mobile_bank_transfer',
     'charge_id' => 'bank_charge_001', // Must be unique for every transaction
 ]);
 ```
@@ -291,6 +293,7 @@ $payment = Paychangu::pay_bill([
     'reference' => 'bill_payment_001',
 ]);
 ```
+Some billers may accept optional amount/reference fields depending on bill type.
 
 **Get Transaction Details:**
 
@@ -317,6 +320,7 @@ $airtime = Paychangu::buy_airtime([
     'reference' => 'airtime_ref_001',
 ]);
 ```
+reference is optional.
 
 ## Testing
 
