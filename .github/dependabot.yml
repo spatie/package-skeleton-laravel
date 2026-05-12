@@ -10,6 +10,8 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
+    cooldown:
+      default-days: 1
 
   - package-ecosystem: "composer"
     directory: "/"
@@ -17,3 +19,5 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
+    cooldown:
+      default-days: 1
