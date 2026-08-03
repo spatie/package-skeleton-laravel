@@ -85,6 +85,144 @@ function run(string $command): string
     return trim((string) shell_exec($command));
 }
 
+function fail(string ...$messages): never
+{
+    foreach ($messages as $message) {
+        fwrite(STDERR, $message.PHP_EOL);
+    }
+
+    fwrite(STDERR, 'Run `php configure.php --help` for usage.'.PHP_EOL);
+
+    exit(1);
+}
+
+function options(): array
+{
+    return [
+        'author-name' => ['type' => 'string', 'group' => 'Author', 'label' => 'Author name', 'default' => 'git config user.name'],
+        'author-email' => ['type' => 'string', 'group' => 'Author', 'label' => 'Author email', 'default' => 'git config user.email'],
+        'author-username' => ['type' => 'string', 'group' => 'Author', 'label' => 'Author username', 'default' => 'guessed from git/gh'],
+        'vendor-name' => ['type' => 'string', 'group' => 'Vendor', 'label' => 'Vendor name', 'default' => 'guessed from the git remote', 'required' => true],
+        'vendor-username' => ['type' => 'string', 'group' => 'Vendor', 'label' => 'Vendor username', 'hint' => 'The slug used in composer.json, e.g. "spatie" in spatie/laravel-ray.', 'default' => 'slug of the vendor name'],
+        'vendor-namespace' => ['type' => 'string', 'group' => 'Vendor', 'label' => 'Vendor namespace', 'hint' => 'The PHP namespace prefix for your package, e.g. Spatie\\LaravelRay.', 'default' => 'studly vendor name'],
+        'package-name' => ['type' => 'string', 'group' => 'Package', 'label' => 'Package name', 'default' => 'the current directory name', 'required' => true],
+        'class-name' => ['type' => 'string', 'group' => 'Package', 'label' => 'Class name', 'default' => 'studly package name'],
+        'description' => ['type' => 'string', 'group' => 'Package', 'label' => 'Package description', 'default' => '"This is my package <slug>"'],
+        'phpstan' => ['type' => 'bool', 'group' => 'Tooling', 'label' => 'Enable PhpStan?', 'hint' => 'Static analysis to catch bugs before they reach production.', 'default' => true],
+        'pint' => ['type' => 'bool', 'group' => 'Tooling', 'label' => 'Enable Laravel Pint?', 'hint' => 'Automatic code formatting following Laravel conventions.', 'default' => true],
+        'dependabot' => ['type' => 'bool', 'group' => 'Tooling', 'label' => 'Enable Dependabot?', 'hint' => 'Automated dependency update PRs via GitHub.', 'default' => true],
+        'ray' => ['type' => 'bool', 'group' => 'Tooling', 'label' => 'Use Ray for debugging?', 'hint' => 'Debug your package with the Ray desktop app.', 'default' => true],
+        'changelog-workflow' => ['type' => 'bool', 'group' => 'Tooling', 'label' => 'Use automatic changelog updater workflow?', 'hint' => 'Automatically updates CHANGELOG.md when a new release is tagged.', 'default' => true],
+        'run-tests' => ['type' => 'bool', 'group' => 'Behaviour', 'label' => 'Execute `composer install` and run tests?', 'default' => 'yes when interactive, no otherwise'],
+        'delete-script' => ['type' => 'bool', 'group' => 'Behaviour', 'label' => 'Let this script delete itself?', 'default' => true],
+        'no-interaction' => ['type' => 'bool', 'group' => 'Behaviour', 'label' => 'Never prompt; use flags and derived defaults only.', 'default' => false, 'short' => 'n'],
+        'help' => ['type' => 'bool', 'group' => 'Behaviour', 'label' => 'Show this help and exit.', 'default' => false, 'short' => 'h'],
+    ];
+}
+
+function parseArgs(array $argv): array
+{
+    $options = options();
+    $shortToLong = [];
+
+    foreach ($options as $name => $option) {
+        if (isset($option['short'])) {
+            $shortToLong['-'.$option['short']] = $name;
+        }
+    }
+
+    $given = [];
+    $arguments = array_slice($argv, 1);
+
+    while ($arguments !== []) {
+        $argument = array_shift($arguments);
+
+        if (isset($shortToLong[$argument])) {
+            $given[$shortToLong[$argument]] = true;
+
+            continue;
+        }
+
+        if (! str_starts_with($argument, '--')) {
+            fail("Error: unexpected argument `{$argument}`.");
+        }
+
+        [$flag, $value] = explode('=', substr($argument, 2), 2) + [null, null];
+
+        $negated = str_starts_with($flag, 'no-') && isset($options[substr($flag, 3)]) && $options[substr($flag, 3)]['type'] === 'bool';
+        $name = $negated ? substr($flag, 3) : $flag;
+
+        if (! isset($options[$name])) {
+            fail("Error: unknown option `--{$flag}`.");
+        }
+
+        if ($options[$name]['type'] === 'bool') {
+            if ($value !== null) {
+                fail("Error: `--{$flag}` is a flag and does not take a value.");
+            }
+
+            $given[$name] = ! $negated;
+
+            continue;
+        }
+
+        $value ??= array_shift($arguments);
+
+        if ($value === null || str_starts_with($value, '--')) {
+            fail("Error: `--{$flag}` requires a value.");
+        }
+
+        $given[$name] = $value;
+    }
+
+    return $given;
+}
+
+function showHelp(): void
+{
+    writeln('');
+    writeln(bold('  Configure the Laravel package skeleton.'));
+    writeln('');
+    writeln(bold('  Usage'));
+    writeln('    php configure.php [options]');
+    writeln('');
+    writeln('  Run without options to answer every question interactively. Any option you pass');
+    writeln('  is used as-is and its question is skipped. With --no-interaction nothing is asked:');
+    writeln('  --vendor-name and --package-name are required and everything else is derived.');
+    writeln('');
+
+    $grouped = [];
+
+    foreach (options() as $name => $option) {
+        $flag = $option['type'] === 'bool' && ! isset($option['short'])
+            ? "--{$name}, --no-{$name}"
+            : (isset($option['short']) ? "-{$option['short']}, --{$name}" : "--{$name}=<value>");
+
+        $grouped[$option['group']][$flag] = $option;
+    }
+
+    $flags = array_merge([], ...array_values(array_map('array_keys', $grouped)));
+    $width = max(array_map('strlen', $flags));
+
+    foreach ($grouped as $group => $flags) {
+        writeln(bold("  {$group}"));
+
+        foreach ($flags as $flag => $option) {
+            $default = is_bool($option['default']) ? ($option['default'] ? 'yes' : 'no') : $option['default'];
+            $note = ($option['required'] ?? false) ? 'required with --no-interaction' : "default: {$default}";
+
+            writeln('    '.str_pad($flag, $width).'  '.dim($note));
+        }
+
+        writeln('');
+    }
+
+    writeln(bold('  Examples'));
+    writeln('    php configure.php -n --vendor-name="Spatie" --package-name="laravel-ray"');
+    writeln('    php configure.php -n --vendor-name="Spatie" --package-name="laravel-ray" --no-ray --no-phpstan --run-tests');
+    writeln('');
+}
+
 function str_after(string $subject, string $search): string
 {
     $pos = strrpos($subject, $search);
@@ -318,104 +456,156 @@ function guessGitHubVendorInfo($authorName, $username): array
     return [$response->name ?? $authorName, $response->login ?? $username];
 }
 
-writeln('');
+$given = parseArgs($argv);
 
-$logoLines = [
-    '  ███████ ██████   █████  ████████ ████ ████████',
-    '  ██      ██   ██ ██   ██    ██     ██  ██',
-    '  ███████ ██████  ███████    ██     ██  ██████',
-    '       ██ ██      ██   ██    ██     ██  ██',
-    '  ███████ ██      ██   ██    ██    ████ ████████',
+$state = [
+    'given' => $given,
+    'interactive' => ! ($given['no-interaction'] ?? false),
+    'missing' => [],
+    'firstInSection' => true,
 ];
 
-$gradientColors = [
-    '38;2;100;200;225',
-    '38;2;62;170;200',
-    '38;2;35;140;175',
-    '38;2;25;117;147',
-    '38;2;15;90;115',
-];
+if ($given['help'] ?? false) {
+    showHelp();
 
-foreach ($logoLines as $i => $line) {
-    writeln(supportsAnsi() ? "\033[{$gradientColors[$i]}m{$line}\033[0m" : $line);
+    exit(0);
 }
 
-writeln('');
+function resolve(string $name, string|bool|Closure $default): string|bool
+{
+    global $state;
 
-if (supportsAnsi()) {
-    writeln("  \033[48;2;25;117;147m\033[97m ✦ Laravel Package Skeleton :: spatie.be ✦ \033[0m");
-} else {
-    writeln('  ✦ Laravel Package Skeleton :: spatie.be ✦');
+    if (isset($state['given'][$name])) {
+        return $state['given'][$name];
+    }
+
+    $option = options()[$name];
+    $default = $default instanceof Closure ? $default() : $default;
+
+    if (! $state['interactive']) {
+        if (($option['required'] ?? false) || $default === '') {
+            $state['missing'][] = "Error: `--{$name}` is required with --no-interaction.";
+        }
+
+        return $default;
+    }
+
+    if (isset($option['hint'])) {
+        if (! $state['firstInSection']) {
+            writeln('');
+        }
+
+        writeln(dim('  '.$option['hint']));
+    }
+
+    $state['firstInSection'] = false;
+
+    return is_bool($default)
+        ? confirm($option['label'], $default)
+        : ask($option['label'], $default);
 }
 
-writeln('');
-writeln('  Thanks for using the Spatie Laravel package skeleton!');
-writeln('  Let\'s get your new package configured.');
-writeln('');
+function section(string $title, string $description = ''): void
+{
+    global $state;
 
-writeln(bold('  Author'));
-writeln(dim('  Used for composer.json credits and the README.'));
-writeln('');
+    $state['firstInSection'] = true;
 
-$gitName = run('git config user.name');
-$authorName = ask('Author name', $gitName);
+    if (! $state['interactive']) {
+        return;
+    }
 
-$gitEmail = run('git config user.email');
-$authorEmail = ask('Author email', $gitEmail);
-$authorUsername = ask('Author username', guessGitHubUsername());
+    writeln('');
+    writeln(bold('  '.$title));
 
-writeln('');
-writeln(bold('  Vendor'));
-writeln(dim('  The vendor is your brand on Packagist, e.g. in spatie/laravel-ray the vendor is "spatie".'));
-writeln('');
+    if ($description) {
+        writeln(dim('  '.$description));
+    }
 
-$guessGitHubVendorInfo = guessGitHubVendorInfo($authorName, $authorUsername);
+    writeln('');
+}
 
-$vendorName = ask('Vendor name', $guessGitHubVendorInfo[0]);
-writeln('');
-writeln(dim('  The slug used in composer.json, e.g. "spatie" in spatie/laravel-ray.'));
-$vendorUsername = ask('Vendor username', $guessGitHubVendorInfo[1] ?? slugify($vendorName));
+function showBanner(): void
+{
+    $logoLines = [
+        '  ███████ ██████   █████  ████████ ████ ████████',
+        '  ██      ██   ██ ██   ██    ██     ██  ██',
+        '  ███████ ██████  ███████    ██     ██  ██████',
+        '       ██ ██      ██   ██    ██     ██  ██',
+        '  ███████ ██      ██   ██    ██    ████ ████████',
+    ];
+
+    $gradientColors = [
+        '38;2;100;200;225',
+        '38;2;62;170;200',
+        '38;2;35;140;175',
+        '38;2;25;117;147',
+        '38;2;15;90;115',
+    ];
+
+    writeln('');
+
+    foreach ($logoLines as $i => $line) {
+        writeln(supportsAnsi() ? "\033[{$gradientColors[$i]}m{$line}\033[0m" : $line);
+    }
+
+    writeln('');
+
+    if (supportsAnsi()) {
+        writeln("  \033[48;2;25;117;147m\033[97m ✦ Laravel Package Skeleton :: spatie.be ✦ \033[0m");
+    } else {
+        writeln('  ✦ Laravel Package Skeleton :: spatie.be ✦');
+    }
+
+    writeln('');
+    writeln('  Thanks for using the Spatie Laravel package skeleton!');
+    writeln('  Let\'s get your new package configured.');
+}
+
+if ($state['interactive']) {
+    showBanner();
+}
+
+section('Author', 'Used for composer.json credits and the README.');
+
+$authorName = resolve('author-name', fn () => run('git config user.name'));
+$authorEmail = resolve('author-email', fn () => run('git config user.email'));
+$authorUsername = resolve('author-username', fn () => guessGitHubUsername());
+
+section('Vendor', 'The vendor is your brand on Packagist, e.g. in spatie/laravel-ray the vendor is "spatie".');
+
+[$guessedVendorName, $guessedVendorUsername] = isset($given['vendor-name'], $given['vendor-username'])
+    ? [$given['vendor-name'], $given['vendor-username']]
+    : guessGitHubVendorInfo($authorName, $authorUsername);
+
+$vendorName = resolve('vendor-name', $guessedVendorName);
+$vendorUsername = resolve('vendor-username', $vendorName === $guessedVendorName && $guessedVendorUsername
+    ? $guessedVendorUsername
+    : slugify($vendorName));
 $vendorSlug = slugify($vendorUsername);
-writeln('');
-$vendorNamespace = str_replace('-', '', ucwords($vendorName));
-writeln(dim('  The PHP namespace prefix for your package, e.g. Spatie\\LaravelRay.'));
-$vendorNamespace = ask('Vendor namespace', $vendorNamespace);
+$vendorNamespace = resolve('vendor-namespace', str_replace('-', '', ucwords($vendorName)));
 
-writeln('');
-writeln(bold('  Package'));
-writeln('');
+section('Package');
 
-$currentDirectory = getcwd();
-$folderName = basename($currentDirectory);
-
-$packageName = ask('Package name', $folderName);
+$packageName = resolve('package-name', basename(getcwd()));
 $packageSlug = slugify($packageName);
 $packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
-$className = title_case($packageName);
-$className = ask('Class name', $className);
+$className = resolve('class-name', title_case($packageName));
 $variableName = lcfirst($className);
-$description = ask('Package description', "This is my package {$packageSlug}");
+$description = resolve('description', "This is my package {$packageSlug}");
 
-writeln('');
-writeln(bold('  Tooling'));
-writeln(dim('  Choose which dev tools to include. You can always add these later.'));
-writeln('');
+section('Tooling', 'Choose which dev tools to include. You can always add these later.');
 
-writeln(dim('  Static analysis to catch bugs before they reach production.'));
-$usePhpStan = confirm('Enable PhpStan?', true);
-writeln('');
-writeln(dim('  Automatic code formatting following Laravel conventions.'));
-$useLaravelPint = confirm('Enable Laravel Pint?', true);
-writeln('');
-writeln(dim('  Automated dependency update PRs via GitHub.'));
-$useDependabot = confirm('Enable Dependabot?', true);
-writeln('');
-writeln(dim('  Debug your package with the Ray desktop app.'));
-$useLaravelRay = confirm('Use Ray for debugging?', true);
-writeln('');
-writeln(dim('  Automatically updates CHANGELOG.md when a new release is tagged.'));
-$useUpdateChangelogWorkflow = confirm('Use automatic changelog updater workflow?', true);
+$usePhpStan = resolve('phpstan', true);
+$useLaravelPint = resolve('pint', true);
+$useDependabot = resolve('dependabot', true);
+$useLaravelRay = resolve('ray', true);
+$useUpdateChangelogWorkflow = resolve('changelog-workflow', true);
+
+if ($state['missing'] !== []) {
+    fail(...$state['missing']);
+}
 
 writeln('');
 writeln(bold('  Summary'));
@@ -435,7 +625,7 @@ writeln('  Ray              '.($useLaravelRay ? green('yes') : dim('no')));
 writeln('  Auto-Changelog   '.($useUpdateChangelogWorkflow ? green('yes') : dim('no')));
 writeln('');
 
-if (! confirm('Modify files?', true)) {
+if ($state['interactive'] && ! confirm('Modify files?', true)) {
     exit(1);
 }
 
@@ -521,10 +711,10 @@ if (! empty($removeDeps) || ! empty($removeScripts)) {
     writeln(green('  ✓ Cleaned up composer.json'));
 }
 
-confirm('Execute `composer install` and run tests?', true) && run('composer install && composer test');
+resolve('run-tests', $state['interactive']) && run('composer install && composer test');
 
 writeln('');
-confirm('Let this script delete itself?', true) && unlink(__FILE__);
+resolve('delete-script', true) && unlink(__FILE__);
 
 writeln('');
 writeln(green(bold('  ✨ You\'re all set! Happy building!')));
