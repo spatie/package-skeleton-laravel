@@ -187,8 +187,13 @@ function showHelp(): void
     writeln('    php configure.php [options]');
     writeln('');
     writeln('  Run without options to answer every question interactively. Any option you pass');
-    writeln('  is used as-is and its question is skipped. With --no-interaction nothing is asked:');
-    writeln('  --vendor-name and --package-name are required and everything else is derived.');
+    writeln('  is used as-is and its question is skipped.');
+    writeln('');
+    writeln('  To run unattended, pass --no-interaction. Nothing is asked, --vendor-name and');
+    writeln('  --package-name are required, and the rest is derived from git and the package');
+    writeln('  name. If a value cannot be derived, the script exits non-zero naming the option');
+    writeln('  to pass. Tests are skipped unless --run-tests is given, and the script deletes');
+    writeln('  itself when done unless --no-delete-script is given.');
     writeln('');
 
     $grouped = [];
@@ -432,22 +437,31 @@ function guessGitHubUsername(): string
     }
 
     // fall back to using the username from the git remote
-    $remoteUrl = shell_exec('git config remote.origin.url') ?? '';
-    $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
+    return gitHubRemoteOwner();
+}
 
-    return $remoteUrlParts[1] ?? '';
+function gitHubRemoteOwner(): string
+{
+    $remoteUrl = trim(shell_exec('git config remote.origin.url') ?? '');
+
+    if (! str_contains($remoteUrl, 'github.com')) {
+        return '';
+    }
+
+    $remoteUrlParts = explode('/', str_replace(':', '/', $remoteUrl));
+
+    return $remoteUrlParts[count($remoteUrlParts) - 2] ?? '';
 }
 
 function guessGitHubVendorInfo($authorName, $username): array
 {
-    $remoteUrl = shell_exec('git config remote.origin.url') ?? '';
-    $remoteUrlParts = explode('/', str_replace(':', '/', trim($remoteUrl)));
+    $owner = gitHubRemoteOwner();
 
-    if (! isset($remoteUrlParts[1])) {
+    if ($owner === '') {
         return [$authorName, $username];
     }
 
-    $response = getGitHubApiEndpoint("orgs/{$remoteUrlParts[1]}");
+    $response = getGitHubApiEndpoint("orgs/{$owner}");
 
     if ($response === null) {
         return [$authorName, $username];
@@ -469,6 +483,13 @@ if ($given['help'] ?? false) {
     showHelp();
 
     exit(0);
+}
+
+if ($state['interactive'] && ! stream_isatty(STDIN)) {
+    fail(
+        'Error: there is no terminal to ask questions on.',
+        'Pass --no-interaction along with --vendor-name and --package-name to run unattended.',
+    );
 }
 
 function resolve(string $name, string|bool|Closure $default): string|bool

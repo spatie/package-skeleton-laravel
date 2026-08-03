@@ -10,7 +10,10 @@ This repo can be used to scaffold a Laravel package. Follow these steps to get s
 
 1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
 2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-   To skip the questions (handy for scripts and coding agents), pass the answers as options instead:
+
+   To run it unattended — from a script, or by handing it to a coding agent — pass `--no-interaction`
+   (`-n`) and the answers as options. It never prompts, and exits non-zero with a message naming any
+   option it still needs:
 
    ```bash
    php ./configure.php -n --vendor-name="Spatie" --package-name="laravel-ray"
